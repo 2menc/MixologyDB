@@ -12,8 +12,8 @@
 -- Database Section
 -- ________________ 
 
-create database LOGICO2;
-use LOGICO2;
+create database MixologyDB;
+use MixologyDB;
 
 
 -- Tables Section
