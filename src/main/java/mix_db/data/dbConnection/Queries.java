@@ -64,7 +64,7 @@ public class Queries {
     /**
      * creates, categorizes, identifies and links to the user a new drink
      */
-    public static final String CREATE_DRINK =       //TODO: TRANSACTION
+    public static final String CREATE_DRINK =                                                                //TODO: TRANSACTION
     """
     
     """;
