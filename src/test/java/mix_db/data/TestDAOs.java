@@ -21,7 +21,7 @@ public class TestDAOs {
 
     @BeforeAll
     private static void setup () {
-        connection = DatabaseConnection.localConnection("localHost", "root", "Password");
+        connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
     }
 
     @Test
