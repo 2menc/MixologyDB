@@ -30,10 +30,48 @@ public class Composition {
                 + ", measureUnit=" + measureUnit + "]";
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((ingredientName == null) ? 0 : ingredientName.hashCode());
+        result = prime * result + drinkID;
+        result = prime * result + Float.floatToIntBits(quantity);
+        result = prime * result + ((measureUnit == null) ? 0 : measureUnit.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Composition other = (Composition) obj;
+        if (ingredientName == null) {
+            if (other.ingredientName != null)
+                return false;
+        } else if (!ingredientName.equals(other.ingredientName))
+            return false;
+        if (drinkID != other.drinkID)
+            return false;
+        if (Float.floatToIntBits(quantity) != Float.floatToIntBits(other.quantity))
+            return false;
+        if (measureUnit == null) {
+            if (other.measureUnit != null)
+                return false;
+        } else if (!measureUnit.equals(other.measureUnit))
+            return false;
+        return true;
+    }
+    
     /**
      * DAO obj for Composition
      */
     public static final class DAO {
 
     }
+
 }

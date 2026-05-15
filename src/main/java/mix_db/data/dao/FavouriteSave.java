@@ -28,6 +28,37 @@ public class FavouriteSave {
         return "FavouriteSave [drinkID=" + drinkID + ", userID=" + userID + ", saveDate=" + saveDate + "]";
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + drinkID;
+        result = prime * result + userID;
+        result = prime * result + ((saveDate == null) ? 0 : saveDate.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        FavouriteSave other = (FavouriteSave) obj;
+        if (drinkID != other.drinkID)
+            return false;
+        if (userID != other.userID)
+            return false;
+        if (saveDate == null) {
+            if (other.saveDate != null)
+                return false;
+        } else if (!saveDate.equals(other.saveDate))
+            return false;
+        return true;
+    }
+
     /**
      * DAO object for FavouriteSave
      */
