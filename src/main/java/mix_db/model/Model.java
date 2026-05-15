@@ -88,9 +88,9 @@ public interface Model {
      * Calculates a leaderbord of the {@code numberOfResults} drinks with most positive reviews in the specified time intervall
      * @param daysAgo time interval filter
      * @param numberOfResults number of Drinks to show
-     * @return the list of drinks, an empty list if there are not drinks with any positive review 
+     * @return a {@code Map (Drink, number of positive reviews)} 
      */
-    List<Drink> calculateDrinkBestReviewsLeaderboard(int daysAgo, int numberOfResults);
+    Map<Drink, Integer> calculateDrinkBestReviewsLeaderboard(int daysAgo, int numberOfResults);
 
     /**
      * gets the most used ingredients
@@ -144,4 +144,12 @@ public interface Model {
      * @return {@code true} if the drink has been successfully deleted, {@code false} otherwise
      */
     boolean deleteDrink(String drinkID);
+
+    /**
+     * ONLY FOR ADMINS
+     * deletes a user, maintains recipes as anonymous {@code(special User with userID=0)}
+     * @param userID
+     * @return
+     */
+    boolean banUser(String userID);
 }
