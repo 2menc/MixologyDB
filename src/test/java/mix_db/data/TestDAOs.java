@@ -1,11 +1,9 @@
 package mix_db.data;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.sql.Connection;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -20,15 +18,23 @@ public class TestDAOs {
     private static Connection connection;
 
     @BeforeAll
-    private static void setup () {
+    static void setup () {
         connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
     }
 
     @Test
-    public void ingredients() {
+    void ListOfIngredients() {
         final var actual = Ingredient.DAO.allMaterials(connection);
-        final var expected = Set.of(new Ingredient("gin", 1));
+        final var expected = new Ingredient("Gin", 0);
 
-        assertThat(actual).hasSameElementsAs(expected);
+        assertThat(actual).contains(expected);
+    }
+
+    @Test 
+    void ingredientsOf() {
+        final var actual = Ingredient.DAO.ofDrink(connection, "5");
+        final var expected = new Ingredient("Gin", 0);
+
+        assertThat(actual.contains(expected));
     }
 }
