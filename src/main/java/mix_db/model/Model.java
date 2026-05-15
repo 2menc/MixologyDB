@@ -1,0 +1,147 @@
+package mix_db.model;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import mix_db.data.dao.*;
+
+/**
+ * interface that defines methods to communicate with the DAOs
+ */
+public interface Model {
+
+    /**
+     * registers a new {@link User}. 
+     * Checks if this user is already in the db
+     * @param user the user
+     * @return an empty Optional if the user is already in the db, the User otherwise 
+     */
+    Optional<User> registerUser(User user);
+
+    /**
+     * logs in with user's credentials
+     * @param user the user
+     * @return an empty Optional if the user is not in the db, the User otherwise 
+     */
+    Optional<User> login(User user);
+
+    /**
+     * Creates a new Drink, also saving its composition (ingredients) and identification (keywords). Automatically links the drink to the user and saves the creationDate
+     * @param drink .
+     * @param composition a {@link Set} of {@link Composition}
+     * @param identification a {@link Set} of {@link Identification}
+     * @returnan empty Optional if the drink is not in the db, the drink otherwise 
+     */
+    Optional<Drink> createDrink(Drink drink, Set<Composition> composition, Set<Identification> identification);
+
+    /**
+     * gets a drink
+     * @param drinkID .
+     * @return empty Optional if the drink is not in the db, the drink otherwise 
+     */
+    Optional<Drink> getDrink(String drinkID);
+
+    /**
+     * gets a drink's ingredients
+     * @param drinkID the id of the drink to get the ingredients from
+     * @return empty Optional if the drink is not in the db, a list with all Ingredients otherwise
+     */
+    Optional<List<Ingredient>> getIngredients(String drinkID);
+
+    /**
+     * gets a drink's keywords
+     * @param drinkID the id of the drink to get the keywords from
+     * @return empty Optional if the drink is not in the db, a list with all Tags otherwise
+     */
+    Optional<List<Tag>> getKeywords(String drinkID);
+
+    /**
+     * saves a drink in favourites
+     * @param drinkID the id of the drink to save
+     * @return {@code true} if the drink can be saved (its not already in the list), {@code false} otherwise
+     */
+    boolean saveAsFavourite(String drinkID);
+
+    /**
+     * gets the list of drink saved as fav.
+     * @return the list (an empty list if there are not any favourites)
+     */
+    List<Drink> getFavourites();
+
+    /**
+     * adds a review linked to the drink
+     * @param drinkID the drink id
+     * @return {@code true} if can add the review, {@code false} otherwise (f.e. the user has already created a review for that drink)
+     */
+    boolean addReview(String drinkID);
+
+    /**
+     * Searches a drink using keywords, drink name, drink description, category name, ingredients
+     * @param keyword the word/phrase to search for
+     * @return empty Optional if there is not such drink in the db or the search word is not precise enough, a list with all Ingredients otherwise
+     */
+    Optional<Drink> searchForKeywords(String keyword);
+
+    /**
+     * Calculates a leaderbord of the {@code numberOfResults} drinks with most positive reviews in the specified time intervall
+     * @param daysAgo time interval filter
+     * @param numberOfResults number of Drinks to show
+     * @return the list of drinks, an empty list if there are not drinks with any positive review 
+     */
+    List<Drink> calculateDrinkBestReviewsLeaderboard(int daysAgo, int numberOfResults);
+
+    /**
+     * gets the most used ingredients
+     * @param numberOfResults number of ingredients to show
+     * @return a list of ingredients
+     */
+    List<Ingredient> getMostUsedIngredients(int numberOfResults);
+
+    /**
+     * calculates a leaderboard of the {@code numberOfResults} users with most positive reviews
+     * @param numberOfResults number of users to show
+     * @return the list of users, an empty list if there are not users with any positive review
+     */
+    List<User> calculateUsersWithMostPositiveReviewsLeaderboard(int numberOfResults);
+
+    /**
+     * gets a {@code Map of (keyword, numberUsed)}
+     * @param daysAgo time interval filter
+     * @param numberOfResults number of Drinks to show
+     * @return a Map of the trending keywords
+     */
+    Map<String, Integer> getTrendingKeywords(int daysAgo, int numberOfResults);
+
+    /**
+     * gets a list of suggested drinks
+     * @param numberOfResults number of results to show
+     * @return the list of drinks
+     */
+    List<Drink> getSuggestions(int numberOfResults);
+
+    /**
+     * ONLY FOR ADMINS
+     * Gets a list of Users with analitics data such as the reviews he made
+     * @return a {@code Map (User, List of the reviews he has made)}
+     */
+    Map<User, List<Review>> getUserAnalitics();
+
+    /**
+     * ONLY FOR ADMINS
+     * deletes the specified review
+     * @param userID .
+     * @param drinkID .
+     * @return {@code true} if the review has been successfully deleted, {@code false} otherwise
+     */
+    boolean deleteReview(String userID, String drinkID);
+
+    /**
+     * ONLY FOR ADMINS
+     * deletes the specified drink
+     * @param drinkID .
+     * @return {@code true} if the drink has been successfully deleted, {@code false} otherwise
+     */
+    boolean deleteDrink(String drinkID);
+}
