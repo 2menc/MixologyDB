@@ -3,6 +3,7 @@ package mix_db.data.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import mix_db.data.Queries;
@@ -238,7 +239,44 @@ public class Drink {
                 throw new DAOException(e);
             }
         }
-    }
+
+        /**
+         * searches a drink by keywords
+         * @param connection .
+         * @param keyword .
+         * @return a List of drinks
+         */
+        public static List<Drink> searchByKeyword(Connection connection, String keyword) {
+            final List<Drink> drinks = new LinkedList<>();
+
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.SEARCH_BY_KEYWORD, 
+                    keyword);
+                final var rs = statement.executeQuery();
+            ) {
+                while(rs.next()) {
+                    final var d = new Drink(
+                        rs.getInt("drinkID"), 
+                        rs.getString("nome"),
+                        rs.getString("descrizione"), 
+                        rs.getString("foto"), 
+                        rs.getString("nomeCategoria"),
+                        rs.getBoolean("IBA")
+                        );
+
+                        drinks.add(d);
+                    }
+
+                    return drinks;
+                } catch(final Exception e) {
+                    throw new DAOException(e);
+                }
+            }
+
+            
+
+        }        
 
     public int getDrinkID() {
         return drinkID;
