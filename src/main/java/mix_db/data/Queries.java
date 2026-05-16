@@ -218,6 +218,14 @@ public class Queries {
     VALUES (?, ?, ?, DATE(NOW()), ?);      
     """;
 
+    public static final String SEARCH_DRINK_REVIEWS =
+    """
+    SELECT *
+    FROM recensioni
+    WHERE drinkID = ?
+    ORDER BY dataRecensione DESC;        
+    """;
+
     /**
      * updates the {@code numeroRecensioniEffettuate} counter in User
      */

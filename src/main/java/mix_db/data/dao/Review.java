@@ -1,6 +1,13 @@
 package mix_db.data.dao;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import mix_db.data.Queries;
+import mix_db.data.dbConnection.DAOException;
+import mix_db.data.dbConnection.DatabaseConnection;
 
 /**
  * User - Review - Drink
@@ -80,5 +87,93 @@ public class Review {
      */
     public static final class DAO {
 
+        /**
+         * creates a new review
+         * @param connection .
+         * @param drinkID .
+         * @param userID .
+         * @param description .
+         * @param score between 1 and 5
+         * @return true if success, false otherwise
+         */
+        public static boolean createReview(Connection connection, int drinkID, int userID, String description, int score) {
+            if(score < 1 || score > 5) {
+                throw new DAOException("score " + score + " not accepted: it must be between 1 andd 5");
+            }
+
+            try(
+                final var statement = DatabaseConnection.prepare(connection, Queries.CREATE_REVIEW,
+                    drinkID, userID, description, score);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+        /**
+         * searches all reviews linked to a drink
+         * @param connection .
+         * @param drinkID .
+         * @return a list of the reviews
+         */
+        public static List<Review> searchDrinkReviews(Connection connection, int drinkID) {
+            final var reviews = new LinkedList<Review>();
+
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.SEARCH_DRINK_REVIEWS, 
+                drinkID);
+                final var rs = statement.executeQuery();
+            ) {
+                while(rs.next()) {
+                    final var r = new Review(
+                        drinkID, 
+                        rs.getInt("userID"),
+                        rs.getString("descrizione"),
+                        rs.getDate("dataRecensione"), 
+                        rs.getInt("voto")
+                    );
+                    reviews.add(r);
+                }
+
+                return reviews;
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        /**
+         * updates user's attribute that counts how much reviews he has made
+         * @param connection .
+         * @param userID .
+         */
+        public static void updateReviewsCounter(Connection connection, int userID) {
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.UPDATE_USER_REVIEW_NUMBER_COUNTER,
+                    userID);
+            ) {
+                statement.executeUpdate();
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        /**
+         * updates user's attribute that counts how much positive reviews he has
+         * @param connection .
+         * @param userID .
+         */
+        public static void updatePositiveReviewsCounter(Connection connection, int userID) {
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.UPDATE_USER_POSITIVE_REVIEW_COUNTER,
+                    userID);
+            ) {
+                statement.executeUpdate();
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }    
 }
