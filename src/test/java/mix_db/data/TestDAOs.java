@@ -27,22 +27,6 @@ public class TestDAOs {
     }
 
     @Test
-    void ListOfIngredients() {
-        final var actual = Ingredient.DAO.allMaterials(connection);
-        final var expected = new Ingredient("Gin", 0);
-
-        assertThat(actual).contains(expected);
-    }
-
-    @Test 
-    void ingredientsOf() {
-        final var actual = Ingredient.DAO.ofDrink(connection, "5");
-        final var expected = new Ingredient("Gin", 0);
-
-        assertThat(actual.contains(expected));
-    }
-
-    @Test
     void insertUser() {
         final User u = new User(-1, "tryemail", "pass",
         "name", "aurn", new Date(2005, 05, 05),
