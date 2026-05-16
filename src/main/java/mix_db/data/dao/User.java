@@ -219,6 +219,12 @@ public class User {
             }
         }
 
+        /**
+         * gets a list of user's favourites
+         * @param connection .
+         * @param userID .
+         * @return the list
+         */
         public static List<Drink> getFavourites(Connection connection, int userID) {
             final List<Drink> favs = new LinkedList<>();
 
@@ -243,6 +249,43 @@ public class User {
                 throw new DAOException(e);
             }
         }
+
+        /**
+         * sets a drink as favourite
+         * @param connection .
+         * @param drinkID .
+         * @return true if success, false otherwise
+         */
+        public static boolean setFavourite(Connection connection, int drinkID) {
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.SAVE_FAVOURITE,
+                    drinkID);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch(final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        /**
+         * removees a drink from favourites
+         * @param connection .
+         * @param drinkID .
+         * @return true if success, false otherwise
+         */
+        public static boolean deleteFavourite(Connection connection, int drinkID) {
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.REMOVE_FAVOURITE,
+                    drinkID);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch(final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
     }
 
     public int getUserID() {
