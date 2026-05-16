@@ -8,9 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import mix_db.data.Queries;
 import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
-import mix_db.data.dbConnection.Queries;
 
 /**
  * User

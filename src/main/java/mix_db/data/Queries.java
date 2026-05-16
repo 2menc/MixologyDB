@@ -1,4 +1,4 @@
-package mix_db.data.dbConnection;
+package mix_db.data;
 
 public class Queries {
 

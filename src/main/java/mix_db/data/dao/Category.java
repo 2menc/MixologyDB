@@ -2,9 +2,9 @@ package mix_db.data.dao;
 
 import java.sql.Connection;
 
+import mix_db.data.Queries;
 import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
-import mix_db.data.dbConnection.Queries;
 
 /**
  * Category

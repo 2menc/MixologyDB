@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.Set;
 
+import mix_db.data.Queries;
 import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
-import mix_db.data.dbConnection.Queries;
 
 /**
  * Ingredient
