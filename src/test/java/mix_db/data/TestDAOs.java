@@ -95,12 +95,10 @@ public class TestDAOs {
 
         // ingredients population
         Ingredient.DAO.createIngredient(connection, "ingredient1");
-        Ingredient.DAO.createIngredient(connection, "ingredient2");
 
         // compositions
         final List<Composition> composition = List.of(
-            new Composition("ingredient1", -1, 20, "ml"),
-            new Composition("ingredient2", -1, 30, "ml")
+            new Composition("ingredient1", -1, 20, "ml")
         );
 
         // drink
@@ -113,6 +111,7 @@ public class TestDAOs {
         // deletions after test
         Drink.DAO.deleteByCategoryName(connection, "cat");
         Category.DAO.deleteCategory(connection, "cat");
+        Ingredient.DAO.deleteIngredient(connection, "Ingredient1");
     }
 
     @Test
