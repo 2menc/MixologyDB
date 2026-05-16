@@ -256,11 +256,11 @@ public class User {
          * @param drinkID .
          * @return true if success, false otherwise
          */
-        public static boolean setFavourite(Connection connection, int drinkID) {
+        public static boolean setFavourite(Connection connection, int drinkID, int userID) {
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
                     Queries.SAVE_FAVOURITE,
-                    drinkID);
+                    drinkID, userID);
             ) {
                 return (statement.executeUpdate() == 1);
             } catch(final Exception e) {
@@ -274,11 +274,11 @@ public class User {
          * @param drinkID .
          * @return true if success, false otherwise
          */
-        public static boolean deleteFavourite(Connection connection, int drinkID) {
+        public static boolean deleteFavourite(Connection connection, int drinkID, int userID) {
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
                     Queries.REMOVE_FAVOURITE,
-                    drinkID);
+                    userID, drinkID);
             ) {
                 return (statement.executeUpdate() == 1);
             } catch(final Exception e) {
