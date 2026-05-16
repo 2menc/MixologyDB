@@ -142,6 +142,12 @@ public class User {
     */
     public static final class DAO {
 
+        /**
+         * inserts a new user
+         * @param connection db connection
+         * @param u the user to insert
+         * @return {@code true} if can add the user, {@code false} otherwise
+         */
         public static boolean insertNewUser(Connection connection, User u) {
             try (
                 final PreparedStatement statement = DatabaseConnection.prepare(connection, 
@@ -155,6 +161,14 @@ public class User {
             }
         }
 
+        /**
+         * logs in with email and password
+         * @param connection .
+         * @param email .
+         * @param password .
+         * @return an empty Optional if there is no such user in the db, 
+         * an Optional of the searched User otherwise
+         */
         public static Optional<User> getUser(Connection connection, String email, String password) {
             try (
                 final PreparedStatement statement = DatabaseConnection.prepare(connection, 
@@ -185,5 +199,66 @@ public class User {
                 throw new DAOException(e);
             }
         }
+
+        /**
+         * deletes a user
+         * @param userID
+         * @return {@code true} if the user exists and can be deleted,
+         * {@code false} otherwise
+         */
+        public static boolean deleteUser(Connection connection, int userID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection,
+                    Queries.BAN_USER, userID);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public Date getSubsctriptionDate() {
+        return subsctriptionDate;
+    }
+
+    public int getNumCreatedRecipes() {
+        return numCreatedRecipes;
+    }
+
+    public int getNumPositiveReviews() {
+        return numPositiveReviews;
+    }
+
+    public int getNumCreatedReviews() {
+        return numCreatedReviews;
     }
 }
