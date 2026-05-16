@@ -32,6 +32,12 @@ public class Queries {
     VALUES (?, ?, ?, ?, ?, ?, DATE(NOW()), 0, 0, 0);
     """;
 
+    public static final String CREATE_INGREDIENT =
+    """
+    INSERT INTO Ingredienti (nomeIngrediente, volteUtilizzato)
+    VALUES (?, 0);        
+    """;
+
     /**
      * logs in with an existing user
      */
@@ -61,7 +67,9 @@ public class Queries {
     VALUES (?, ?);
     """;
 
-
+    /**
+     * searches a bar
+     */
     public static final String SEARCH_BAR =
     """
     SELECT *
@@ -71,22 +79,88 @@ public class Queries {
     AND indirizzo = ?;
     """;
 
-    public static final String DELETE_BAR =                                                 //TODO
+    /**
+     * deletes a bar
+     */
+    public static final String DELETE_BAR =
     """
-            
+    DELETE FROM Bar
+    WHERE barID = ?;     
     """;
+
+    /**
+     * creates a new category
+     */
+    public static final String CREATE_CATEGORY =
+    """
+    INSERT INTO Categorie (nomeCategoria, descrizione)
+    VALUES (?,?);        
+    """;
+
+    /**
+     * deletes a category
+     * ! ---
+     * {@link DELETE_DRINK_BY_CATEGORYNAME}
+     */
+    public static final String DELETE_CATEGORY =
+    """
+    DELETE FROM Categorie 
+    WHERE nomeCategoria = ?;
+    """;
+    
+    /**
+     * deletes drinks having categoryname = ?
+     */
+    public static final String DELETE_DRINK_BY_CATEGORYNAME =
+    """
+    DELETE FROM drink 
+    WHERE nomeCategoria = ?;    
+    """;
+
+    /*
+    * DRINK CREATION START
+    ! TRANSACTION START
+    */
 
     /**
      * creates, categorizes, identifies and links to the user a new drink
      */
-    public static final String CREATE_DRINK =                                                                //TODO: TRANSACTION
+    public static final String CREATE_DRINK =
     """
-    
+    INSERT INTO Drink (nome, descrizione, foto, nomeCategoria, IBA)
+    VALUES (?, ?, ?, ?, false);
+    """;
+
+    /**
+     * links the drink with the creator
+     */
+    public static final String LINK_DRINK_WITH_USER =
+    """
+    INSERT INTO creazioni (drinkID, dataCreazione, userID)
+    VALUES (?, DATE(NOW()), ?);
+    """;
+
+    /**
+     * inserts  drink's ingredients
+     */
+    public static final String INSERT_DRINK_INGREDIENTS =
+    """
+    INSERT INTO composizioni (nomeIngrediente, drinkID, quantita, unitaDiMisura)
+    VALUES (?, ?, ?, ?)        
+    """;
+
+    /**
+     * increments the timeUsed ingredient counter
+     */
+    public static final String UPDATE_INGREDIENT_TIMEUSED_COUNTER =
+    """
+    UPDATE Ingredienti
+    SET volteUtilizzato = volteUtilizzato+1
+    WHERE nomeIngrediente = ?
     """;
 
     /**
      * updates the user creation counter
-     * ! necessary after creating a drink
      */
     public static final String UPDATE_USER_CREATIONS_COUNTER =                                                  
     """
@@ -94,6 +168,12 @@ public class Queries {
     SET numeroRicetteCreate = numeroRicetteCreate+1
     WHERE userID = ?;
     """;
+    
+    /*
+    * DRINK CREATION STOP
+    ! TRANSACTION STOP
+    */
+
 
     /**
      * saves a drink in the favourites section
@@ -114,6 +194,13 @@ public class Queries {
     WHERE U.userID = SP.userID
     AND SP.drinkID = D.drinkID
     AND U.userID = ?;    
+    """;
+
+    public static final String REMOVE_FAVOURITE =
+    """
+    DELETE FROM salvataggioPreferiti
+    WHERE userID = ?
+    AND drinkID = ?;
     """;
 
     /**

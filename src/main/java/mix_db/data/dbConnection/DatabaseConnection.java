@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+import java.sql.Statement;
 
 /**
  * Establishes a connection to a MySQL local server on port 3306
@@ -54,4 +54,38 @@ public class DatabaseConnection {
             throw e;
         }
     }
+
+    /**
+     * gets auto_increment keys
+     * @param connection .
+     * @param query .
+     * @param params .
+     * @return the previewsly createe keys
+     */
+    public static PreparedStatement prepareWithKeys(Connection connection, String query, Object... params) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            setParameters(statement, params);
+
+            return statement;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    /**
+     * inseets the parameters into the statement
+     * @param statement .
+     * @param params .
+     * @throws SQLException .
+     */
+    private static void setParameters(PreparedStatement statement, Object... params) throws SQLException {
+        if (params != null) {
+            for (int i = 0; i < params.length; i++) {
+                statement.setObject(i + 1, params[i]);
+            }
+        }
+    }
+
+
 }
