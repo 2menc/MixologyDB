@@ -2,8 +2,10 @@ package mix_db.data;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -42,18 +44,6 @@ public class TestDAOs {
     /**
      * insertUser() required
      */
-    @Test
-    void login() {
-        final String email = "tryemail";
-        final String password = "pass";
-
-        final Optional<User> result = User.DAO.getUser(connection, email, password);
-        assertFalse(result.isEmpty());        
-    }
-
-    /**
-     * insertUser() required
-     */
     @AfterEach
     void deleteUser() {
         final User u = User.DAO.getUser(connection, "tryemail", "pass").get();
@@ -61,6 +51,18 @@ public class TestDAOs {
 
         final boolean result = User.DAO.deleteUser(connection, userID);
         assertTrue(result);
+    }
+
+    /**
+     * insertUser() required
+     */
+    @Test
+    void login() {
+        final String email = "tryemail";
+        final String password = "pass";
+
+        final Optional<User> result = User.DAO.getUser(connection, email, password);
+        assertFalse(result.isEmpty());        
     }
 
     @Test 
@@ -79,10 +81,50 @@ public class TestDAOs {
 
 
         assertTrue(Bar.DAO.addUserToBar(connection, u.getUserID(), barNew.get().getBarID()));
+
+        assertTrue(Bar.DAO.deleteBar(connection, barNew.get().getBarID()));
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void createDrink() {
-        
+        Category.DAO.createCategory(connection, "cat", "category description");
+
+        final Drink d = new Drink(-1, "drink1", "description1", "path", "cat", false);
+        final User u = User.DAO.getUser(connection, "tryemail", "pass").get();
+
+        // ingredients population
+        Ingredient.DAO.createIngredient(connection, "ingredient1");
+        Ingredient.DAO.createIngredient(connection, "ingredient2");
+
+        // compositions
+        final List<Composition> composition = List.of(
+            new Composition("ingredient1", -1, 20, "ml"),
+            new Composition("ingredient2", -1, 30, "ml")
+        );
+
+        // drink
+        Drink.DAO.createDrink(connection, d, u.getUserID(), composition);
+
+        assertDoesNotThrow(() -> {
+            Drink.DAO.createDrink(connection, d, u.getUserID(), composition);
+        }, "createDrink() should not throw DAOExceptions");
+   
+        // deletions after test
+        Drink.DAO.deleteByCategoryName(connection, "cat");
+        Category.DAO.deleteCategory(connection, "cat");
     }
+
+    @Test
+    void favourites() {                     //TODO 
+        // *save    
+        final User u = User.DAO.getUser(connection, "tryemail", "pass").get();
+
+
+        // *get
+
+        // *remove
+    }
+
+
 }
