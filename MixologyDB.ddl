@@ -97,7 +97,7 @@ create table Tag (
 
 create table Utenti (
      userID int auto_increment not null,
-     email varchar(128) not null,
+     email varchar(128) not null unique,
      password varchar(256) not null,
      nome varchar(20) not null,
      cognome varchar(20) not null,
