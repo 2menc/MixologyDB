@@ -74,4 +74,20 @@ public class Composition {
 
     }
 
+    public String getIngredientName() {
+        return ingredientName;
+    }
+
+    public int getDrinkID() {
+        return drinkID;
+    }
+
+    public float getQuantity() {
+        return quantity;
+    }
+
+    public String getMeasureUnit() {
+        return measureUnit;
+    }
+
 }

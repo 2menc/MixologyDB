@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import mix_db.data.dbConnection.DAOException;
@@ -217,19 +219,27 @@ public class User {
             }
         }
 
-        /**
-         * updates User's counter for drink created
-         * ! necessary after creating a drink
-         * @param connection .
-         */
-        public static void updateCreationCounter(Connection connection) {
-            
+        public static List<Drink> getFavourites(Connection connection, int userID) {
+            final List<Drink> favs = new LinkedList<>();
+
             try (
                 final PreparedStatement statement = DatabaseConnection.prepare(connection, 
-                    Queries.UPDATE_USER_CREATIONS_COUNTER);
+                    Queries.GET_FAVOURITES, userID);
+                final ResultSet rs = statement.executeQuery();
             ) {
-                statement.executeUpdate();
-            } catch(final Exception e) {
+                while(rs.next()) {
+                    final Drink d = new Drink( 
+                        rs.getInt("drinkID"), 
+                        rs.getString("nome"), 
+                        rs.getString("descrizione"), 
+                        rs.getString("foto"), 
+                        rs.getString("nomeCategoria"),
+                        rs.getBoolean("IBA")
+                    );
+                    favs.add(d);
+                }
+                return new LinkedList<>(favs);
+            } catch (final Exception e) {
                 throw new DAOException(e);
             }
         }

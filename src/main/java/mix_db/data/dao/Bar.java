@@ -146,6 +146,22 @@ public class Bar {
                 throw new DAOException(e);
             }
         }
+
+        /**
+         * deletes a bar
+         * @param connection .
+         * @param barID .
+         */
+        public static boolean deleteBar(Connection connection, int barID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.DELETE_BAR, barID);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch(final Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 
     public int getBarID() {

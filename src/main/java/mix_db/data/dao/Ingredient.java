@@ -71,7 +71,7 @@ public class Ingredient {
          * @param connection the connection
          * @return a set of Ingredient
          */
-        public static Set<Ingredient> allMaterials(Connection connection) {
+        public static Set<Ingredient> allIngredients(Connection connection) {
             final Set<Ingredient> allIngredients = new HashSet<>();
 
             // try with resources: controlla prima che si instanzino correttamente statement e resultSet
@@ -93,6 +93,12 @@ public class Ingredient {
             return allIngredients;
         }
 
+        /**
+         * gets the ingredients of a drink
+         * @param connection .
+         * @param drinkID ..
+         * @return a Set of ingredients
+         */
         public static Set<Ingredient> ofDrink(Connection connection, String drinkID) {
             final Set<Ingredient> ingredients = new HashSet<>();
 
@@ -111,6 +117,18 @@ public class Ingredient {
             }
 
             return ingredients;
+        }
+
+        public static boolean createIngredient(Connection connection, String ingredientName) {
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.CREATE_INGREDIENT, 
+                    ingredientName);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch(final Exception e) {
+                throw new DAOException(e);
+            }
         }
     }
 }

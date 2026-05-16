@@ -2,6 +2,8 @@ package mix_db.data.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
 
 import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
@@ -98,22 +100,144 @@ public class Drink {
     public static final class DAO {
 
         /**
-         * inserts a new drink
+         * inserts a new drink using transactions. 
          * @param connection .
          * @param d the drink to insert
          * @return {@code true} if can insert the drink, {@code false} otherwise
          */
-        public static boolean createDrink(Connection connection, Drink d) {
+        public static void createDrink(Connection connection, Drink d, int userID, List<Composition> composition) {
+            
+            try {
+                // !transaction start
+                connection.setAutoCommit(false);
+                int correctDrinkId;
+                
+                // *creates the drink
+                try(
+                    final var statement = DatabaseConnection.prepareWithKeys(connection, 
+                        Queries.CREATE_DRINK, 
+                    d.getName(), d.getDescription(), d.getImagePath(), d.getCategoryName());
+                ) {
+                    statement.executeUpdate();
+
+                    // ? the drinkID is currently -1: before linking the program should get the correct id
+                    try(final var rs = statement.getGeneratedKeys()) {
+                        if(rs.next()) {
+                            correctDrinkId = rs.getInt(1);
+                        } else {
+                            throw new SQLException("Insert failed: no drinkID specified");
+                        }
+                    }
+
+                } catch(Exception e) {
+                    throw new DAOException(e);
+                }
+
+                // *links drink to user
+                try (
+                    final var statement = DatabaseConnection.prepare(connection, 
+                        Queries.LINK_DRINK_WITH_USER,
+                    correctDrinkId, userID); 
+                ) {
+                    statement.executeUpdate();
+                } catch(final Exception e) {
+                    throw new DAOException(e);
+                }
+
+                // *inserts ingredients
+                for(var c: composition) {
+                    try (
+                        final var statement = DatabaseConnection.prepare(connection, 
+                            Queries.INSERT_DRINK_INGREDIENTS, 
+                            c.getIngredientName(), correctDrinkId, c.getQuantity(), c.getMeasureUnit());
+                        ) {
+                            statement.executeUpdate();
+                        } catch(final Exception e) {
+                            throw new DAOException(e);
+                        }
+                }
+
+                // *increments ingredients timeUsed counter
+                for(var c: composition) {
+                    try (
+                        final var statement = DatabaseConnection.prepare(connection, 
+                            Queries.UPDATE_INGREDIENT_TIMEUSED_COUNTER, 
+                        c.getIngredientName())
+                    ) {
+                        statement.executeUpdate();
+                    } catch(final Exception e) {
+                        throw new DAOException(e);
+                    }
+                }
+
+                // *increments user's creation counter
+                try (
+                    final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                        Queries.UPDATE_USER_CREATIONS_COUNTER, userID);
+                ) {
+                    statement.executeUpdate();
+                } catch(final Exception e) {
+                    throw new DAOException(e);
+                }
+
+                // ! COMMIT
+                connection.commit();
+                
+            } catch (final Exception e) {
+                // ?if this exception was thrown, then the transaction has to be interrupted:
+                // ! transaction ends with rollback
+                try {
+                    connection.rollback();
+                } catch(final SQLException rollBackException) {
+                    throw new DAOException(rollBackException);
+                }
+
+                // and the DAOexception has to be thrown with the previews trace
+                throw new DAOException(e);
+            } finally {
+                // if no exceptions were thrown, seta the autocommit true and commits the transacrion
+                // ! transaction ends with commit
+                try{
+                    connection.setAutoCommit(true);
+                } catch(SQLException autoCommitException) {
+                    //ignores the exception
+                }
+            }
+        }
+
+        /**
+         * saves a drink as favourite
+         * @param connection
+         * @param drinkID .
+         * @param userID .
+         * @return true if the drink is not already in the favs, false otherwise
+         */
+        public static boolean saveAsFavourite(Connection connection, int drinkID, int userID) {
             try (
-               final PreparedStatement statement = DatabaseConnection.prepare(connection, 
-                Queries.CREATE_DRINK, d); 
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.SAVE_FAVOURITE, drinkID, userID);
             ) {
                 return (statement.executeUpdate() == 1);
-            } catch(final Exception e) {
+            } catch (final Exception e) {
                 throw new DAOException(e);
             }
         }
 
+        /**
+         * ! FOR TESTS
+         */
+        @Deprecated
+        public static void deleteByCategoryName(Connection connection, String categoryName) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.DELETE_DRINK_BY_CATEGORYNAME, 
+                    categoryName);
+            ) {
+                statement.executeUpdate();
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 
     public int getDrinkID() {
