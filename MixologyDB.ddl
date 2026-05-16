@@ -26,7 +26,7 @@ create table Bar (
      barID int auto_increment not null,
      nomeBar varchar(128) not null,
      città varchar(30) not null,
-     indirizzo varchar(60) not null,
+     indirizzo varchar(60) not null unique,
      constraint IDBar primary key (barID));
 
 create table Categorie (
