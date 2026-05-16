@@ -71,6 +71,11 @@ public class Queries {
     AND indirizzo = ?;
     """;
 
+    public static final String DELETE_BAR =                                                 //TODO
+    """
+            
+    """;
+
     /**
      * creates, categorizes, identifies and links to the user a new drink
      */
