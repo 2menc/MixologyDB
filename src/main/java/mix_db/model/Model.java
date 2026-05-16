@@ -31,10 +31,10 @@ public interface Model {
      * Creates a new Drink, also saving its composition (ingredients) and identification (keywords). Automatically links the drink to the user and saves the creationDate
      * @param drink .
      * @param composition a {@link Set} of {@link Composition}
-     * @param identification a {@link Set} of {@link Identification}
+     * @param identification a {@link Map} of {@link (drinkID, keyword)}
      * @returnan empty Optional if the drink is not in the db, the drink otherwise 
      */
-    Optional<Drink> createDrink(Drink drink, Set<Composition> composition, Set<Identification> identification);
+    Optional<Drink> createDrink(Drink drink, Set<Composition> composition, Map<Integer, String> identification);
 
     /**
      * gets a drink
