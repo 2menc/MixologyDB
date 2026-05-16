@@ -38,7 +38,7 @@ public class Queries {
     public static final String LOGIN =
     """
     SELECT *
-    FROM Utente
+    FROM Utenti
     WHERE email = ?
     AND password = ?;
     """;
