@@ -9,8 +9,9 @@ bin/
 # Ignore Idea customizations
 .idea
 
-# Ignore Eclipse settings
+# Ignore Eclipse/vscode settings
 .project
 .settings/
 .classpath
 ./vscode/
+.vscode/
