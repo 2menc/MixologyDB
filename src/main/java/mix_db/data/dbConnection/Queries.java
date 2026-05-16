@@ -57,8 +57,18 @@ public class Queries {
      */
     public static final String ADD_EMPLOYEE =
     """
-    NSERT INTO occupazioni (userID, barID)
+    INSERT INTO occupazioni (userID, barID)
     VALUES (?, ?);
+    """;
+
+
+    public static final String SEARCH_BAR =
+    """
+    SELECT *
+    FROM Bar
+    WHERE nomeBar = ? 
+    AND città = ?
+    AND indirizzo = ?;
     """;
 
     /**
