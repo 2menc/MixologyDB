@@ -1,6 +1,14 @@
 package mix_db.data.dao;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Optional;
+
+import mix_db.data.dbConnection.DAOException;
+import mix_db.data.dbConnection.DatabaseConnection;
+import mix_db.data.dbConnection.Queries;
 
 /**
  * User
@@ -134,5 +142,48 @@ public class User {
     */
     public static final class DAO {
 
+        public static boolean insertNewUser(Connection connection, User u) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.REGISTER_USER, 
+                    u.email, u.password, u.name, u.surname, u.birthDate, u.userRole
+                );
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static Optional<User> getUser(Connection connection, String email, String password) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.LOGIN, email, password);
+                final ResultSet rs = statement.executeQuery();
+            ) {
+                
+                if(rs.next()) {
+                    final User u = new User(
+                        rs.getInt("userID"),
+                        rs.getString("email"),
+                        rs.getString("password"), 
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getDate("dataNascita"),
+                        rs.getString("ruoloUtente"),
+                        rs.getDate("dataIscrizione"),
+                        rs.getInt("numeroRicetteCreate"),
+                        rs.getInt("numeroRecensioniPositive"),
+                        rs.getInt("numeroRecensioniEffettuate")
+                    );
+
+                    return Optional.of(u);
+                }
+                return Optional.empty();
+                
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 }
