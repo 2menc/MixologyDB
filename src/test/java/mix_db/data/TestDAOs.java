@@ -80,4 +80,9 @@ public class TestDAOs {
 
         assertTrue(Bar.DAO.addUserToBar(connection, u.getUserID(), barNew.get().getBarID()));
     }
+
+    @Test
+    void createDrink() {
+        
+    }
 }

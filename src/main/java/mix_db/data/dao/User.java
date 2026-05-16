@@ -216,6 +216,23 @@ public class User {
                 throw new DAOException(e);
             }
         }
+
+        /**
+         * updates User's counter for drink created
+         * ! necessary after creating a drink
+         * @param connection .
+         */
+        public static void updateCreationCounter(Connection connection) {
+            
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.UPDATE_USER_CREATIONS_COUNTER);
+            ) {
+                statement.executeUpdate();
+            } catch(final Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 
     public int getUserID() {

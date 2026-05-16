@@ -1,5 +1,12 @@
 package mix_db.data.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+import mix_db.data.dbConnection.DAOException;
+import mix_db.data.dbConnection.DatabaseConnection;
+import mix_db.data.dbConnection.Queries;
+
 /**
  * Drink
  */
@@ -90,5 +97,46 @@ public class Drink {
      */
     public static final class DAO {
 
+        /**
+         * inserts a new drink
+         * @param connection .
+         * @param d the drink to insert
+         * @return {@code true} if can insert the drink, {@code false} otherwise
+         */
+        public static boolean createDrink(Connection connection, Drink d) {
+            try (
+               final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                Queries.CREATE_DRINK, d); 
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch(final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+    }
+
+    public int getDrinkID() {
+        return drinkID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public boolean isIBA() {
+        return isIBA;
     }
 }
