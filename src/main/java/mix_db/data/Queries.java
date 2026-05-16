@@ -38,6 +38,12 @@ public class Queries {
     VALUES (?, 0);        
     """;
 
+    public static final String DELETE_INGREDIENT =
+    """
+    DELETE FROM ingredienti
+    WHERE nomeIngrediente = ?;        
+    """;
+
     /**
      * logs in with an existing user
      */

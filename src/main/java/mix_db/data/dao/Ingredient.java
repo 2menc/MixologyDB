@@ -130,5 +130,17 @@ public class Ingredient {
                 throw new DAOException(e);
             }
         }
+
+        public static boolean deleteIngredient(Connection connection, String ingredientName) {
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.DELETE_INGREDIENT, 
+                    ingredientName);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch(final Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 }
