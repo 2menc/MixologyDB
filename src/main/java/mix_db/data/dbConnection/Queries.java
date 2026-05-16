@@ -80,6 +80,17 @@ public class Queries {
     """;
 
     /**
+     * updates the user creation counter
+     * ! necessary after creating a drink
+     */
+    public static final String UPDATE_USER_CREATIONS_COUNTER =                                                  
+    """
+    UPDATE Utenti
+    SET numeroRicetteCreate = numeroRicetteCreate+1
+    WHERE userID = ?;
+    """;
+
+    /**
      * saves a drink in the favourites section
      */
     public static final String SAVE_FAVOURITE =
