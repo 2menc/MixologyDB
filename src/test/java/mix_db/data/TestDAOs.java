@@ -27,6 +27,7 @@ public class TestDAOs {
         connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
     }
 
+    @SuppressWarnings("deprecation")
     @BeforeEach
     void insertUser() {
         final User u = new User(-1, "tryemail", "pass",
