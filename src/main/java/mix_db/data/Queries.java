@@ -345,6 +345,7 @@ public class Queries {
     """
     SELECT *
     FROM utenti;       
+    ORDER BY userID
     """;
 
     /**
@@ -352,10 +353,11 @@ public class Queries {
      */
     public static final String GET_USER_REVIEWS =
     """
-    SELECT descrizione, dataRecensione, voto
+    SELECT R.*
     FROM utenti U, recensioni R
     WHERE U.userID = R.userID
-    AND U.userID = ?;       
+    AND U.userID = ?;     
+    ORDER BY U.userID  
     """;
 
     /**
