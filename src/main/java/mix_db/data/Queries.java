@@ -162,6 +162,12 @@ public class Queries {
     VALUES (?, DATE(NOW()), ?);
     """;
 
+    public static final String LINK_DRINK_WITH_BAR =
+    """
+    INSERT INTO creazioniBar (drinkID, barID, dataCreazione)
+    VALUES (?, ?, DATE(NOW()));        
+    """;
+
     /**
      * inserts  drink's ingredients
      */
@@ -427,6 +433,14 @@ public class Queries {
     """
     DELETE FROM drink
     WHERE drinkID = ?;        
+    """;
+
+    public static final String SEARCH_BAR_DRINK = 
+    """
+    SELECT *
+    FROM drink D, creazioniBar CB
+    WHERE D.drinkID = ?
+    AND D.drinkID = CB.drinkID;        
     """;
 
     public static final String SEARCH_DRINK =

@@ -250,7 +250,36 @@ public class Drink {
             } catch (final Exception e) {
                 throw new DAOException(e);
             }
+        }
 
+        /**
+         * searches a drink by his name
+         * @param connection .
+         * @param drinkName .
+         * @return an optional of drink
+         */
+        public static Optional<Drink> getBarDrink(Connection connection, int drinkID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.SEARCH_BAR_DRINK, drinkID);
+                final var rs = statement.executeQuery();
+            ) {
+                if(rs.next()) {
+                    final var d = new Drink(
+                        rs.getInt("drinkID"), 
+                        rs.getString("nome"),
+                        rs.getString("descrizione"), 
+                        rs.getString("foto"), 
+                        rs.getString("nomeCategoria"),
+                        rs.getBoolean("IBA")
+                        );
+
+                    return Optional.of(d);
+                }
+                return Optional.empty();
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
         }
 
         /**

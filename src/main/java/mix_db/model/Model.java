@@ -28,13 +28,24 @@ public interface Model {
     Optional<User> login(String email, String password);
 
     /**
-     * Creates a new Drink, also saving its composition (ingredients) and identification (keywords). Automatically links the drink to the user and saves the creationDate
+     * Creates a new Drink, also saving its composition (ingredients) and identification (keywords). 
+     * Automatically links the drink to the user and saves the creationDate
      * @param drink .
      * @param composition a {@link Set} of {@link Composition}
      * @param keywords a {@link Map} of {@link (drinkID, keyword)}
      * @returnan empty Optional if the drink is not in the db, the drink otherwise 
      */
     Optional<Drink> createDrink(Drink drink, int userID, List<Composition> composition, List<String> keywords);
+
+    /**
+     * Creates a new Drink as a bar creation, also saving its composition (ingredients) 
+     * and identification (keywords). Automatically links the drink to the user and saves the creationDate
+     * @param drink .
+     * @param composition a {@link Set} of {@link Composition}
+     * @param keywords a {@link Map} of {@link (drinkID, keyword)}
+     * @returnan empty Optional if the drink is not in the db, the drink otherwise 
+     */
+    Optional<Drink> createDrinkFromBar(Drink drink, int barID, List<Composition> composition, List<String> keywords);
 
     /**
      * gets a drink
