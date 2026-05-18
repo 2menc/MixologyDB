@@ -99,7 +99,7 @@ public class Ingredient {
          * @param drinkID ..
          * @return a Set of ingredients
          */
-        public static Set<Ingredient> ofDrink(Connection connection, String drinkID) {
+        public static Set<Ingredient> ofDrink(Connection connection, int drinkID) {
             final Set<Ingredient> ingredients = new HashSet<>();
 
             try (
