@@ -1,6 +1,7 @@
 package mix_db.data.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,6 +79,42 @@ public class AdminUtils {
                 throw new DAOException(e);
             }
 
-        }        
+        }  
+
+        /**
+         * needed to ban a user
+         * @param connection .
+         * @param userID the user to ban
+         */
+        private static boolean removeUserDrinks(Connection connection, int userID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection,
+                    Queries.PREPARE_TO_BAN_USER, 
+                    userID);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        /**
+         * deletes a user
+         * @param userID
+         * @return {@code true} if the user exists and can be deleted,
+         * {@code false} otherwise
+         */
+        public static boolean deleteUser(Connection connection, int userID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection,
+                    Queries.BAN_USER, userID);
+            ) {
+                removeUserDrinks(connection, userID);
+                return (statement.executeUpdate() == 1);
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+      
     }
 }

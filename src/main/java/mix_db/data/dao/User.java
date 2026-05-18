@@ -203,23 +203,6 @@ public class User {
         }
 
         /**
-         * deletes a user
-         * @param userID
-         * @return {@code true} if the user exists and can be deleted,
-         * {@code false} otherwise
-         */
-        public static boolean deleteUser(Connection connection, int userID) {
-            try (
-                final PreparedStatement statement = DatabaseConnection.prepare(connection,
-                    Queries.BAN_USER, userID);
-            ) {
-                return (statement.executeUpdate() == 1);
-            } catch (final Exception e) {
-                throw new DAOException(e);
-            }
-        }
-
-        /**
          * gets a list of user's favourites
          * @param connection .
          * @param userID .
