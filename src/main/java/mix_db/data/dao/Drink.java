@@ -149,15 +149,29 @@ public class Drink {
 
                 // *inserts ingredients
                 for(var c: composition) {
+                    final int correctIngredientName = Ingredient.DAO.getOrCreateId(connection, c.getIngredientName());
+
                     try (
                         final var statement = DatabaseConnection.prepare(connection, 
                             Queries.INSERT_DRINK_INGREDIENTS, 
-                            c.getIngredientName(), correctDrinkId, c.getQuantity(), c.getMeasureUnit());
+                            correctIngredientName, correctDrinkId, c.getQuantity(), c.getMeasureUnit());
                         ) {
                             statement.executeUpdate();
                         } catch(final Exception e) {
                             throw new DAOException(e);
                         }
+                }
+
+                // *inserts keywords
+                for(String k : keywords) {
+                    final int correctKeyword = Tag.DAO.getOrCreateId(connection, k);
+
+                    try (final var statement = DatabaseConnection.prepare(connection, 
+                            Queries.INSERT_DRINK_KEYWORD, 
+                            correctDrinkId, correctKeyword);
+                    ) {
+                        statement.executeUpdate();
+                    }  
                 }
 
                 // *increments ingredients timeUsed counter
@@ -181,16 +195,6 @@ public class Drink {
                     statement.executeUpdate();
                 } catch(final Exception e) {
                     throw new DAOException(e);
-                }
-
-                // *inserts keywords
-                for(String k : keywords) {
-                    try (final var statement = DatabaseConnection.prepare(connection, 
-                            Queries.INSERT_DRINK_KEYWORD, 
-                            correctDrinkId, k);
-                    ) {
-                        statement.executeUpdate();
-                    }  
                 }
                 
                 // ! COMMIT

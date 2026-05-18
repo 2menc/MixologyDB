@@ -32,16 +32,32 @@ public class Queries {
     VALUES (?, ?, ?, ?, ?, ?, DATE(NOW()), 0, 0, 0);
     """;
 
+    /**
+     * creates a new ingredient
+     */
     public static final String CREATE_INGREDIENT =
     """
     INSERT INTO Ingredienti (nomeIngrediente, volteUtilizzato)
     VALUES (?, 0);        
     """;
 
+    /**
+     * deletes an ingredient
+     */
     public static final String DELETE_INGREDIENT =
     """
     DELETE FROM ingredienti
     WHERE nomeIngrediente = ?;        
+    """;
+
+    /**
+     * checks if an ingredients exists
+     */
+    public static final String SEARCH_INGREDIENT =
+    """
+    SELECT nomeIngrediente 
+    FROM Ingredienti 
+    WHERE nomeIngrediente = ?;         
     """;
 
     /**
@@ -188,6 +204,25 @@ public class Queries {
     * DRINK CREATION STOP
     ! TRANSACTION STOP
     */
+
+    /**
+     * creates a new tag
+     */
+    public static final String CREATE_TAG =
+    """
+    INSERT INTO Tag (keyword) 
+    VALUES ?;        
+    """;
+
+    /**
+     * gets a specific tag
+     */
+    public static final String SEARCH_TAG =
+    """
+    SELECT *
+    FROM Tag
+    WHERE keyword = ?;    
+    """;
 
     public static final String GET_DRINK_TAGS =
     """

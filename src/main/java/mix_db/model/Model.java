@@ -71,6 +71,14 @@ public interface Model {
     List<Drink> getFavourites(int userID);
 
     /**
+     * removes a drink from favourites
+     * @param drinkID the drink
+     * @param userID the user
+     * @return {@code true} if the drink was in the favourite, {@code false} otherwise
+     */
+    boolean removeFromFavourites(int drinkID, int userID);
+
+    /**
      * adds a review linked to the drink
      * @param drinkID the drink id
      * @return {@code true} if can add the review, {@code false} otherwise (f.e. the user has already created a review for that drink)
@@ -107,7 +115,7 @@ public interface Model {
     List<User> calculateUsersWithMostPositiveReviewsLeaderboard(int numberOfResults);
 
     /**
-     * gets a {@code Map of (keyword, numberUsed)}
+     * gets a list of trending identifiers
      * @param daysAgo time interval filter
      * @param numberOfResults number of Drinks to show
      * @return a List of the trending keywords

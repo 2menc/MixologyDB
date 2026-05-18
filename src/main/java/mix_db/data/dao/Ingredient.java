@@ -3,6 +3,7 @@ package mix_db.data.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -136,6 +137,34 @@ public class Ingredient {
                 throw new DAOException(e);
             }
         }
+
+        public static int getOrCreateId(Connection connection, String name) {
+
+            try (var statement = DatabaseConnection.prepare(connection, 
+                Queries.SEARCH_INGREDIENT, 
+                name);
+                var rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("nomeIngrediente"); 
+                }
+            } catch (SQLException e) { throw new DAOException(e); }
+
+            // 2. Se non esiste, lo creo
+            try (var statement = DatabaseConnection.prepareWithKeys(connection,
+                Queries.CREATE_INGREDIENT,
+                name);
+            ) {
+                statement.executeUpdate();
+                try (var rs = statement.getGeneratedKeys()) {
+                    if (rs.next()) return rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                throw new DAOException(e); 
+            }
+            
+            throw new DAOException("Cannot create the ingredient: " + name);
+        }
+
 
         /**
          * deletes an ingredient

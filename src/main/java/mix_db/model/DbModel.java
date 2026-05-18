@@ -65,6 +65,11 @@ public class DbModel implements Model{
     }
 
     @Override
+    public boolean removeFromFavourites(int drinkID, int userID) {
+        return User.DAO.deleteFavourite(connection, drinkID, userID);
+    }
+
+    @Override
     public boolean addReview(int drinkID, int userID, String description, int score) {
         return Review.DAO.addReview(connection, drinkID, userID, description, score);
     }

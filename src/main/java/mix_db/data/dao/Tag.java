@@ -1,6 +1,7 @@
 package mix_db.data.dao;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -85,6 +86,27 @@ public class Tag {
                 throw new DAOException(e);
             }
         }
+
+    public static int getOrCreateId(Connection connection, String keyword) {
+        try (var statement = DatabaseConnection.prepare(connection,
+            Queries.SEARCH_TAG,
+            keyword);
+            var rs = statement.executeQuery()) {
+            if (rs.next()) return rs.getInt("tagID");
+        } catch (SQLException e) { throw new DAOException(e); }
+
+        try (var statement = DatabaseConnection.prepareWithKeys(connection,
+            Queries.CREATE_TAG,
+            keyword);
+        ) {
+            statement.setString(1, keyword);
+            statement.executeUpdate();
+            try (var rs = statement.getGeneratedKeys()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        } catch (SQLException e) { throw new DAOException(e); }
+        throw new DAOException("Cannot cerate the tag: " + keyword);
+    }
 
     }
 
