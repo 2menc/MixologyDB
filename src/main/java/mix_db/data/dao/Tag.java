@@ -1,5 +1,13 @@
 package mix_db.data.dao;
 
+import java.sql.Connection;
+import java.util.LinkedList;
+import java.util.List;
+
+import mix_db.data.Queries;
+import mix_db.data.dbConnection.DAOException;
+import mix_db.data.dbConnection.DatabaseConnection;
+
 /**
  * Tag
  */
@@ -49,6 +57,34 @@ public class Tag {
      * DAO obj for Tag
      */
     public static final class DAO {
+
+        /**
+         * gets a dirnk's tags
+         * @param connection .
+         * @param drinkID .
+         * @return a list of tags
+         */
+        public static List<Tag> ofDrink(Connection connection, int drinkID) {
+            final List<Tag> tags = new LinkedList<>();
+
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_DRINK_TAGS, 
+                    drinkID);
+                final var rs = statement.executeQuery();
+            ) {
+                while(rs.next()) {
+                    final var t = new Tag(
+                        rs.getString("keyword")
+                    );
+
+                    tags.add(t);
+                }
+                return tags;
+            } catch (Exception e) {
+                throw new DAOException(e);
+            }
+        }
 
     }
 

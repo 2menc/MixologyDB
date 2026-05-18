@@ -189,6 +189,14 @@ public class Queries {
     ! TRANSACTION STOP
     */
 
+    public static final String GET_DRINK_TAGS =
+    """
+    SELECT *
+    FROM drink D, identificazioni I
+    WHERE D.drinkID = ?
+    AND D.drinkID = I.drinkID;        
+    """;
+
     public static final String GET_DRINK_CREATOR =
     """
     SELECT U.*
