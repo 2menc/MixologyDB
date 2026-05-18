@@ -340,7 +340,6 @@ public class Drink {
                     throw new DAOException(e);
                 }
             }
-
         }        
 
     public int getDrinkID() {

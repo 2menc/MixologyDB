@@ -119,6 +119,12 @@ public class Ingredient {
             return ingredients;
         }
 
+        /**
+         * creates a new ingredient
+         * @param connection .
+         * @param ingredientName .
+         * @return true if can create the ingredient
+         */
         public static boolean createIngredient(Connection connection, String ingredientName) {
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
@@ -131,6 +137,12 @@ public class Ingredient {
             }
         }
 
+        /**
+         * deletes an ingredient
+         * @param connection .
+         * @param ingredientName .
+         * @return true if can dlete the ingredient
+         */
         public static boolean deleteIngredient(Connection connection, String ingredientName) {
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
@@ -142,5 +154,6 @@ public class Ingredient {
                 throw new DAOException(e);
             }
         }
+
     }
 }
