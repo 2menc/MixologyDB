@@ -345,7 +345,6 @@ public class Queries {
     """
     SELECT *
     FROM utenti;       
-    ORDER BY userID
     """;
 
     /**
@@ -357,7 +356,6 @@ public class Queries {
     FROM utenti U, recensioni R
     WHERE U.userID = R.userID
     AND U.userID = ?;     
-    ORDER BY U.userID  
     """;
 
     /**
