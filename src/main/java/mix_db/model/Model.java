@@ -48,14 +48,14 @@ public interface Model {
      * @param drinkID the id of the drink to get the ingredients from
      * @return empty Optional if the drink is not in the db, a list with all Ingredients otherwise
      */
-    Optional<List<Ingredient>> getIngredients(int drinkID);
+    List<Ingredient> getIngredients(int drinkID);
 
     /**
      * gets a drink's keywords
      * @param drinkID the id of the drink to get the keywords from
      * @return empty Optional if the drink is not in the db, a list with all Tags otherwise
      */
-    Optional<List<Tag>> getKeywords(int drinkID);
+    List<Tag> getKeywords(int drinkID);
 
     /**
      * saves a drink in favourites
