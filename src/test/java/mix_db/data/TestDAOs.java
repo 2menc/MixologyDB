@@ -18,22 +18,36 @@ import org.junit.jupiter.api.Test;
 
 import mix_db.data.dao.*;
 import mix_db.data.dbConnection.*;
+import mix_db.model.DbModel;
+import mix_db.model.Model;
 
 /**
  * Test class for taking data from the database.        //TODO: make populate() and dePopulate() from model's methods
  */
 public class TestDAOs {
 
+    private Model model; 
+
     private static Connection connection;
 
-    final String email = "tryemail";
-    final String password = "pass";
-
-    final String drinkName = "drink1";
-
+    @SuppressWarnings("deprecation")
     @BeforeAll
-    static void setup () {
+    void setup () {
         connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
+        this.model = new DbModel(connection);
+        
+        final var user = new User(
+            -1, 
+            "try@email", 
+            "password", 
+            "testName", 
+            "testSurname", 
+            new Date(2000, 02, 2), 
+            Role.USER, 
+            null, 
+            0, 0, 0);
+
+        model.registerUser(user);
     }
 
     @SuppressWarnings("deprecation")
