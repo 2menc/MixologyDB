@@ -51,4 +51,8 @@ public class Tag {
     public static final class DAO {
 
     }
+
+    public String getKeyword() {
+        return keyword;
+    }
 }

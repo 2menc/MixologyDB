@@ -116,5 +116,22 @@ public class AdminUtils {
             }
         }
       
+        /**
+         * deletes a drink
+         * @param connection .
+         * @param drinkID .
+         * @return true if can delete the drink
+         */
+        public static boolean deleteDrink(Connection connection, int drinkID) {
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.DELETE_DRINK, 
+                drinkID);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch (Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 }

@@ -386,11 +386,11 @@ public class Queries {
     WHERE drinkID = ?;        
     """;
 
-    public static final String GET_DRINK_BY_NAME =
+    public static final String SEARCH_DRINK =
     """
     SELECT *
     FROM Drink
-    WHERE nome = ?;   
+    WHERE drinkID = ?;   
     """;
 
     /**

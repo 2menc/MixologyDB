@@ -224,10 +224,10 @@ public class Drink {
          * @param drinkName .
          * @return an optional of drink
          */
-        public static Optional<Drink> getDrink(Connection connection, String drinkName) {
+        public static Optional<Drink> getDrink(Connection connection, int drinkID) {
             try (
                 final PreparedStatement statement = DatabaseConnection.prepare(connection, 
-                    Queries.GET_DRINK_BY_NAME, drinkName);
+                    Queries.SEARCH_DRINK, drinkID);
                 final var rs = statement.executeQuery();
             ) {
                 if(rs.next()) {
