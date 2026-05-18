@@ -25,7 +25,7 @@ public interface Model {
      * @param user the user
      * @return an empty Optional if the user is not in the db, the User otherwise 
      */
-    Optional<User> login(User user);
+    Optional<User> login(String email, String password);
 
     /**
      * Creates a new Drink, also saving its composition (ingredients) and identification (keywords). Automatically links the drink to the user and saves the creationDate
@@ -34,7 +34,7 @@ public interface Model {
      * @param identification a {@link Map} of {@link (drinkID, keyword)}
      * @returnan empty Optional if the drink is not in the db, the drink otherwise 
      */
-    Optional<Drink> createDrink(Drink drink, Set<Composition> composition, Map<Integer, String> identification);
+    Optional<Drink> createDrink(Drink drink, String userID, Set<Composition> composition, Map<Integer, String> identification);
 
     /**
      * gets a drink
@@ -62,20 +62,20 @@ public interface Model {
      * @param drinkID the id of the drink to save
      * @return {@code true} if the drink can be saved (its not already in the list), {@code false} otherwise
      */
-    boolean saveAsFavourite(String drinkID);
+    boolean saveAsFavourite(String drinkID, String userID);
 
     /**
      * gets the list of drink saved as fav.
      * @return the list (an empty list if there are not any favourites)
      */
-    List<Drink> getFavourites();
+    List<Drink> getFavourites(String userID);
 
     /**
      * adds a review linked to the drink
      * @param drinkID the drink id
      * @return {@code true} if can add the review, {@code false} otherwise (f.e. the user has already created a review for that drink)
      */
-    boolean addReview(String drinkID);
+    boolean addReview(String drinkID, String userID);
 
     /**
      * Searches a drink using keywords, drink name, drink description, category name, ingredients

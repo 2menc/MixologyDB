@@ -7,17 +7,16 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import mix_db.data.dao.Composition;
-import mix_db.data.dao.Drink;
-import mix_db.data.dao.Ingredient;
-import mix_db.data.dao.Review;
-import mix_db.data.dao.Tag;
-import mix_db.data.dao.User;
+import mix_db.data.dao.*;
 
 public class DbModel implements Model{
 
     private final Connection connection;
 
+    /**
+     * construcytor
+     * @param connection .
+     */
     public DbModel(Connection connection) {
         Objects.requireNonNull(connection, "Null connection");
         this.connection = connection;
@@ -25,18 +24,19 @@ public class DbModel implements Model{
 
     @Override
     public Optional<User> registerUser(User user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'registerUser'");
+        User.DAO.insertNewUser(connection, user);
+        final var u = User.DAO.getUser(connection, user.getEmail(), user.getPassword());
+        return u;
     }
 
     @Override
-    public Optional<User> login(User user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'login'");
+    public Optional<User> login(String email, String password) {
+        return User.DAO.getUser(connection, email, password);
     }
 
     @Override
-    public Optional<Drink> createDrink(Drink drink, Set<Composition> composition, Map<Integer, String> identification) {
+    public Optional<Drink> createDrink(Drink drink, String userID, Set<Composition> composition,
+            Map<Integer, String> identification) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createDrink'");
     }
@@ -60,19 +60,19 @@ public class DbModel implements Model{
     }
 
     @Override
-    public boolean saveAsFavourite(String drinkID) {
+    public boolean saveAsFavourite(String drinkID, String userID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'saveAsFavourite'");
     }
 
     @Override
-    public List<Drink> getFavourites() {
+    public List<Drink> getFavourites(String userID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getFavourites'");
     }
 
     @Override
-    public boolean addReview(String drinkID) {
+    public boolean addReview(String drinkID, String userID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addReview'");
     }
