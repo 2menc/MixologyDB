@@ -105,9 +105,10 @@ public class Drink {
          * inserts a new drink using transactions. 
          * @param connection .
          * @param d the drink to insert
+         * @param keywords the keywords to identify the drink
          * @return {@code true} if can insert the drink, {@code false} otherwise
          */
-        public static void createDrink(Connection connection, Drink d, int userID, List<Composition> composition) {
+        public static void createDrink(Connection connection, Drink d, int userID, List<Composition> composition, List<String> keywords) {
             
             try {
                 // !transaction start
@@ -182,6 +183,16 @@ public class Drink {
                     throw new DAOException(e);
                 }
 
+                // *inserts keywords
+                for(String k : keywords) {
+                    try (final var statement = DatabaseConnection.prepare(connection, 
+                            Queries.INSERT_DRINK_KEYWORD, 
+                            correctDrinkId, k);
+                    ) {
+                        statement.executeUpdate();
+                    }  
+                }
+                
                 // ! COMMIT
                 connection.commit();
                 

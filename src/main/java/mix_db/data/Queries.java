@@ -174,6 +174,15 @@ public class Queries {
     SET numeroRicetteCreate = numeroRicetteCreate+1
     WHERE userID = ?;
     """;
+
+    /**
+     * inserts a single keyword in a drink
+     */
+    public static final String INSERT_DRINK_KEYWORD =
+    """
+    INSERT INTO identificazioni (drinkID, keyword)
+    VALUES (?, ?);
+    """;
     
     /*
     * DRINK CREATION STOP
