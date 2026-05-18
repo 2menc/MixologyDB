@@ -10,8 +10,14 @@ import mix_db.data.Queries;
 import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
 
+/**
+ * leaderboards
+ */
 public class Leaderboards {
 
+    /**
+     * DAO for leaderboards
+     */
     public static final class DAO {
         
         /**
