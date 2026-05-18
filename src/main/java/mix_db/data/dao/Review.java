@@ -88,6 +88,14 @@ public class Review {
      */
     public static final class DAO {
 
+        /**
+         * adds a new review
+         * @param connection .
+         * @param drinkID .
+         * @param userID .
+         * @param description .
+         * @param score .
+         */
         public static void addReview(Connection connection, int drinkID, int userID, String description, int score) {
             try{
                 // !transaction start
