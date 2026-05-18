@@ -96,7 +96,7 @@ public class Review {
          * @param description .
          * @param score .
          */
-        public static void addReview(Connection connection, int drinkID, int userID, String description, int score) {
+        public static boolean addReview(Connection connection, int drinkID, int userID, String description, int score) {
             try{
                 // !transaction start
                 connection.setAutoCommit(false);
@@ -139,6 +139,7 @@ public class Review {
 
                 // !commit
                 connection.commit();
+                return true;
 
             } catch (Exception e) {
                 // ! transaction ends with rollback
