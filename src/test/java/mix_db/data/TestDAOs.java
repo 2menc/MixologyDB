@@ -56,7 +56,7 @@ public class TestDAOs {
         final User u = User.DAO.getUser(connection, email, password).get();
         final int userID = u.getUserID();
 
-        final boolean result = User.DAO.deleteUser(connection, userID);
+        final boolean result = AdminUtils.DAO.deleteUser(connection, userID);
         assertTrue(result);
     }
 
