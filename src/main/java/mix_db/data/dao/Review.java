@@ -219,26 +219,6 @@ public class Review {
                 throw new DAOException(e);
             }
         }
-
-        /**
-        * removes a review
-        * @param connection .
-        * @param drinkID .
-        * @param userID .
-        * @return true if can remove the review, false otherwise
-        */
-        public static boolean removeReview(Connection connection, int drinkID, int userID) {
-            try(
-            final var statement = DatabaseConnection.prepare(connection, 
-                    Queries.DELETE_REVIEW, 
-                    drinkID, userID);
-            ) {
-                return (statement.executeUpdate() == 1);
-            } catch(Exception e) {
-                throw new DAOException(e);
-            }
-        }
-
     }
 
     public int getDrinkID() {
