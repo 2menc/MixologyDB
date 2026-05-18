@@ -11,6 +11,7 @@ public class DAOException extends RuntimeException{
      */
     public DAOException(final String message) {
         super(message);
+        this.notifyUser(message);
     }
 
     /**
@@ -20,6 +21,7 @@ public class DAOException extends RuntimeException{
 
     public DAOException(Throwable cause) {
         super(cause);
+        this.notifyUser(cause.getMessage());
     }
 
     /**
@@ -29,6 +31,15 @@ public class DAOException extends RuntimeException{
      */
     public DAOException(String message, Throwable cause) {
         super(message, cause);
+        this.notifyUser(message);
+    }
+
+    /**
+     * prints the error on the ui
+     * @param message
+     */
+    private void notifyUser(String message) {
+        //TODO 
     }
 
 }
