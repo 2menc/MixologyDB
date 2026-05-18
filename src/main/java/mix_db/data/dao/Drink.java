@@ -256,6 +256,7 @@ public class Drink {
          * @param userID .
          * @return true if the drink is not already in the favs, false otherwise
          */
+        @Deprecated
         public static boolean saveAsFavourite(Connection connection, int drinkID, int userID) {
             try (
                 final PreparedStatement statement = DatabaseConnection.prepare(connection, 
