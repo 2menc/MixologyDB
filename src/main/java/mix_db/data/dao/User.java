@@ -286,6 +286,39 @@ public class User {
             }
         }
 
+        /**
+         * gets suggested drinks
+         * @param connection .
+         * @param userID .
+         * @param numberOfResults .
+         * @return a list of Drinks
+         */
+        public static List<Drink> getSuggestedDrinks(Connection connection, int userID, int numberOfResults) {
+            final var drinks = new LinkedList<Drink>();
+
+            try(
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.CREATE_DRINK, 
+                    userID, numberOfResults);
+                final var rs = statement.executeQuery();
+            ) {
+                while(rs.next()) {
+                    final var d = new Drink(
+                        rs.getInt("drinkID"), 
+                        rs.getString("nome"),
+                        rs.getString("descrizione"), 
+                        rs.getString("foto"), 
+                        rs.getString("nomeCategoria"),
+                        rs.getBoolean("IBA")
+                    );
+                    drinks.add(d);
+                }
+                return new LinkedList<>(drinks);
+            } catch(Exception e) {
+                throw new DAOException(e);
+            }
+
+        }
     }
 
     public int getUserID() {
