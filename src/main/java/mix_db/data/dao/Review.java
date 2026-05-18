@@ -2,6 +2,7 @@ package mix_db.data.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -87,29 +88,63 @@ public class Review {
      */
     public static final class DAO {
 
-        /**
-         * creates a new review
-         * @param connection .
-         * @param drinkID .
-         * @param userID .
-         * @param description .
-         * @param score between 1 and 5
-         * @return true if success, false otherwise
-         */
-        public static boolean createReview(Connection connection, int drinkID, int userID, String description, int score) {
-            if(score < 1 || score > 5) {
-                throw new DAOException("score " + score + " not accepted: it must be between 1 andd 5");
-            }
+        public static void addReview(Connection connection, int drinkID, int userID, String description, int score) {
+            try{
+                // !transaction start
+                connection.setAutoCommit(false);
 
-            try(
-                final var statement = DatabaseConnection.prepare(connection, Queries.CREATE_REVIEW,
+                // *1) add review
+                try(
+                    final var statement = DatabaseConnection.prepare(connection, 
+                        Queries.CREATE_REVIEW, 
                     drinkID, userID, description, score);
-            ) {
-                return (statement.executeUpdate() == 1);
-            } catch (final Exception e) {
-                throw new DAOException(e);
+                ) {
+                    statement.executeUpdate();
+                } catch(Exception e) {
+                    throw new DAOException(e);
+                }
+
+                // *2) updates user review couynter
+                try(
+                    final var statement = DatabaseConnection.prepare(connection, 
+                        Queries.UPDATE_USER_REVIEW_NUMBER_COUNTER, 
+                    userID);
+                ) {
+                    statement.executeUpdate();
+                } catch(Exception e) {
+                    throw new DAOException(e);
+                }
+
+                // *3) updates user positive review counter
+                // ?verifies if score > 2 (positive) 
+                if(score > 2) {
+                    try(
+                        final var statement = DatabaseConnection.prepare(connection, 
+                            Queries.UPDATE_USER_POSITIVE_REVIEW_COUNTER, 
+                        userID);
+                    ) {
+                        statement.executeUpdate();
+                    } catch(Exception e) {
+                        throw new DAOException(e);
+                    }
+                }
+
+                // !commit
+                connection.commit();
+
+            } catch (Exception e) {
+                // ! transaction ends with rollback
+                try {
+                    connection.rollback();
+                } catch(final SQLException rollBackException) {}
+                throw new DAOException("error during addReview(): " + e.getMessage(), e);
+            } finally {
+                try{
+                    connection.setAutoCommit(true);
+                } catch(SQLException autoCommitException) { }
             }
         }
+
         /**
          * searches all reviews linked to a drink
          * @param connection .
@@ -175,5 +210,45 @@ public class Review {
                 throw new DAOException(e);
             }
         }
+
+        /**
+        * removes a review
+        * @param connection .
+        * @param drinkID .
+        * @param userID .
+        * @return true if can remove the review, false otherwise
+        */
+        public static boolean removeReview(Connection connection, int drinkID, int userID) {
+            try(
+            final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.DELETE_REVIEW, 
+                    drinkID, userID);
+            ) {
+                return (statement.executeUpdate() == 1);
+            } catch(Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+    }
+
+    public int getDrinkID() {
+        return drinkID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Date getReviewDate() {
+        return reviewDate;
+    }
+
+    public float getScore() {
+        return score;
     }    
 }

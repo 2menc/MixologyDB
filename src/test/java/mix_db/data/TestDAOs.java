@@ -5,7 +5,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -24,6 +26,11 @@ public class TestDAOs {
 
     private static Connection connection;
 
+    final String email = "tryemail";
+    final String password = "pass";
+
+    final String drinkName = "drink1";
+
     @BeforeAll
     static void setup () {
         connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
@@ -32,7 +39,7 @@ public class TestDAOs {
     @SuppressWarnings("deprecation")
     @BeforeEach
     void insertUser() {
-        final User u = new User(-1, "tryemail", "pass",
+        final User u = new User(-1, email, password,
         "name", "aurn", new Date(2005, 05, 05),
         Role.USER, null, 0, 0, 0);
 
@@ -46,28 +53,22 @@ public class TestDAOs {
      */
     @AfterEach
     void deleteUser() {
-        final User u = User.DAO.getUser(connection, "tryemail", "pass").get();
+        final User u = User.DAO.getUser(connection, email, password).get();
         final int userID = u.getUserID();
 
         final boolean result = User.DAO.deleteUser(connection, userID);
         assertTrue(result);
     }
 
-    /**
-     * insertUser() required
-     */
     @Test
     void login() {
-        final String email = "tryemail";
-        final String password = "pass";
-
         final Optional<User> result = User.DAO.getUser(connection, email, password);
-        assertFalse(result.isEmpty());        
+        assertFalse(result.isEmpty());   
     }
 
     @Test 
     void barWithEmployee() {
-        final User u = User.DAO.getUser(connection, "tryemail", "pass").get();
+        final User u = User.DAO.getUser(connection, email, password).get();
         
         final String barName = "name bar";
         final String city = "city 1";
@@ -86,12 +87,11 @@ public class TestDAOs {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     void createDrink() {
         Category.DAO.createCategory(connection, "cat", "category description");
 
-        final Drink d = new Drink(-1, "drink1", "description1", "path", "cat", false);
-        final User u = User.DAO.getUser(connection, "tryemail", "pass").get();
+        final Drink d = new Drink(-1, drinkName, "description1", "path", "cat", false);
+        final User u = User.DAO.getUser(connection, email, password).get();
 
         // ingredients population
         Ingredient.DAO.createIngredient(connection, "ingredient1");
@@ -102,28 +102,65 @@ public class TestDAOs {
         );
 
         // drink
-        Drink.DAO.createDrink(connection, d, u.getUserID(), composition);
-
         assertDoesNotThrow(() -> {
             Drink.DAO.createDrink(connection, d, u.getUserID(), composition);
         }, "createDrink() should not throw DAOExceptions");
-   
-        // deletions after test
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    void deleteDrink() {
         Drink.DAO.deleteByCategoryName(connection, "cat");
         Category.DAO.deleteCategory(connection, "cat");
         Ingredient.DAO.deleteIngredient(connection, "Ingredient1");
     }
 
+    /**
+     * createDrink() needed
+     */
     @Test
-    void favourites() {                     //TODO 
+    void favourites() {                     
         // *save    
-        final User u = User.DAO.getUser(connection, "tryemail", "pass").get();
+        final var u = User.DAO.getUser(connection, email, password).get();
+        final var d = Drink.DAO.getDrink(connection, drinkName).get();
 
+        final boolean resultSave =User.DAO.setFavourite(connection, d.getDrinkID(), u.getUserID());
+        assertTrue(resultSave);
 
         // *get
+        final List<Drink> favs = User.DAO.getFavourites(connection, u.getUserID());
+        assertThat(favs).hasSameElementsAs(List.of(d));
 
         // *remove
+        final boolean resultDelete = User.DAO.deleteFavourite(connection, d.getDrinkID(), u.getUserID());
+        assertTrue(resultDelete);
     }
 
+    /**
+     * createDrink() needed
+     */
+    @Test 
+    void review() {
+    this.createDrink();
+        int testDrinkID = Drink.DAO.getDrink(connection, drinkName).get().getDrinkID();
+        int testUserID = User.DAO.getUser(connection, email, password).get().getUserID();
+        String testDescription = "description review";
+        int testScore = 3;
 
+        assertDoesNotThrow(() -> {
+            Review.DAO.addReview(connection, testDrinkID, testUserID, testDescription, testScore);
+        }, "addReview() should not throw DAOExceptions");
+
+        // *checks if exists
+        
+        final List<Review> r = Review.DAO.searchDrinkReviews(connection, testDrinkID);
+        assertEquals(r.get(0).getDescription(), testDescription);
+
+        // *deletes thereview
+        Review.DAO.removeReview(connection, testDrinkID, testUserID);
+        final List<Review> rNew = Review.DAO.searchDrinkReviews(connection, testDrinkID);
+        assertThat(rNew).isEmpty(); 
+
+        this.deleteDrink();
+    }
 }

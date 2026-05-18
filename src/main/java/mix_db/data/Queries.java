@@ -180,6 +180,13 @@ public class Queries {
     ! TRANSACTION STOP
     */
 
+    public static final String GET_DRINK_CREATOR =
+    """
+    SELECT U.*
+    FROM utenti U, creazioni C
+    WHERE drinkID = ?
+    AND U.userID = C.userID;         
+    """;
 
     /**
      * saves a drink in the favourites section
@@ -214,7 +221,7 @@ public class Queries {
      */
     public static final String CREATE_REVIEW =
     """
-    NSERT INTO recensioni (drinkID, userID, descrizione, dataRecensione, voto)
+    INSERT INTO recensioni (drinkID, userID, descrizione, dataRecensione, voto)
     VALUES (?, ?, ?, DATE(NOW()), ?);      
     """;
 
@@ -254,9 +261,9 @@ public class Queries {
     SELECT DISTINCT D.*
     FROM Drink D
     LEFT JOIN identificazioni I
-    ON D.drinkID = I.drinkID
+        ON D.drinkID = I.drinkID
     LEFT JOIN composizioni C
-    ON D.drinkID = C.drinkID
+        ON D.drinkID = C.drinkID
     WHERE D.nome = ?
     OR I.keyword = ?
     OR C.nomeIngrediente = ?
@@ -320,14 +327,14 @@ public class Queries {
     FROM Drink D, identificazioni I
     WHERE D.drinkID = I.drinkID
     AND I.keyword IN
-    (SELECT I2.keyword
-    FROM salvataggioPreferiti SP, identificazioni I2
-    WHERE I2.drinkID = SP.drinkID
-    AND SP.userID = ?)
-    AND D.drinkID NOT IN
-    (SELECT drinkID
-    FROM salvataggioPreferiti SP2
-    WHERE SP2.userID = ?)
+        (SELECT I2.keyword
+        FROM salvataggioPreferiti SP, identificazioni I2
+        WHERE I2.drinkID = SP.drinkID
+        AND SP.userID = ?)
+        AND D.drinkID NOT IN
+            (SELECT drinkID
+            FROM salvataggioPreferiti SP2
+            WHERE SP2.userID = ?)
     LIMIT ?;       
     """;
 
@@ -368,6 +375,13 @@ public class Queries {
     """
     DELETE FROM drink
     WHERE drinkID = ?;        
+    """;
+
+    public static final String GET_DRINK_BY_NAME =
+    """
+    SELECT *
+    FROM Drink
+    WHERE nome = ?;   
     """;
 
     /**

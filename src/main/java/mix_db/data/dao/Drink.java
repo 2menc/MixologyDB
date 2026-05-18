@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import mix_db.data.Queries;
 import mix_db.data.dbConnection.DAOException;
@@ -207,6 +208,37 @@ public class Drink {
         }
 
         /**
+         * searches a drink by his name
+         * @param connection .
+         * @param drinkName .
+         * @return an optional of drink
+         */
+        public static Optional<Drink> getDrink(Connection connection, String drinkName) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_DRINK_BY_NAME, drinkName);
+                final var rs = statement.executeQuery();
+            ) {
+                if(rs.next()) {
+                    final var d = new Drink(
+                        rs.getInt("drinkID"), 
+                        rs.getString("nome"),
+                        rs.getString("descrizione"), 
+                        rs.getString("foto"), 
+                        rs.getString("nomeCategoria"),
+                        rs.getBoolean("IBA")
+                        );
+
+                    return Optional.of(d);
+                }
+                return Optional.empty();
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+
+        }
+
+        /**
          * saves a drink as favourite
          * @param connection
          * @param drinkID .
@@ -274,7 +306,40 @@ public class Drink {
                 }
             }
 
-            
+            /**
+             * gets the creator of the drink
+             * @param connection .
+             * @param userID .
+             * @return an optional of user
+             */
+            public static Optional<User> getCreator(Connection connection, int drinkID) {
+                try(
+                    final var statement = DatabaseConnection.prepare(connection, 
+                        Queries.CREATE_DRINK, 
+                        drinkID);
+                    final var rs = statement.executeQuery();
+                ) {
+                    if(rs.next()) {
+                        final User u = new User(
+                            rs.getInt("userID"),
+                            rs.getString("email"),
+                            rs.getString("password"), 
+                            rs.getString("nome"),
+                            rs.getString("cognome"),
+                            rs.getDate("dataNascita"),
+                            rs.getString("ruoloUtente"),
+                            rs.getDate("dataIscrizione"),
+                            rs.getInt("numeroRicetteCreate"),
+                            rs.getInt("numeroRecensioniPositive"),
+                            rs.getInt("numeroRecensioniEffettuate")
+                        );
+                        return Optional.of(u);
+                    }
+                    return Optional.empty();
+                } catch(Exception e) {
+                    throw new DAOException(e);
+                }
+            }
 
         }        
 
