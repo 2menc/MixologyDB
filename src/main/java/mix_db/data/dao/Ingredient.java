@@ -3,8 +3,8 @@ package mix_db.data.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import mix_db.data.Queries;
 import mix_db.data.dbConnection.DAOException;
@@ -71,8 +71,8 @@ public class Ingredient {
          * @param connection the connection
          * @return a set of Ingredient
          */
-        public static Set<Ingredient> allIngredients(Connection connection) {
-            final Set<Ingredient> allIngredients = new HashSet<>();
+        public static List<Ingredient> allIngredients(Connection connection) {
+            final List<Ingredient> allIngredients = new LinkedList<>();
 
             // try with resources: controlla prima che si instanzino correttamente statement e resultSet
             try (
@@ -99,8 +99,8 @@ public class Ingredient {
          * @param drinkID ..
          * @return a Set of ingredients
          */
-        public static Set<Ingredient> ofDrink(Connection connection, int drinkID) {
-            final Set<Ingredient> ingredients = new HashSet<>();
+        public static List<Ingredient> ofDrink(Connection connection, int drinkID) {
+            final List<Ingredient> ingredients = new LinkedList<>();
 
             try (
                 final var statement = DatabaseConnection.prepare(connection, Queries.INGREDIENTS_OF_DRINK, drinkID);
