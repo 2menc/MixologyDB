@@ -20,7 +20,7 @@ import mix_db.data.dao.*;
 import mix_db.data.dbConnection.*;
 
 /**
- * Test class for taking data from the database.
+ * Test class for taking data from the database.        //TODO: make populate() and dePopulate() from model's methods
  */
 public class TestDAOs {
 
@@ -101,9 +101,14 @@ public class TestDAOs {
             new Composition("ingredient1", -1, 20, "ml")
         );
 
+        //identifications
+        final List<String> kws = List.of(
+            "k1", "k2"
+        );
+
         // drink
         assertDoesNotThrow(() -> {
-            Drink.DAO.createDrink(connection, d, u.getUserID(), composition);
+            Drink.DAO.createDrink(connection, d, u.getUserID(), composition, kws);
         }, "createDrink() should not throw DAOExceptions");
     }
 
