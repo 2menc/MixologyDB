@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 import mix_db.data.dao.*;
 
@@ -35,106 +34,89 @@ public class DbModel implements Model{
     }
 
     @Override
-    public Optional<Drink> createDrink(Drink drink, int userID, Set<Composition> composition,
-            Map<Integer, String> identification) {
-
-        Drink.DAO.createDrink(connection, drink, userID, composition);
+    public Optional<Drink> createDrink(Drink drink, int userID, List<Composition> composition, List<String> keywords) {
+        Drink.DAO.createDrink(connection, drink, userID, composition, keywords);
+        return Drink.DAO.getDrink(connection, drink.getDrinkID());
     }
 
     @Override
     public Optional<Drink> getDrink(int drinkID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDrink'");
+        return Drink.DAO.getDrink(connection, drinkID);
     }
 
     @Override
-    public Optional<List<Ingredient>> getIngredients(int drinkID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getIngredients'");
+    public List<Ingredient> getIngredients(int drinkID) {
+        return Ingredient.DAO.ofDrink(connection, drinkID);
     }
 
     @Override
-    public Optional<List<Tag>> getKeywords(int drinkID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getKeywords'");
+    public List<Tag> getKeywords(int drinkID) {
+        return Tag.DAO.ofDrink(connection, drinkID);
     }
 
     @Override
     public boolean saveAsFavourite(int drinkID, int userID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'saveAsFavourite'");
+        return User.DAO.setFavourite(connection, drinkID, userID);
     }
 
     @Override
     public List<Drink> getFavourites(int userID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFavourites'");
+        return User.DAO.getFavourites(connection, userID);
     }
 
     @Override
-    public boolean addReview(int drinkID, int userID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addReview'");
+    public boolean addReview(int drinkID, int userID, String description, int score) {
+        return Review.DAO.addReview(connection, drinkID, userID, description, score);
     }
 
     @Override
-    public Optional<Drink> searchForKeywords(String keyword) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'searchForKeywords'");
+    public List<Drink> searchByKeywords(String keyword) {
+        return Drink.DAO.searchByKeyword(connection, keyword);
     }
 
     @Override
     public Map<Drink, Integer> calculateDrinkBestReviewsLeaderboard(int daysAgo, int numberOfResults) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'calculateDrinkBestReviewsLeaderboard'");
+        return Leaderboards.DAO.MorePositiveDrinkReviews(connection, daysAgo, numberOfResults);
     }
 
     @Override
     public List<Ingredient> getMostUsedIngredients(int numberOfResults) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMostUsedIngredients'");
+        return Leaderboards.DAO.MostUsedIngredients(connection, numberOfResults);
     }
 
     @Override
     public List<User> calculateUsersWithMostPositiveReviewsLeaderboard(int numberOfResults) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'calculateUsersWithMostPositiveReviewsLeaderboard'");
+        return Leaderboards.DAO.usersWithMorePositiveReviews(connection, numberOfResults);
     }
 
     @Override
-    public Map<String, Integer> getTrendingKeywords(int daysAgo, int numberOfResults) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTrendingKeywords'");
+    public List<Tag> getTrendingKeywords(int daysAgo, int numberOfResults) {
+        return Leaderboards.DAO.getTrendingKeywords(connection, daysAgo, numberOfResults);
     }
 
     @Override
-    public List<Drink> getSuggestions(int numberOfResults) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSuggestions'");
+    public List<Drink> getSuggestions(int userID, int numberOfResults) {
+        return User.DAO.getSuggestedDrinks(connection, userID, numberOfResults);
     }
 
     @Override
-    public Map<User, List<Review>> getUserAnalitics() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserAnalitics'");
+    public Map<User, List<Review>> getUsersAnalitics() {
+        return AdminUtils.DAO.getUsersAnalitics(connection);
     }
 
     @Override
     public boolean deleteReview(int userID, int drinkID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteReview'");
+        return AdminUtils.DAO.removeReview(connection, drinkID, userID);
     }
 
     @Override
     public boolean deleteDrink(int drinkID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteDrink'");
+        return AdminUtils.DAO.deleteDrink(connection, drinkID);
     }
 
     @Override
     public boolean banUser(int userID) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'banUser'");
+        return AdminUtils.DAO.deleteUser(connection, userID);
     }
 
 }
