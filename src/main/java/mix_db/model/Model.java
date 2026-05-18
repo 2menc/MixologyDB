@@ -75,7 +75,7 @@ public interface Model {
      * @param drinkID the drink id
      * @return {@code true} if can add the review, {@code false} otherwise (f.e. the user has already created a review for that drink)
      */
-    boolean addReview(int drinkID, int userID);
+    boolean addReview(int drinkID, int userID, String description, int score);
 
     /**
      * Searches a drink using keywords, drink name, drink description, category name, ingredients
