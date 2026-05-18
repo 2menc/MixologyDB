@@ -34,6 +34,12 @@ public class DbModel implements Model{
     }
 
     @Override
+    public Optional<Bar> createBar(Bar bar) {
+        Bar.DAO.createBar(connection, bar);
+        return Bar.DAO.searchBar(connection, bar.getBarName(), bar.getCity(), bar.getAddress());
+    }
+
+    @Override
     public Optional<Drink> createDrink(Drink drink, int userID, List<Composition> composition, List<String> keywords) {
         Drink.DAO.createDrink(connection, drink, userID, composition, keywords);
         return Drink.DAO.getDrink(connection, drink.getDrinkID());
@@ -43,6 +49,12 @@ public class DbModel implements Model{
     public Optional<Drink> createDrinkFromBar(Drink drink, int barID, List<Composition> composition, List<String> keywords) {
         Bar.DAO.createDrink(connection, drink, barID, composition, keywords);
         return Drink.DAO.getBarDrink(connection, drink.getDrinkID());
+    }
+
+    @Override
+    public boolean addUserToBar(int barID, int userID) {
+        Bar.DAO.addUserToBar(connection, userID, barID);
+        return ! Bar.DAO.searchBar(connection, barID).isEmpty();
     }
 
     @Override

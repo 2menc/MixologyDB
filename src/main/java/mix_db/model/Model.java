@@ -28,6 +28,13 @@ public interface Model {
     Optional<User> login(String email, String password);
 
     /**
+     * creates a new bar
+     * @param bar the bar to create
+     * @return anOptional of Bar
+     */
+    public Optional<Bar> createBar(Bar bar);
+
+    /**
      * Creates a new Drink, also saving its composition (ingredients) and identification (keywords). 
      * Automatically links the drink to the user and saves the creationDate
      * @param drink .
@@ -46,6 +53,13 @@ public interface Model {
      * @returnan empty Optional if the drink is not in the db, the drink otherwise 
      */
     Optional<Drink> createDrinkFromBar(Drink drink, int barID, List<Composition> composition, List<String> keywords);
+
+    /**
+     * links a user to a bar
+     * @param barID the bar
+     * @param userID the user
+     */
+    boolean addUserToBar(int barID, int userID);
 
     /**
      * gets a drink

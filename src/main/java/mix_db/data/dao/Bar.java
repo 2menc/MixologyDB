@@ -261,6 +261,36 @@ public class Bar {
         }
 
         /**
+         * searches a bar by: 
+         * @param connection .
+         * @param name .
+         * @param city .
+         * @param address .
+         * @return Optional of bar if exists, empty Optional otherwise
+         */
+        public static Optional<Bar> searchBar(Connection connection, int barID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.SEARCH_BAR, barID);
+                final ResultSet rs = statement.executeQuery();
+            ) {
+                if(rs.next()) {
+                    final Bar b = new Bar(
+                        rs.getInt("barID"), 
+                        rs.getString("nomeBar"), 
+                        rs.getString("città"), 
+                        rs.getString("indirizzo")
+                    );
+                    return Optional.of(b);
+                }
+                return Optional.empty();
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+
+        /**
          * deletes a bar
          * @param connection .
          * @param barID .

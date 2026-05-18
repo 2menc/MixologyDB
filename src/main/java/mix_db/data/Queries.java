@@ -101,6 +101,13 @@ public class Queries {
     AND indirizzo = ?;
     """;
 
+    public static final String GET_BAR = 
+    """
+    SELECT *
+    FROM Bar
+    WHERE barID = ?;        
+    """;
+
     /**
      * deletes a bar
      */
