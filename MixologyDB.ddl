@@ -55,7 +55,7 @@ create table creazioniBar (
 
 create table Drink (
      drinkID int auto_increment not null,
-     nome varchar(32) not null,
+     nome varchar(32) not null unique,
      descrizione varchar(1000) not null,
      foto varchar(256) not null,
      nomeCategoria varchar(64) not null,
