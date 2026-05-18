@@ -34,48 +34,48 @@ public interface Model {
      * @param identification a {@link Map} of {@link (drinkID, keyword)}
      * @returnan empty Optional if the drink is not in the db, the drink otherwise 
      */
-    Optional<Drink> createDrink(Drink drink, String userID, Set<Composition> composition, Map<Integer, String> identification);
+    Optional<Drink> createDrink(Drink drink, int userID, Set<Composition> composition, Map<Integer, String> identification);
 
     /**
      * gets a drink
      * @param drinkID .
      * @return empty Optional if the drink is not in the db, the drink otherwise 
      */
-    Optional<Drink> getDrink(String drinkID);
+    Optional<Drink> getDrink(int drinkID);
 
     /**
      * gets a drink's ingredients
      * @param drinkID the id of the drink to get the ingredients from
      * @return empty Optional if the drink is not in the db, a list with all Ingredients otherwise
      */
-    Optional<List<Ingredient>> getIngredients(String drinkID);
+    Optional<List<Ingredient>> getIngredients(int drinkID);
 
     /**
      * gets a drink's keywords
      * @param drinkID the id of the drink to get the keywords from
      * @return empty Optional if the drink is not in the db, a list with all Tags otherwise
      */
-    Optional<List<Tag>> getKeywords(String drinkID);
+    Optional<List<Tag>> getKeywords(int drinkID);
 
     /**
      * saves a drink in favourites
      * @param drinkID the id of the drink to save
      * @return {@code true} if the drink can be saved (its not already in the list), {@code false} otherwise
      */
-    boolean saveAsFavourite(String drinkID, String userID);
+    boolean saveAsFavourite(int drinkID, int userID);
 
     /**
      * gets the list of drink saved as fav.
      * @return the list (an empty list if there are not any favourites)
      */
-    List<Drink> getFavourites(String userID);
+    List<Drink> getFavourites(int userID);
 
     /**
      * adds a review linked to the drink
      * @param drinkID the drink id
      * @return {@code true} if can add the review, {@code false} otherwise (f.e. the user has already created a review for that drink)
      */
-    boolean addReview(String drinkID, String userID);
+    boolean addReview(int drinkID, int userID);
 
     /**
      * Searches a drink using keywords, drink name, drink description, category name, ingredients
@@ -135,7 +135,7 @@ public interface Model {
      * @param drinkID .
      * @return {@code true} if the review has been successfully deleted, {@code false} otherwise
      */
-    boolean deleteReview(String userID, String drinkID);
+    boolean deleteReview(int userID, int drinkID);
 
     /**
      * ONLY FOR ADMINS
@@ -143,7 +143,7 @@ public interface Model {
      * @param drinkID .
      * @return {@code true} if the drink has been successfully deleted, {@code false} otherwise
      */
-    boolean deleteDrink(String drinkID);
+    boolean deleteDrink(int drinkID);
 
     /**
      * ONLY FOR ADMINS
@@ -151,5 +151,5 @@ public interface Model {
      * @param userID
      * @return
      */
-    boolean banUser(String userID);
+    boolean banUser(int userID);
 }

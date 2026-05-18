@@ -35,44 +35,44 @@ public class DbModel implements Model{
     }
 
     @Override
-    public Optional<Drink> createDrink(Drink drink, String userID, Set<Composition> composition,
+    public Optional<Drink> createDrink(Drink drink, int userID, Set<Composition> composition,
             Map<Integer, String> identification) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createDrink'");
+
+        Drink.DAO.createDrink(connection, drink, userID, composition);
     }
 
     @Override
-    public Optional<Drink> getDrink(String drinkID) {
+    public Optional<Drink> getDrink(int drinkID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getDrink'");
     }
 
     @Override
-    public Optional<List<Ingredient>> getIngredients(String drinkID) {
+    public Optional<List<Ingredient>> getIngredients(int drinkID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getIngredients'");
     }
 
     @Override
-    public Optional<List<Tag>> getKeywords(String drinkID) {
+    public Optional<List<Tag>> getKeywords(int drinkID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getKeywords'");
     }
 
     @Override
-    public boolean saveAsFavourite(String drinkID, String userID) {
+    public boolean saveAsFavourite(int drinkID, int userID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'saveAsFavourite'");
     }
 
     @Override
-    public List<Drink> getFavourites(String userID) {
+    public List<Drink> getFavourites(int userID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getFavourites'");
     }
 
     @Override
-    public boolean addReview(String drinkID, String userID) {
+    public boolean addReview(int drinkID, int userID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addReview'");
     }
@@ -120,19 +120,19 @@ public class DbModel implements Model{
     }
 
     @Override
-    public boolean deleteReview(String userID, String drinkID) {
+    public boolean deleteReview(int userID, int drinkID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteReview'");
     }
 
     @Override
-    public boolean deleteDrink(String drinkID) {
+    public boolean deleteDrink(int drinkID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteDrink'");
     }
 
     @Override
-    public boolean banUser(String userID) {
+    public boolean banUser(int userID) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'banUser'");
     }
