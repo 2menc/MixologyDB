@@ -80,9 +80,9 @@ public interface Model {
     /**
      * Searches a drink using keywords, drink name, drink description, category name, ingredients
      * @param keyword the word/phrase to search for
-     * @return empty Optional if there is not such drink in the db or the search word is not precise enough, a list with all Ingredients otherwise
+     * @return a List of all drinks found
      */
-    Optional<Drink> searchForKeywords(String keyword);
+    List<Drink> searchByKeywords(String keyword);
 
     /**
      * Calculates a leaderbord of the {@code numberOfResults} drinks with most positive reviews in the specified time intervall
@@ -110,23 +110,24 @@ public interface Model {
      * gets a {@code Map of (keyword, numberUsed)}
      * @param daysAgo time interval filter
      * @param numberOfResults number of Drinks to show
-     * @return a Map of the trending keywords
+     * @return a List of the trending keywords
      */
-    Map<String, Integer> getTrendingKeywords(int daysAgo, int numberOfResults);
+    List<Tag> getTrendingKeywords(int daysAgo, int numberOfResults);
 
     /**
      * gets a list of suggested drinks
      * @param numberOfResults number of results to show
+     * @param userID the user
      * @return the list of drinks
      */
-    List<Drink> getSuggestions(int numberOfResults);
+    List<Drink> getSuggestions(int userID, int numberOfResults);
 
     /**
      * ONLY FOR ADMINS
      * Gets a list of Users with analitics data such as the reviews he made
      * @return a {@code Map (User, List of the reviews he has made)}
      */
-    Map<User, List<Review>> getUserAnalitics();
+    Map<User, List<Review>> getUsersAnalitics();
 
     /**
      * ONLY FOR ADMINS
