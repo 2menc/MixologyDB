@@ -109,7 +109,7 @@ public class Bar {
          * @param keywords the keywords to identify the drink
          * @return {@code true} if can insert the drink, {@code false} otherwise
          */
-        public static void createDrink(Connection connection, Drink d, int barID, List<Composition> composition, List<String> keywords) {
+        public static void createDrink(Connection connection, Drink d, int barID, int userID, List<Composition> composition, List<String> keywords) {
             
             try {
                 // !transaction start
@@ -141,7 +141,7 @@ public class Bar {
                 try (
                     final var statement = DatabaseConnection.prepare(connection, 
                         Queries.LINK_DRINK_WITH_BAR,
-                    correctDrinkId, barID); 
+                        correctDrinkId, barID, userID); 
                 ) {
                     statement.executeUpdate();
                 } catch(final Exception e) {
@@ -239,10 +239,10 @@ public class Bar {
          * @param address .
          * @return Optional of bar if exists, empty Optional otherwise
          */
-        public static Optional<Bar> searchBar(Connection connection, String name, String city, String address) {
+        public static Optional<Bar> searchBarByParams(Connection connection, String name, String city, String address) {
             try (
                 final PreparedStatement statement = DatabaseConnection.prepare(connection, 
-                    Queries.SEARCH_BAR, name, city, address);
+                    Queries.SEARCH_BAR_BY_PARAMETERS, name, city, address);
                 final ResultSet rs = statement.executeQuery();
             ) {
                 if(rs.next()) {
@@ -263,9 +263,7 @@ public class Bar {
         /**
          * searches a bar by: 
          * @param connection .
-         * @param name .
-         * @param city .
-         * @param address .
+         * @param barID
          * @return Optional of bar if exists, empty Optional otherwise
          */
         public static Optional<Bar> searchBar(Connection connection, int barID) {

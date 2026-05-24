@@ -96,10 +96,21 @@ public class Queries {
     """
     SELECT *
     FROM Bar
-    WHERE nomeBar = ? 
+    WHERE barID = ?
+    """;
+
+    /**
+     * searches a bar by parameters
+     */
+    public static final String SEARCH_BAR_BY_PARAMETERS =
+    """
+    SELECT *
+    FROM Bar
+    WHERE nomeBar = ?
     AND città = ?
     AND indirizzo = ?;
     """;
+
 
     public static final String GET_BAR = 
     """
@@ -171,8 +182,8 @@ public class Queries {
 
     public static final String LINK_DRINK_WITH_BAR =
     """
-    INSERT INTO creazioniBar (drinkID, barID, dataCreazione)
-    VALUES (?, ?, DATE(NOW()));        
+    INSERT INTO creazioni (drinkID, dataCreazione, barID, userID)
+    VALUES (?, DATE(NOW()), ?, ?);        
     """;
 
     /**
@@ -440,14 +451,6 @@ public class Queries {
     """
     DELETE FROM drink
     WHERE drinkID = ?;        
-    """;
-
-    public static final String SEARCH_BAR_DRINK = 
-    """
-    SELECT *
-    FROM drink D, creazioniBar CB
-    WHERE D.drinkID = ?
-    AND D.drinkID = CB.drinkID;        
     """;
 
     public static final String SEARCH_DRINK =

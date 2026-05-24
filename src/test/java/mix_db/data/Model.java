@@ -61,11 +61,13 @@ public class Model {
         assertFalse(actualBar.isEmpty());
 
         // Link User to Bar
-        assertTrue(model.addUserToBar(actualUser.get().getUserID(), actualBar.get().getBarID()));
+        assertTrue(model.addUserToBar(actualBar.get().getBarID(), actualUser.get().getUserID()));
     }
 
     @Test
     void teardown() {
+        connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
+        this.model = new DbModel(connection);
 
         final String[] tablesToDelete = {
             "salvataggioPreferiti", 
@@ -73,14 +75,13 @@ public class Model {
             "composizioni", 
             "recensioni", 
             "creazioni", 
-            "creazioniBar", 
             "occupazioni", 
             "Drink", 
-            "User", 
+            "Utenti", 
             "Bar", 
             "Tag", 
-            "Ingredient", 
-            "Categoria"
+            "Ingredienti", 
+            "Categorie"
         };
 
         for (var table : tablesToDelete) {

@@ -52,7 +52,7 @@ public interface Model {
      * @param keywords a {@link Map} of {@link (drinkID, keyword)}
      * @returnan empty Optional if the drink is not in the db, the drink otherwise 
      */
-    Optional<Drink> createDrinkFromBar(Drink drink, int barID, List<Composition> composition, List<String> keywords);
+    public Optional<Drink> createDrinkFromBar(Drink drink, int barID, int userID, List<Composition> composition, List<String> keywords);
 
     /**
      * links a user to a bar
