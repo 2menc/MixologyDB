@@ -1,6 +1,10 @@
 package mix_db.core;
 
+import java.sql.Connection;
+import java.util.Optional;
+
 import mix_db.data.dao.User;
+import mix_db.data.dbConnection.DatabaseConnection;
 
 /**
  * class that models the current session, providing login, logout, sign in features
@@ -43,6 +47,31 @@ public class Session {
     }
 
     /**
+     * logs in
+     * @param email .
+     * @param password .
+     * @return {@code true} if can log in, {@code false} otherwise
+     */
+    public boolean login(String email, String password) {
+
+        try (final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password")) {
+
+            final Optional<User> userOpt = User.DAO.getUser(connection, email, password);
+
+            if(userOpt.isPresent()) {
+                this.loggedUser = userOpt.get();
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    /**
      * logs out
      */
     public void logout() {
@@ -53,7 +82,7 @@ public class Session {
      * tells if the user is currently logged in
      * @return true if it is
      */
-    public boolean idLoggedIn() {
+    public boolean isLoggedIn() {
         return loggedUser != null;
     }
 
