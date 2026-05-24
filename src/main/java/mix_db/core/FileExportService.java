@@ -70,6 +70,7 @@ public class FileExportService {
             document.add(cat);
 
             final Paragraph kws = new Paragraph("Parole chiave:\n");
+            document.add(kws);
             final List list = new List(false, 20);
             for(var k: keywords) {
                 final ListItem li = new ListItem(k);
