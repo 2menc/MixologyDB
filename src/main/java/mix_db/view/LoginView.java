@@ -16,21 +16,27 @@ public class LoginView extends JFrame{
     private final JTextField emailField;
     private final JTextField passwordField;
     private final JButton confirmButton;
+    private final JButton signInButton;
+    private final JButton guestButton;
 
     public LoginView() {
         this.emailField = new JTextField("email");
         this.passwordField = new JTextField("password");
         this.confirmButton = new JButton("conferma");
+        this.signInButton = new JButton("iscriviti");
+        this.guestButton = new JButton("entra come ospite");
 
         super.setTitle("MixologyDB_login");
-        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/8, Toolkit.getDefaultToolkit().getScreenSize().width/6);
+        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/7, Toolkit.getDefaultToolkit().getScreenSize().width/6);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        this.panel.setLayout(new GridLayout(3, 2, 5, 5));
+        this.panel.setLayout(new GridLayout(5, 1, 5, 5));
         
         this.panel.add(this.emailField);
         this.panel.add(this.passwordField);
         this.panel.add(this.confirmButton);
+        this.panel.add(this.signInButton);
+        this.panel.add(this.guestButton);
 
         super.add(panel);
         this.setVisible(true);
@@ -60,6 +66,26 @@ public class LoginView extends JFrame{
         this.confirmButton.addActionListener(al);
     }
 
+    /**
+     * signs in as new user
+     * @param al .
+     */
+    public void signIn(ActionListener al) {
+        //TODO
+    }
+
+    /**
+     * enters as a guest
+     * @param al .
+     */
+    public void enterAsGuest(ActionListener al) {
+        //TODO
+    }
+
+    /**
+     * shows the error via message dialog
+     * @param message
+     */
     public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
