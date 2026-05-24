@@ -1,20 +1,8 @@
--- *********************************************
--- * SQL MySQL generation                      
--- *--------------------------------------------
--- * DB-MAIN version: 11.0.2              
--- * Generator date: Sep 14 2021              
--- * Generation date: Thu May 14 14:08:41 2026 
--- * LUN file: C:\Users\namel\OneDrive - Alma Mater Studiorum Università di Bologna\BASI DI DATI\progetto\progettoBasiDiDati2.lun 
--- * Schema: LOGICO2/1 
--- ********************************************* 
-
-
 -- Database Section
 -- ________________ 
 
 create database MixologyDB;
 use MixologyDB;
-
 
 -- Tables Section
 -- _____________ 
@@ -45,13 +33,8 @@ create table creazioni (
      drinkID int not null,
      dataCreazione date not null,
      userID int not null,
+     barID int,
      constraint FKcre_Dri_ID primary key (drinkID));
-
-create table creazioniBar (
-     drinkID int not null,
-     dataCreazione date not null,
-     barID int not null,
-     constraint FKcreBar_Dri_ID primary key (drinkID)); -- NOME CORRETTO
 
 create table Drink (
      drinkID int auto_increment not null,
@@ -116,24 +99,20 @@ create table Utenti (
 alter table composizioni add constraint FKcom_Dri
      foreign key (drinkID)
      references Drink (drinkID) ON DELETE CASCADE; 
-
+     
 alter table composizioni add constraint FKcom_Ing
      foreign key (nomeIngrediente)
      references Ingredienti (nomeIngrediente);
+
+alter table creazioni add constraint FKcre_Bar
+     foreign key (barID)
+     references Bar (barID) ON DELETE CASCADE;
 
 alter table creazioni add constraint FKcre_Ute
      foreign key (userID)
      references Utenti (userID) ON DELETE CASCADE;
 
 alter table creazioni add constraint FKcre_Dri_FK
-     foreign key (drinkID)
-     references Drink (drinkID) ON DELETE CASCADE;
-
-alter table creazioniBar add constraint FKcre_Bar
-     foreign key (barID)
-     references Bar (barID) ON DELETE CASCADE;
-
-alter table creazioniBar add constraint FKbarCre_Dri_FK
      foreign key (drinkID)
      references Drink (drinkID) ON DELETE CASCADE;
 
