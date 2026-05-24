@@ -39,7 +39,7 @@ public interface Model {
      * Automatically links the drink to the user and saves the creationDate
      * @param drink .
      * @param barID NULL if is a single user creation
-     * @para userID
+     * @param userID .
      * @param composition a {@link Set} of {@link Composition}
      * @param keywords a {@link Map} of {@link (drinkID, keyword)}
      * @returnan empty Optional if the drink is not in the db, the drink otherwise 
