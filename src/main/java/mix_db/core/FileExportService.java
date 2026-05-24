@@ -4,10 +4,12 @@ import java.io.FileOutputStream;
 
 import org.openpdf.text.Document;
 import org.openpdf.text.Element;
+import org.openpdf.text.Font;
 import org.openpdf.text.Image;
 import org.openpdf.text.List;
 import org.openpdf.text.ListItem;
 import org.openpdf.text.Paragraph;
+import org.openpdf.text.pdf.BaseFont;
 import org.openpdf.text.pdf.PdfWriter;
 
 import mix_db.data.dao.Drink;
@@ -37,8 +39,16 @@ public class FileExportService {
             PdfWriter.getInstance(document, fileStream);
 
             document.open();
+            
+            // *font
+            final BaseFont font = BaseFont.createFont(GeneralSettings.fontEmojiPath + "symbola.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            final Font titleFont = new Font(font, 20, Font.BOLD);
+            final Font textFont = new Font(font, 11, Font.NORMAL);
+            final Font italicFont = new Font(font, 11, Font.ITALIC);
+            final Font listFont = new Font(font, 9, Font.NORMAL);
 
-            final Paragraph title = new Paragraph("🍹" + drink.getName() + "🍹");
+
+            final Paragraph title = new Paragraph("🍹" + drink.getName() + "🍹", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             title.setSpacingAfter(8);
             document.add(title);
@@ -54,42 +64,44 @@ public class FileExportService {
             }
 
 
-            final Paragraph drinkName = new Paragraph("🍸Nome: " + drink.getName());
+            final Paragraph drinkName = new Paragraph("🍸Nome: " + drink.getName(), textFont);
             drinkName.setSpacingAfter(5);
             document.add(drinkName);
 
             if(drink.isIBA()) {
-                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: ricetta IBA");
-                drinkCreator.setSpacingAfter(5);
+                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: ricetta IBA", textFont);
+                drinkCreator.setSpacingAfter(15);
                 document.add(drinkCreator);
             } else {
-                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: " + creator);
-                drinkCreator.setSpacingAfter(5);
+                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: " + creator, textFont);
+                drinkCreator.setSpacingAfter(15);
                 document.add(drinkCreator);
             }
 
-            final Paragraph description = new Paragraph("🖋️Descrizione: " + drink.getDescription());
-            description.setSpacingAfter(5);
-            document.add(drinkName);
+            final Paragraph description = new Paragraph("🖋️Descrizione: " + drink.getDescription(), italicFont);
+            description.setSpacingAfter(15);
+            document.add(description);
 
-            final Paragraph cat = new Paragraph("☀️Categoria: " + drink.getCategoryName());
+            final Paragraph cat = new Paragraph("☀️Categoria: " + drink.getCategoryName(), textFont);
             cat.setSpacingAfter(15);
             document.add(cat);
 
-            final Paragraph kws = new Paragraph("🔑Parole chiave:\n");
+            final Paragraph kws = new Paragraph("🔑Parole chiave:\n", textFont);
             document.add(kws);
             final List list = new List(false, 20);
             for(var k: keywords) {
-                final ListItem li = new ListItem(k);
+                final ListItem li = new ListItem(k, listFont);
                 list.add(li);
             }
             document.add(list);
         } catch(Exception e) {
             throw new DAOException(e);
         } finally {
-            if(document.isOpen()) {
-                document.close();
-            }
+            try {
+                if(document.isOpen()) {
+                    document.close();
+                }
+            } catch (Exception e) {}
         }
     }
     

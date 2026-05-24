@@ -3,7 +3,6 @@ package mix_db;
 import com.formdev.flatlaf.*;
 
 import mix_db.controller.ApplicationController;
-import mix_db.core.FileExportService;
 import mix_db.view.LoginView;
 
 /**
@@ -16,6 +15,6 @@ public class Main {
 
         final LoginView loginView = new LoginView();
 
-        new ApplicationController(new FileExportService(), loginView);
+        new ApplicationController(loginView);
     }
 }

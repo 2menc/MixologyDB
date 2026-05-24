@@ -5,16 +5,14 @@ import java.awt.event.ActionListener;
 
 import mix_db.core.FileExportService;
 import mix_db.core.Session;
+import mix_db.data.dao.Drink;
 import mix_db.view.LoginView;
 
 public class ApplicationController {
 
-    private final FileExportService fileExport;
-
     private final LoginView loginView;
 
-    public ApplicationController(FileExportService fileExportService, LoginView loginView) {
-        this.fileExport = fileExportService;
+    public ApplicationController(LoginView loginView) {
         this.loginView = loginView;
 
         loginView.verifyLogin(new ActionListener() {
@@ -44,8 +42,9 @@ public class ApplicationController {
     /**
      * manages pdf file generation, getting output path
      */
-    private void managePdfGeneration() {
-        //TODO
+    private void managePdfGeneration(Drink drink, String creator, java.util.List<String> keywords) {
+        final String outputPath = "";
+        FileExportService.createPdf(drink, creator, keywords, outputPath);
     }
 
 }
