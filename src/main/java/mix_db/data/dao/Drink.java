@@ -102,13 +102,13 @@ public class Drink {
     public static final class DAO {
 
         /**
-         * inserts a new drink using transactions. 
+         * inserts a new drink as barCreation using transactions. 
          * @param connection .
          * @param d the drink to insert
          * @param keywords the keywords to identify the drink
          * @return {@code true} if can insert the drink, {@code false} otherwise
          */
-        public static void createDrink(Connection connection, Drink d, int userID, List<Composition> composition, List<String> keywords) {
+        public static void createDrink(Connection connection, Drink d, int barID, int userID, List<Composition> composition, List<String> keywords) {
             
             try {
                 // !transaction start
@@ -139,8 +139,8 @@ public class Drink {
                 // *links drink to user
                 try (
                     final var statement = DatabaseConnection.prepare(connection, 
-                        Queries.LINK_DRINK_WITH_USER,
-                    correctDrinkId, userID); 
+                        Queries.LINK_DRINK_WITH_BAR,
+                        correctDrinkId, barID, userID); 
                 ) {
                     statement.executeUpdate();
                 } catch(final Exception e) {
@@ -185,16 +185,6 @@ public class Drink {
                     } catch(final Exception e) {
                         throw new DAOException(e);
                     }
-                }
-
-                // *increments user's creation counter
-                try (
-                    final PreparedStatement statement = DatabaseConnection.prepare(connection, 
-                        Queries.UPDATE_USER_CREATIONS_COUNTER, userID);
-                ) {
-                    statement.executeUpdate();
-                } catch(final Exception e) {
-                    throw new DAOException(e);
                 }
                 
                 // ! COMMIT

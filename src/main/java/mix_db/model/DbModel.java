@@ -40,14 +40,8 @@ public class DbModel implements Model{
     }
 
     @Override
-    public Optional<Drink> createDrink(Drink drink, int userID, List<Composition> composition, List<String> keywords) {
-        Drink.DAO.createDrink(connection, drink, userID, composition, keywords);
-        return Drink.DAO.getDrink(connection, drink.getDrinkID());
-    }
-
-    @Override
-    public Optional<Drink> createDrinkFromBar(Drink drink, int barID, int userID, List<Composition> composition, List<String> keywords) {
-        Bar.DAO.createDrink(connection, drink, barID, userID, composition, keywords);
+    public Optional<Drink> createDrink(Drink drink, int userID, int barID, List<Composition> composition, List<String> keywords) {
+        Drink.DAO.createDrink(connection, drink, userID, barID, composition, keywords);
         return Drink.DAO.getDrink(connection, drink.getDrinkID());
     }
 
