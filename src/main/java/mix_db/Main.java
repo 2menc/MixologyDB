@@ -1,5 +1,7 @@
 package mix_db;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 import mix_db.controller.ApplicationController;
 import mix_db.core.FileExportService;
 import mix_db.view.LoginView;
@@ -10,6 +12,7 @@ import mix_db.view.LoginView;
 public class Main {
 
     public static void main(String[] args) {
+        FlatLightLaf.setup();
 
         final LoginView loginView = new LoginView();
 

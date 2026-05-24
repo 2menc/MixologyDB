@@ -29,6 +29,7 @@ dependencies {
     implementation("org.jooq:jool:0.9.15")
     
     implementation("com.github.librepdf:openpdf:3.0.5")
+    implementation("com.formdev:flatlaf:3.7.1")
 
     /*
      * Simple Logging Facade for Java (SLF4J)
