@@ -21,6 +21,13 @@ public class FileExportService {
     /** 0-args constructor */
     public FileExportService() { }
 
+    /**
+     * generates a .pdf file with all drink informations
+     * @param drink .
+     * @param creator .
+     * @param keywords .
+     * @param outputPath .
+     */
     public static void createPdf(Drink drink, String creator, java.util.List<String> keywords, String outputPath) {
 
         final Document document = new Document();
@@ -31,7 +38,7 @@ public class FileExportService {
 
             document.open();
 
-            final Paragraph title = new Paragraph("🍹" + drink.getName());
+            final Paragraph title = new Paragraph("🍹" + drink.getName() + "🍹");
             title.setAlignment(Element.ALIGN_CENTER);
             title.setSpacingAfter(8);
             document.add(title);
@@ -47,29 +54,29 @@ public class FileExportService {
             }
 
 
-            final Paragraph drinkName = new Paragraph("Nome: " + drink.getName());
+            final Paragraph drinkName = new Paragraph("🍸Nome: " + drink.getName());
             drinkName.setSpacingAfter(5);
             document.add(drinkName);
 
             if(drink.isIBA()) {
-                final Paragraph drinkCreator = new Paragraph("Creatore: ricetta IBA");
+                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: ricetta IBA");
                 drinkCreator.setSpacingAfter(5);
                 document.add(drinkCreator);
             } else {
-                final Paragraph drinkCreator = new Paragraph("Creatore: " + creator);
+                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: " + creator);
                 drinkCreator.setSpacingAfter(5);
                 document.add(drinkCreator);
             }
 
-            final Paragraph description = new Paragraph("Descrizione: " + drink.getDescription());
+            final Paragraph description = new Paragraph("🖋️Descrizione: " + drink.getDescription());
             description.setSpacingAfter(5);
             document.add(drinkName);
 
-            final Paragraph cat = new Paragraph("Categoria: " + drink.getCategoryName());
+            final Paragraph cat = new Paragraph("☀️Categoria: " + drink.getCategoryName());
             cat.setSpacingAfter(15);
             document.add(cat);
 
-            final Paragraph kws = new Paragraph("Parole chiave:\n");
+            final Paragraph kws = new Paragraph("🔑Parole chiave:\n");
             document.add(kws);
             final List list = new List(false, 20);
             for(var k: keywords) {

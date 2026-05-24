@@ -5,6 +5,7 @@ package mix_db.core;
  */
 public interface GeneralSettings {
 
+    /** standard path for drink photos */
     String fotoPath = "resources/images";
 
 }
