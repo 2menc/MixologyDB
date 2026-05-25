@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DatabaseConnection;
+import mix_db.model.DbModel;
+import mix_db.model.Model;
 
 /**
  * class that models the current session, providing login, logout, sign in features
@@ -56,7 +58,8 @@ public class Session {
 
         try (final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password")) {
 
-            final Optional<User> userOpt = User.DAO.getUser(connection, email, password);
+            final Model model = new DbModel(connection);
+            final Optional<User> userOpt = model.login(email, password);
 
             if(userOpt.isPresent()) {
                 this.loggedUser = userOpt.get();
