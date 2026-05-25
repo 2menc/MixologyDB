@@ -40,7 +40,7 @@ public class SignInView extends JFrame{
         this.yearField = new JTextField("year");
 
         super.setTitle("MixologyDB_login");
-        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/7, Toolkit.getDefaultToolkit().getScreenSize().height/4);
+        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/6, Toolkit.getDefaultToolkit().getScreenSize().height/4);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.panel.setLayout(new GridLayout(5, 1, 5, 1));
