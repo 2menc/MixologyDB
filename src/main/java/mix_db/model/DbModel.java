@@ -23,7 +23,9 @@ public class DbModel implements Model{
 
     @Override
     public Optional<User> registerUser(User user) {
-        User.DAO.insertNewUser(connection, user);
+        if(! User.DAO.insertNewUser(connection, user)) {
+            return Optional.empty();
+        }
         final var u = User.DAO.getUser(connection, user.getEmail(), user.getPassword());
         return u;
     }

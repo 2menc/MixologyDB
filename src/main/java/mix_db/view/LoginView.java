@@ -27,7 +27,7 @@ public class LoginView extends JFrame{
         this.guestButton = new JButton("entra come ospite");
 
         super.setTitle("MixologyDB_login");
-        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/7, Toolkit.getDefaultToolkit().getScreenSize().width/6);
+        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/7, Toolkit.getDefaultToolkit().getScreenSize().height/4);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.panel.setLayout(new GridLayout(5, 1, 5, 5));
@@ -70,8 +70,8 @@ public class LoginView extends JFrame{
      * signs in as new user
      * @param al .
      */
-    public void signIn(ActionListener al) {
-        //TODO
+    public void requestedSignIn(ActionListener al) {
+        this.signInButton.addActionListener(al);
     }
 
     /**
@@ -79,7 +79,7 @@ public class LoginView extends JFrame{
      * @param al .
      */
     public void enterAsGuest(ActionListener al) {
-        //TODO
+        this.guestButton.addActionListener(al);
     }
 
     /**
