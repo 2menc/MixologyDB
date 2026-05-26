@@ -65,7 +65,6 @@ public class ApplicationController {
 
     /**
      * manages login attempt
-     * @throws ExceptionPanel 
      */
     private void manageLoginAttempt() {
         if(this.view instanceof LoginView loginView){
@@ -85,9 +84,9 @@ public class ApplicationController {
 
     /**
      * manages sign in attempt
-     * @throws ExceptionPanel if an error occours
      */
     private void manageSignInAttempt() {
+        //TODO: this method must create a new user via DBModel and check if the returned Optional<User> is NOT null, and throw an exception if it is
     }
 
     /**
@@ -101,7 +100,6 @@ public class ApplicationController {
     /**
      * shows the error on the ui
      * @param e .
-     * @throws ExceptionPanel .
      */
     private void exceptionThrower(String message) {
         new ExceptionPanel(message, view);
