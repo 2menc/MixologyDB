@@ -16,15 +16,20 @@ import mix_db.data.dbConnection.DatabaseConnection;
  */
 public class AdminUtils {
 
+    /** default constructor */
+    public AdminUtils() { }
+
     /**
      * DAO for admin operations
      */
     public static final class DAO {
 
+        /** default constructor */
+        public DAO() { }
+
         /**
          * gets all users with additional analitics data
          * @param connection .
-         * @param userId .
          * @return a Map of (User - List of reviews he made)
          */
         public static Map<User, List<Review>> getUsersAnalitics(Connection connection) {
@@ -100,7 +105,8 @@ public class AdminUtils {
 
         /**
          * deletes a user
-         * @param userID
+         * @param userID .
+         * @param conncection .
          * @return {@code true} if the user exists and can be deleted,
          * {@code false} otherwise
          */

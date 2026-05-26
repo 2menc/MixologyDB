@@ -17,12 +17,19 @@ import mix_db.view.login.LoginPanel;
 import mix_db.view.login.LoginView;
 import mix_db.view.login.SignInPanel;
 
+/**
+ * application controller
+ */
 public class ApplicationController {
 
     private final LoginView loginView;
 
     private Model model;
 
+    /**
+     * constructor
+     * @param loginView the login view frame
+     */
     public ApplicationController(LoginView loginView) {
         this.loginView = loginView;
 
