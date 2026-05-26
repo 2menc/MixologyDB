@@ -22,7 +22,7 @@ import mix_db.view.login.SignInPanel;
  */
 public class ApplicationController {
 
-    private final LoginView loginView;
+    private final JFrame view;
 
     private Model model;
 
@@ -30,35 +30,36 @@ public class ApplicationController {
      * constructor
      * @param loginView the login view frame
      */
-    public ApplicationController(LoginView loginView) {
-        this.loginView = loginView;
+    public ApplicationController() {
+        this.view = new LoginView();
 
         try(final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password")) {
             
             this.model = new DbModel(connection);
 
         } catch (Exception e) {
-            this.exceptionThrower(e.getMessage(), loginView);
+            this.exceptionThrower(e.getMessage());
         }
 
-        if(this.loginView.getMainPanel() instanceof LoginPanel loginPanel) {
+        if(this.view instanceof LoginView loginView){
+            if(loginView.getMainPanel() instanceof LoginPanel loginPanel) {
 
-            loginPanel.verifyLogin(new ActionListener() {
+                loginPanel.verifyLogin(new ActionListener() {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    manageLoginAttempt();
-                }
-            });
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        manageLoginAttempt();
+                    }
+                });
 
-            loginPanel.requestedSignIn(new ActionListener() {
+                loginPanel.requestedSignIn(new ActionListener() {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    manageSignInAttempt();
-                }
-                
-            });
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        loginView.setMainPanel(new SignInPanel());                        
+                    }
+                });
+            }
         }
     }
 
@@ -67,7 +68,8 @@ public class ApplicationController {
      * @throws ExceptionPanel 
      */
     private void manageLoginAttempt() {
-        if(this.loginView.getMainPanel() instanceof LoginPanel loginPanel) {
+        if(this.view instanceof LoginView loginView){
+            if(loginView.getMainPanel() instanceof LoginPanel loginPanel) {
             final String email = loginPanel.getEmail();
             final String password = loginPanel.getPassword();
 
@@ -75,7 +77,8 @@ public class ApplicationController {
                 loginView.dispose();
             } else {
                 // *login failed
-                this.exceptionThrower("Email o password errati", this.loginView);
+                this.exceptionThrower("Email o password errati");
+            }
             }
         }
     }
@@ -85,19 +88,6 @@ public class ApplicationController {
      * @throws ExceptionPanel if an error occours
      */
     private void manageSignInAttempt() {
-
-        if(this.loginView.getMainPanel() instanceof LoginPanel loginPanel) {
-            final String email = loginPanel.getEmail();
-            final String password = loginPanel.getPassword();
-
-            if(Session.getInstance().login(email, password)) {
-                this.exceptionThrower("utente già registrato", this.loginView);
-            } else {
-                this.loginView.setMainPanel(new SignInPanel());
-            }
-        } else {
-            this.exceptionThrower("Errore nella registrazione", this.loginView);
-        }
     }
 
     /**
@@ -113,7 +103,7 @@ public class ApplicationController {
      * @param e .
      * @throws ExceptionPanel .
      */
-    private void exceptionThrower(String message, JFrame frame) {
-        new ExceptionPanel(message, frame);
+    private void exceptionThrower(String message) {
+        new ExceptionPanel(message, view);
     }
 }
