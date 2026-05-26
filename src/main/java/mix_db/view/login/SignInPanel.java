@@ -1,19 +1,15 @@
-package mix_db.view;
+package mix_db.view.login;
 
 import javax.swing.*;
 
 import java.awt.GridLayout;
-import java.awt.Panel;
-import java.awt.Toolkit;
 import java.sql.Date;
 import java.util.Optional;
 
 /**
- * simple login window
+ * simple sign in panel
  */
-public class SignInView extends JFrame{
-
-    private final JPanel panel = new JPanel();
+public class SignInPanel extends JPanel{
 
     private final JTextField emailField;
     private final JTextField passwordField;
@@ -27,7 +23,10 @@ public class SignInView extends JFrame{
 
     private final JButton confirmButton;
 
-    public SignInView() {
+    /**
+     * constructor
+     */
+    public SignInPanel() {
         this.emailField = new JTextField("email");
         this.passwordField = new JTextField("password");
         this.nameField = new JTextField("nome");
@@ -39,26 +38,28 @@ public class SignInView extends JFrame{
         this.monthField = new JTextField("month");
         this.yearField = new JTextField("year");
 
-        super.setTitle("MixologyDB_login");
-        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/6, Toolkit.getDefaultToolkit().getScreenSize().height/4);
-        super.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        this.panel.setLayout(new GridLayout(5, 1, 5, 1));
+        this.setLayout(new GridLayout(4, 1, 5, 5));
         
-        this.panel.add(this.emailField);
-        this.panel.add(this.passwordField);
-        this.panel.add(this.nameField);
-        this.panel.add(this.surnameField);
+        // *panel 1
+        final var p1 = new JPanel(new GridLayout(1, 2, 5, 5));
+        p1.add(this.emailField);
+        p1.add(this.passwordField);
 
-        final var p = new Panel(new GridLayout(1, 3, 10, 5));
-        p.add(this.dayField);
-        p.add(this.monthField);
-        p.add(this.yearField);
-        this.panel.add(p);
+        // *panel 2
+        final var p2 = new JPanel(new GridLayout(1, 2, 5, 5));
+        p2.add(this.nameField);
+        p2.add(this.surnameField);
 
-        this.panel.add(this.confirmButton);
+        // *panel 3
+        final var p3 = new JPanel(new GridLayout(1, 3, 10, 5));
+        p3.add(this.dayField);
+        p3.add(this.monthField);
+        p3.add(this.yearField);
 
-        super.add(panel);
+        this.add(p1);
+        this.add(p2);
+        this.add(p3);
+        this.add(this.confirmButton);
     }
     
     /**

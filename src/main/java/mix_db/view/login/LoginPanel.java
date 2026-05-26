@@ -1,17 +1,14 @@
-package mix_db.view;
+package mix_db.view.login;
 
 import javax.swing.*;
 
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 
 /**
- * simple login window
+ * simple sign in panel
  */
-public class LoginView extends JFrame{
-
-    private final JPanel panel = new JPanel();
+public class LoginPanel extends JPanel{
 
     private final JTextField emailField;
     private final JTextField passwordField;
@@ -19,26 +16,26 @@ public class LoginView extends JFrame{
     private final JButton signInButton;
     private final JButton guestButton;
 
-    public LoginView() {
+    /**
+     * constructor
+     */
+    public LoginPanel() {
+
         this.emailField = new JTextField("email");
         this.passwordField = new JTextField("password");
         this.confirmButton = new JButton("conferma");
         this.signInButton = new JButton("iscriviti");
         this.guestButton = new JButton("entra come ospite");
 
-        super.setTitle("MixologyDB_login");
-        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/7, Toolkit.getDefaultToolkit().getScreenSize().height/4);
-        super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        this.panel.setLayout(new GridLayout(5, 1, 5, 5));
+        this.setLayout(new GridLayout(5, 1, 5, 5));
         
-        this.panel.add(this.emailField);
-        this.panel.add(this.passwordField);
-        this.panel.add(this.confirmButton);
-        this.panel.add(this.signInButton);
-        this.panel.add(this.guestButton);
+        this.add(this.emailField);
+        this.add(this.passwordField);
+        this.add(this.confirmButton);
+        this.add(this.signInButton);
+        this.add(this.guestButton);
 
-        super.add(panel);
         this.setVisible(true);
     }
     
@@ -81,13 +78,4 @@ public class LoginView extends JFrame{
     public void enterAsGuest(ActionListener al) {
         this.guestButton.addActionListener(al);
     }
-
-    /**
-     * shows the error via message dialog
-     * @param message
-     */
-    public void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
-    }
-
 }
