@@ -74,7 +74,7 @@ public class ApplicationController {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        requestedSignIn(loginView);
+                        requestedToEnterAsGuest();
                     }
                     
                 });
