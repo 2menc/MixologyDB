@@ -1,172 +1,127 @@
 package mix_db.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.sql.Connection;
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-import mix_db.core.FileExportService;
 import mix_db.core.Session;
-import mix_db.core.exceptions.WrongCredentialsException;
 import mix_db.data.dao.Drink;
-import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
-import mix_db.model.Model;
 import mix_db.view.ExceptionPanel;
-import mix_db.view.login.LoginPanel;
-import mix_db.view.login.LoginView;
-import mix_db.view.login.SignInPanel;
+import mix_db.view.mainWindow.CentralPanel;
+import mix_db.view.mainWindow.MainView;
 
 /**
- * application controller
+ * main application controller
  */
 public class ApplicationController {
 
-    private final JFrame view;
+    private JFrame view;
 
-    private Model model;
+    private DbModel model;
 
     /**
      * constructor
-     * @param loginView the login view frame
      */
     public ApplicationController() {
-        this.view = new LoginView();
-
         try {
             final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
             this.model = new DbModel(connection);
-
         } catch (Exception e) {
             e.printStackTrace();
             new ExceptionPanel("Problema connessione con database SQL", view);
         }
 
-        if(this.view instanceof LoginView loginView){
-            if(loginView.getMainPanel() instanceof LoginPanel loginPanel) {
+        final CentralPanel centralPanel = new CentralPanel();
+        final JPanel leftPanel = new JPanel();   
+        final JPanel rightPanel = new JPanel();  
 
-                loginPanel.verifyLogin(new ActionListener() {
+        this.view = new MainView(centralPanel, leftPanel, rightPanel);
 
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        try {
-                            manageLoginAttempt(); 
-                        } catch (WrongCredentialsException ex) {
-                            new ExceptionPanel(ex, view);
-                            return;
-                        }
-                    }
-                });
-
-                loginPanel.requestSignIn(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        requestedSignIn(loginView);
-                    }
-                });
-
-                loginPanel.requestToEnterAsGuest(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        requestedToEnterAsGuest();
-                    }
-                    
-                });
-            }
+        try {
+            this.populateDrinkGrid();
+        } catch (Exception e) {
+            view.dispose();
+            throw new ExceptionPanel(e, view);
         }
     }
 
     /**
-     * manages login attempt
+     * fills the central panel grid.
+     * ! if the user is logged in, shows suggestions
+     * ! if the user is a guest OR the logged in user doesn't have any favourites, 
+     * ! shows a generic list of drinks
      */
-    private void manageLoginAttempt() {
-        if(this.view instanceof LoginView loginView){
-            if(loginView.getMainPanel() instanceof LoginPanel loginPanel) {
-                final String email = loginPanel.getEmail();
-                final String password = loginPanel.getPassword();
+    public void populateDrinkGrid() {
+        List<Drink> drinkList = new ArrayList<>();
 
-                if(Session.getInstance().login(email, password)) {
-                    loginView.dispose();
-                } else {
-                    // *login failed
-                    throw new WrongCredentialsException("Email o password errati");
+        if(Session.getInstance().getLoggedUser() != null) {
+            
+            if(this.view instanceof MainView mv) {
+                drinkList = this.model.getSuggestions(Session.getInstance().getLoggedUser().getUserID(), 100);
+
+                final CentralPanel centralPanel = mv.getMainPanel();
+                final JPanel innerPanel = centralPanel.getContentPanel();
+
+                innerPanel.removeAll();
+
+                for(var d: drinkList) {
+                    final JPanel drinkCard = this.createDrinkCard(d);
+
+                    innerPanel.add(drinkCard);
                 }
             }
-        }
-    }
 
-    /**
-     * tries to sign in
-     * @param v the current JFrame
-     */
-    private void requestedSignIn(LoginView v) {
-        v.setMainPanel(new SignInPanel());     
+        } 
+        if (Session.getInstance().getLoggedUser() == null 
+                    || drinkList.size() < 9
+            ) {
+            
+            if(this.view instanceof MainView mv) {
+                drinkList = this.model.getRandomDrinkList(100);
 
-        if(v.getMainPanel() instanceof SignInPanel sp) {
-            sp.requestSignIn(new ActionListener() {
+                final CentralPanel centralPanel = mv.getMainPanel();
+                final JPanel innerPanel = centralPanel.getContentPanel();
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        manageSignInAttempt();
-                    } catch (Exception exception) {
-                        new ExceptionPanel(exception, v);
-                        return;
-                    }
-                }
-            });
-        }
-    }
+                innerPanel.removeAll();
 
-    /**
-     * enters without an account
-     */
-    private void requestedToEnterAsGuest() {
-        //TODO
+                for(var d: drinkList) {
+                    final JPanel drinkCard = this.createDrinkCard(d);
 
-        Session.getInstance().setLoggedUser(null);
-    }
-
-    /**
-     * manages sign in attempt
-     */
-    private void manageSignInAttempt() {
-        if(this.view instanceof LoginView loginView){
-            if(loginView.getMainPanel() instanceof SignInPanel signInPanel) {
-                final String email = signInPanel.getEmail();
-                final String password = signInPanel.getPassword();
-                final String name = signInPanel.getName();
-                final String surname = signInPanel.getSurname();
-                final Date birthDate;
-                
-                if(signInPanel.getBirthDate().isPresent()) {
-                birthDate = signInPanel.getBirthDate().get();
-                } else {
-                    throw new NumberFormatException("formato data non valido");
-                }
-
-                final var u = new User(0, email, password, name, surname, 
-                    birthDate, surname, null, 0, 0, 0);
-                
-                if(this.model.registerUser(u).isEmpty()) {
-                    throw new WrongCredentialsException("errore nella registrazione");
-                } else {
-                    this.view.dispose();
+                    innerPanel.add(drinkCard);
                 }
             }
+
+
+        }
+
+        if(drinkList.isEmpty()) {
+            throw new IllegalStateException("Problema nella ricerca dei drink");
         }
     }
 
-    /**
-     * manages pdf file generation, getting output path
-     */
-    private void managePdfGeneration(Drink drink, String creator, java.util.List<String> keywords) {
-        final String outputPath = "";
-        FileExportService.createPdf(drink, creator, keywords, outputPath);
+    private JPanel createDrinkCard(Drink d) {
+        final JPanel card = new JPanel(new BorderLayout());
+        final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
+        card.setPreferredSize(dim);
+
+        //TODO: foto
+        final JLabel deleteThis = new JLabel("DELETE THIS");
+        card.add(deleteThis, BorderLayout.CENTER);
+
+        final JLabel nameLabel = new JLabel(d.getName() + " | " + d.getCategoryName());
+        card.add(nameLabel, BorderLayout.SOUTH);
+
+        card.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        return card;
     }
+
 }
