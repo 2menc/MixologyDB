@@ -3,6 +3,7 @@ package mix_db.view.login;
 import javax.swing.*;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.Optional;
 
@@ -34,9 +35,9 @@ public class SignInPanel extends JPanel{
 
         this.confirmButton = new JButton("conferma");
 
-        this.dayField = new JTextField("day");
-        this.monthField = new JTextField("month");
-        this.yearField = new JTextField("year");
+        this.dayField = new JTextField("giorno");
+        this.monthField = new JTextField("mese");
+        this.yearField = new JTextField("anno");
 
         this.setLayout(new GridLayout(4, 1, 5, 5));
         
@@ -106,17 +107,14 @@ public class SignInPanel extends JPanel{
             return Optional.of(new Date(year, month, day));
 
         } catch (NumberFormatException e) {
-            this.showError(e.getMessage());
-        }
-        return Optional.empty();
-        
+            throw e;
+        }        
     }
 
     /**
-     * shows the error via message dialog
-     * @param message
+     * requests a sign in
      */
-    public void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
+    public void requestSignIn(ActionListener al) {
+        this.confirmButton.addActionListener(al);
     }
 }

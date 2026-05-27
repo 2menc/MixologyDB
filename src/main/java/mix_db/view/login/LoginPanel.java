@@ -67,7 +67,7 @@ public class LoginPanel extends JPanel{
      * signs in as new user
      * @param al .
      */
-    public void requestedSignIn(ActionListener al) {
+    public void requestSignIn(ActionListener al) {
         this.signInButton.addActionListener(al);
     }
 

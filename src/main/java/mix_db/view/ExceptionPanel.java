@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 /**
  * simple exception notifier
  */
-public class ExceptionPanel extends Throwable{
+public class ExceptionPanel extends RuntimeException{
 
     /**
      * shows a dialog containing the message
@@ -14,6 +14,7 @@ public class ExceptionPanel extends Throwable{
      * @param frame the frame which will host the panel
      */
     public ExceptionPanel(String message, JFrame frame) {
+        super(message);
         JOptionPane.showMessageDialog(frame, message, "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
 
@@ -23,6 +24,7 @@ public class ExceptionPanel extends Throwable{
      * @param frame the frame which will host the panel
      */
     public ExceptionPanel(Throwable cause, JFrame frame) {
+        super(cause);
         JOptionPane.showMessageDialog(frame, cause.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
     }
 

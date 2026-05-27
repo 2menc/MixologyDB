@@ -3,12 +3,16 @@ package mix_db.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 
 import mix_db.core.FileExportService;
 import mix_db.core.Session;
+import mix_db.core.exceptions.WrongCredentialsException;
 import mix_db.data.dao.Drink;
+import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
 import mix_db.model.Model;
@@ -33,12 +37,13 @@ public class ApplicationController {
     public ApplicationController() {
         this.view = new LoginView();
 
-        try(final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password")) {
-            
+        try {
+            final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
             this.model = new DbModel(connection);
 
         } catch (Exception e) {
-            this.exceptionThrower(e.getMessage());
+            e.printStackTrace();
+            new ExceptionPanel("Problema connessione con database SQL", view);
         }
 
         if(this.view instanceof LoginView loginView){
@@ -48,15 +53,20 @@ public class ApplicationController {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        manageLoginAttempt();
+                        try {
+                            manageLoginAttempt(); 
+                        } catch (WrongCredentialsException ex) {
+                            new ExceptionPanel(ex, view);
+                            return;
+                        }
                     }
                 });
 
-                loginPanel.requestedSignIn(new ActionListener() {
+                loginPanel.requestSignIn(new ActionListener() {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        loginView.setMainPanel(new SignInPanel());                        
+                        requestedSignIn(loginView);
                     }
                 });
             }
@@ -69,16 +79,39 @@ public class ApplicationController {
     private void manageLoginAttempt() {
         if(this.view instanceof LoginView loginView){
             if(loginView.getMainPanel() instanceof LoginPanel loginPanel) {
-            final String email = loginPanel.getEmail();
-            final String password = loginPanel.getPassword();
+                final String email = loginPanel.getEmail();
+                final String password = loginPanel.getPassword();
 
-            if(Session.getInstance().login(email, password)) {
-                loginView.dispose();
-            } else {
-                // *login failed
-                this.exceptionThrower("Email o password errati");
+                if(Session.getInstance().login(email, password)) {
+                    loginView.dispose();
+                } else {
+                    // *login failed
+                    throw new WrongCredentialsException("Email o password errati");
+                }
             }
-            }
+        }
+    }
+
+    /**
+     * tries to sign in
+     * @param v the current JFrame
+     */
+    private void requestedSignIn(LoginView v) {
+        v.setMainPanel(new SignInPanel());     
+
+        if(v.getMainPanel() instanceof SignInPanel sp) {
+            sp.requestSignIn(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        manageSignInAttempt();
+                    } catch (Exception exception) {
+                        new ExceptionPanel(exception, v);
+                        return;
+                    }
+                }
+            });
         }
     }
 
@@ -86,7 +119,30 @@ public class ApplicationController {
      * manages sign in attempt
      */
     private void manageSignInAttempt() {
-        //TODO: this method must create a new user via DBModel and check if the returned Optional<User> is NOT null, and throw an exception if it is
+        if(this.view instanceof LoginView loginView){
+            if(loginView.getMainPanel() instanceof SignInPanel signInPanel) {
+                final String email = signInPanel.getEmail();
+                final String password = signInPanel.getPassword();
+                final String name = signInPanel.getName();
+                final String surname = signInPanel.getSurname();
+                final Date birthDate;
+                
+                if(signInPanel.getBirthDate().isPresent()) {
+                birthDate = signInPanel.getBirthDate().get();
+                } else {
+                    throw new NumberFormatException("formato data non valido");
+                }
+
+                final var u = new User(0, email, password, name, surname, 
+                    birthDate, surname, null, 0, 0, 0);
+                
+                if(this.model.registerUser(u).isEmpty()) {
+                    throw new WrongCredentialsException("errore nella registrazione");
+                } else {
+                    this.view.dispose();
+                }
+            }
+        }
     }
 
     /**
@@ -95,13 +151,5 @@ public class ApplicationController {
     private void managePdfGeneration(Drink drink, String creator, java.util.List<String> keywords) {
         final String outputPath = "";
         FileExportService.createPdf(drink, creator, keywords, outputPath);
-    }
-
-    /**
-     * shows the error on the ui
-     * @param e .
-     */
-    private void exceptionThrower(String message) {
-        new ExceptionPanel(message, view);
     }
 }
