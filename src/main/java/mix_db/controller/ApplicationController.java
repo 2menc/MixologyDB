@@ -20,6 +20,7 @@ import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
 import mix_db.view.mainWindow.CentralPanel;
 import mix_db.view.mainWindow.MainView;
+import mix_db.view.mainWindow.RightPanel;
 
 /**
  * main application controller
@@ -44,7 +45,7 @@ public class ApplicationController {
 
         final CentralPanel centralPanel = new CentralPanel();
         final JPanel leftPanel = new JPanel();   
-        final JPanel rightPanel = new JPanel();  
+        final JPanel rightPanel = new RightPanel();  
 
         this.view = new MainView(centralPanel, leftPanel, rightPanel);
 
