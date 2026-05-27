@@ -59,6 +59,11 @@ public class DbModel implements Model{
     }
 
     @Override
+    public List<Drink> getRandomDrinkList(int numberOfResults) {
+        return Drink.DAO.getRandomDrinkList(connection,numberOfResults);
+    }
+
+    @Override
     public List<Ingredient> getIngredients(int drinkID) {
         return Ingredient.DAO.ofDrink(connection, drinkID);
     }
@@ -137,5 +142,6 @@ public class DbModel implements Model{
     public boolean banUser(int userID) {
         return AdminUtils.DAO.deleteUser(connection, userID);
     }
+
 
 }

@@ -230,6 +230,16 @@ public class Queries {
     */
 
     /**
+     * gets a list of random drinks
+     */
+    public static final String GET_RANDOM_DRINKS =
+    """
+    SELECT *
+    FROM Drink
+    LIMIT ?        
+    """;
+
+    /**
      * creates a new tag
      */
     public static final String CREATE_TAG =

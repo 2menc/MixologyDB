@@ -3,6 +3,7 @@ package mix_db.data.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -209,6 +210,38 @@ public class Drink {
                 } catch(SQLException autoCommitException) {
                     //ignores the exception
                 }
+            }
+        }
+
+        /**
+         * gets a list of random drinks
+         * @param connection .
+         * @param numberOfResults .
+         * @return the list
+         */
+        public static List<Drink> getRandomDrinkList(Connection connection, int numberOfResults) {
+            final List<Drink> drinkList = new LinkedList<>();
+
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_RANDOM_DRINKS, numberOfResults);
+                final var rs = statement.executeQuery();
+            ) {
+                while(rs.next()) {
+                    final var d = new Drink(
+                        rs.getInt("drinkID"), 
+                        rs.getString("nome"),
+                        rs.getString("descrizione"), 
+                        rs.getString("foto"), 
+                        rs.getString("nomeCategoria"),
+                        rs.getBoolean("IBA")
+                        );
+                    drinkList.add(d);
+                }
+                Collections.shuffle(drinkList);
+                return drinkList;
+            } catch(Exception e) {
+                throw new DAOException(e);
             }
         }
 

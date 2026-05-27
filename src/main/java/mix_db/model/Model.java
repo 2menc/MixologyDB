@@ -61,6 +61,13 @@ public interface Model {
     Optional<Drink> getDrink(int drinkID);
 
     /**
+     * gets a random list of drinks
+     * @param numberOfResults the number of results to show
+     * @return a list of drinks
+     */
+    List<Drink> getRandomDrinkList(int numberOfResults);
+
+    /**
      * gets a drink's ingredients
      * @param drinkID the id of the drink to get the ingredients from
      * @return empty Optional if the drink is not in the db, a list with all Ingredients otherwise
