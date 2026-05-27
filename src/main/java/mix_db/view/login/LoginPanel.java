@@ -75,7 +75,7 @@ public class LoginPanel extends JPanel{
      * enters as a guest
      * @param al .
      */
-    public void enterAsGuest(ActionListener al) {
+    public void requestToEnterAsGuest(ActionListener al) {
         this.guestButton.addActionListener(al);
     }
 }

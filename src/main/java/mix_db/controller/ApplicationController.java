@@ -69,6 +69,15 @@ public class ApplicationController {
                         requestedSignIn(loginView);
                     }
                 });
+
+                loginPanel.requestToEnterAsGuest(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        requestedSignIn(loginView);
+                    }
+                    
+                });
             }
         }
     }
@@ -113,6 +122,15 @@ public class ApplicationController {
                 }
             });
         }
+    }
+
+    /**
+     * enters without an account
+     */
+    private void requestedToEnterAsGuest() {
+        //TODO
+
+        Session.getInstance().setLoggedUser(null);
     }
 
     /**
