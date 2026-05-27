@@ -65,49 +65,35 @@ public class ApplicationController {
     public void populateDrinkGrid() {
         List<Drink> drinkList = new ArrayList<>();
 
-        if(Session.getInstance().getLoggedUser() != null) {
-            
-            if(this.view instanceof MainView mv) {
-                drinkList = this.model.getSuggestions(Session.getInstance().getLoggedUser().getUserID(), 100);
+        if (!(this.view instanceof MainView mv)) {
+            return; 
+        }
+ 
+        final var loggedUser = Session.getInstance().getLoggedUser();
 
-                final CentralPanel centralPanel = mv.getMainPanel();
-                final JPanel innerPanel = centralPanel.getContentPanel();
+        if(loggedUser != null) {
+            drinkList = this.model.getFavourites(loggedUser.getUserID());
+        }
 
-                innerPanel.removeAll();
-
-                for(var d: drinkList) {
-                    final JPanel drinkCard = this.createDrinkCard(d);
-
-                    innerPanel.add(drinkCard);
-                }
-            }
-
-        } 
-        if (Session.getInstance().getLoggedUser() == null 
-                    || drinkList.size() < 9
-            ) {
-            
-            if(this.view instanceof MainView mv) {
-                drinkList = this.model.getRandomDrinkList(100);
-
-                final CentralPanel centralPanel = mv.getMainPanel();
-                final JPanel innerPanel = centralPanel.getContentPanel();
-
-                innerPanel.removeAll();
-
-                for(var d: drinkList) {
-                    final JPanel drinkCard = this.createDrinkCard(d);
-
-                    innerPanel.add(drinkCard);
-                }
-            }
-
-
+        if(loggedUser == null || drinkList.size() < 6) {
+            drinkList = this.model.getRandomDrinkList(100);
         }
 
         if(drinkList.isEmpty()) {
             throw new IllegalStateException("Problema nella ricerca dei drink");
         }
+
+        final CentralPanel centralPanel = mv.getMainPanel();
+        final JPanel innerPanel = centralPanel.getContentPanel();
+
+        innerPanel.removeAll();
+        for(var d: drinkList) {
+            final JPanel drinkCard = this.createDrinkCard(d);
+            innerPanel.add(drinkCard);
+        }
+
+        innerPanel.revalidate();
+        innerPanel.repaint();
     }
 
     private JPanel createDrinkCard(Drink d) {
