@@ -281,8 +281,8 @@ public class User {
 
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
-                    Queries.CREATE_DRINK, 
-                    userID, numberOfResults);
+                    Queries.SUGGEST_DRINKS, 
+                    userID, userID, numberOfResults);
                 final var rs = statement.executeQuery();
             ) {
                 while(rs.next()) {
