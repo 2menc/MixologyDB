@@ -2,14 +2,17 @@ package mix_db.controller;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import mix_db.core.GeneralSettings;
 import mix_db.core.Session;
 import mix_db.data.dao.Drink;
 import mix_db.data.dbConnection.DatabaseConnection;
@@ -112,9 +115,16 @@ public class ApplicationController {
         final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
         card.setPreferredSize(dim);
 
-        //TODO: foto
-        final JLabel deleteThis = new JLabel("DELETE THIS");
-        card.add(deleteThis, BorderLayout.CENTER);
+        final int targetWidth = dim.width;
+        final int targetHeight = dim.height; 
+
+        final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + "download.jpeg");//!d.getImagePath());
+
+        final Image scaledImage = image.getImage().getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+        final ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        final JLabel imageLabel = new JLabel(scaledIcon);
+        card.add(imageLabel, BorderLayout.CENTER);
 
         final JLabel nameLabel = new JLabel(d.getName() + " | " + d.getCategoryName());
         card.add(nameLabel, BorderLayout.SOUTH);
