@@ -14,8 +14,8 @@ public class MainView extends JFrame {
     private JPanel mainPanel;
 
     private CentralPanel centralPanel;
-    private JPanel leftPanel;
-    private JPanel rightPanel;
+    private LeftPanel leftPanel;
+    private RightPanel rightPanel;
 
     /**
      * constructor
@@ -23,12 +23,12 @@ public class MainView extends JFrame {
      * @param leftPanel panel with informations and leaderboards
      * @param rightPanel panel with user informations, search bar and create drink
      */
-    public MainView(CentralPanel centralPanel, JPanel leftPanel, JPanel rightPanel) {
+    public MainView() {
         this.mainPanel = new JPanel(new BorderLayout());
 
-        this.centralPanel = centralPanel;
-        this.leftPanel = leftPanel;
-        this.rightPanel = rightPanel;
+        this.centralPanel = new CentralPanel();
+        this.leftPanel = new LeftPanel();
+        this.rightPanel = new RightPanel();
 
         this.mainPanel.add(centralPanel, BorderLayout.CENTER);
         this.mainPanel.add(leftPanel, BorderLayout.WEST);
@@ -55,8 +55,16 @@ public class MainView extends JFrame {
      * gets the left panel
      * @return
      */
-    public JPanel getLeftPanel() {
+    public LeftPanel getLeftPanel() {
         return this.leftPanel;
+    }
+
+    /**
+     * gets the right panel
+     * @return
+     */
+    public RightPanel getRightPanel() {
+        return this.rightPanel;
     }
 
     /**

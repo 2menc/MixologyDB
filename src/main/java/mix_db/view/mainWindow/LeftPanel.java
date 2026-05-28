@@ -54,11 +54,11 @@ public class LeftPanel extends JPanel{
     }
 
     public void populateMostUsedIngredients(List<String> list) {
-        this.userWithMostPositiveReviews.setText(String.join("\n", list));   
+        this.mostUsedIngredients.setText(String.join("\n", list));   
     }
 
     public void populateTrendingKeywords(List<String> list) {
-        this.userWithMostPositiveReviews.setText(String.join("\n", list));   
+        this.trendingKeywords.setText(String.join("\n", list));   
     }
 
 }

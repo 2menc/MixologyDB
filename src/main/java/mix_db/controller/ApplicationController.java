@@ -3,6 +3,8 @@ package mix_db.controller;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -19,10 +21,10 @@ import mix_db.data.dao.Drink;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
+import mix_db.view.drinkCreationView.DrinkCreationView;
 import mix_db.view.mainWindow.CentralPanel;
 import mix_db.view.mainWindow.LeftPanel;
 import mix_db.view.mainWindow.MainView;
-import mix_db.view.mainWindow.RightPanel;
 
 /**
  * main application controller
@@ -45,11 +47,7 @@ public class ApplicationController {
             new ExceptionPanel("Problema connessione con database SQL", view);
         }
 
-        final CentralPanel centralPanel = new CentralPanel();
-        final JPanel leftPanel = new LeftPanel();   
-        final JPanel rightPanel = new RightPanel();  
-
-        this.view = new MainView(centralPanel, leftPanel, rightPanel);
+        this.view = new MainView();
 
         // *components population
         try {
@@ -63,6 +61,16 @@ public class ApplicationController {
         this.populateMostUsedIngredients();
         this.populateTrendingKeywords();
 
+        if(this.view instanceof MainView mv) {
+            mv.getRightPanel().requestedToCreateDrink(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    final var v = new DrinkCreationView();
+                    new DrinkController(v.getMainPanel(), model);
+                }
+            });
+        }
     }
 
     /**
@@ -129,13 +137,12 @@ public class ApplicationController {
         return card;
     }
 
-    public void populateUsersWithMostPositiveReviewsLeaderboard() {
+    private void populateUsersWithMostPositiveReviewsLeaderboard() {
         final List<String> list = new LinkedList<>();
         final var l = model.calculateUsersWithMostPositiveReviewsLeaderboard(10);
         for(int n = 0; n < l.size(); n++) {
             list.add(Integer.toString(n+1) + "-" + l.get(n).getName() + " " + l.get(n).getSurname());
         }
-        System.out.println(list.toString());
         if(this.view instanceof MainView mv) {
             if(mv.getLeftPanel() instanceof LeftPanel lp) {
                 lp.populateUserWithMostPositiveReviews(list);;
@@ -143,13 +150,12 @@ public class ApplicationController {
         }
     }
 
-    public void populateMostUsedIngredients() {
+    private void populateMostUsedIngredients() {
         final List<String> list = new LinkedList<>();
         final var l = model.getMostUsedIngredients(10);
         for(int n = 0; n < l.size(); n++) {
             list.add(Integer.toString(n+1) + "-" + l.get(n));
         }
-        System.out.println(list.toString());
         if(this.view instanceof MainView mv) {
             if(mv.getLeftPanel() instanceof LeftPanel lp) {
                 lp.populateUserWithMostPositiveReviews(list);;
@@ -157,18 +163,16 @@ public class ApplicationController {
         }
     }
 
-    public void populateTrendingKeywords() {
+    private void populateTrendingKeywords() {
         final List<String> list = new LinkedList<>();
         final var l = model.getTrendingKeywords(30, 10);
         for(int n = 0; n < l.size(); n++) {
             list.add(Integer.toString(n+1) + "-" + l.get(n));
         }
-        System.out.println(list.toString());
         if(this.view instanceof MainView mv) {
             if(mv.getLeftPanel() instanceof LeftPanel lp) {
                 lp.populateUserWithMostPositiveReviews(list);;
             }
         }
     }
-
 }

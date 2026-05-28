@@ -2,6 +2,7 @@ package mix_db.view.mainWindow;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -45,6 +46,10 @@ public class RightPanel extends JPanel{
         this.add(this.createDrinkButton, 0);
         this.add(this.userInformations, 1);
         this.add(this.searchBar, 2);
+    }
+
+    public void requestedToCreateDrink(ActionListener al) {
+        this.createDrinkButton.addActionListener(al);
     }
 
 }
