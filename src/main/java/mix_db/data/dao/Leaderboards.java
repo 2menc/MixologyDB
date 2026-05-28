@@ -64,7 +64,7 @@ public class Leaderboards {
             final var ingredients = new LinkedList<Ingredient>();
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
-                    Queries.CREATE_DRINK, 
+                    Queries.MOST_USED_INGREDIENTS, 
                     numberOfResults);
                 final var rs = statement.executeQuery();
             ) {
@@ -93,7 +93,7 @@ public class Leaderboards {
 
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
-                    Queries.CREATE_DRINK, 
+                    Queries.USERS_WITH_MORE_POSITIVE_REVIEWS, 
                     numberOfResults);
                 final var rs = statement.executeQuery();
             ) {
@@ -133,7 +133,7 @@ public class Leaderboards {
 
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
-                    Queries.CREATE_DRINK, 
+                    Queries.TRENDING_KEYWORDS, 
                     daysToFilter, numberOfResults);
                 final var rs = statement.executeQuery();
             ) {
@@ -149,7 +149,6 @@ public class Leaderboards {
                 throw new DAOException(e);
             }
         }
-
     }
 
     @Override
