@@ -67,7 +67,7 @@ public class ApplicationController {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     final var v = new DrinkCreationView();
-                    new DrinkController(v.getMainPanel(), model);
+                    new DrinkController(v, model);
                 }
             });
         }

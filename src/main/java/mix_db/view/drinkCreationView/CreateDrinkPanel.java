@@ -244,9 +244,13 @@ public class CreateDrinkPanel extends JPanel {
 
     public java.util.List<String> getKeywords() {
         final java.util.List<String> l = new LinkedList<>();
-
-        for(var k: this.keywords.getText().split(",")) {
-            l.add(k);
+        
+        if(l.contains("parole chiave separate da virgola")) {
+            JOptionPane.showMessageDialog(this, "Il drink deve avere almeno un ingrediente!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+        } else {
+            for(var k: this.keywords.getText().split(",")) {
+                l.add(k);
+            }
         }
         return l;
     }
