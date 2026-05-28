@@ -52,7 +52,7 @@ create table identificazioni (
 
 create table Ingredienti (
      nomeIngrediente varchar(32) not null,
-     volteUtilizzato int not null,
+     volteUtilizzato int not null default 0,
      constraint IDIngrediente primary key (nomeIngrediente));
 
 create table occupazioni (
