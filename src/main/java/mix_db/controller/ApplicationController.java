@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -19,6 +20,7 @@ import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
 import mix_db.view.mainWindow.CentralPanel;
+import mix_db.view.mainWindow.LeftPanel;
 import mix_db.view.mainWindow.MainView;
 import mix_db.view.mainWindow.RightPanel;
 
@@ -44,17 +46,23 @@ public class ApplicationController {
         }
 
         final CentralPanel centralPanel = new CentralPanel();
-        final JPanel leftPanel = new JPanel();   
+        final JPanel leftPanel = new LeftPanel();   
         final JPanel rightPanel = new RightPanel();  
 
         this.view = new MainView(centralPanel, leftPanel, rightPanel);
 
+        // *components population
         try {
             this.populateDrinkGrid();
         } catch (Exception e) {
             view.dispose();
             throw new ExceptionPanel(e, view);
         }
+
+        this.populateUsersWithMostPositiveReviewsLeaderboard();
+        this.populateMostUsedIngredients();
+        this.populateTrendingKeywords();
+
     }
 
     /**
@@ -119,6 +127,48 @@ public class ApplicationController {
         card.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         return card;
+    }
+
+    public void populateUsersWithMostPositiveReviewsLeaderboard() {
+        final List<String> list = new LinkedList<>();
+        final var l = model.calculateUsersWithMostPositiveReviewsLeaderboard(10);
+        for(int n = 0; n < l.size(); n++) {
+            list.add(Integer.toString(n+1) + "-" + l.get(n).getName() + " " + l.get(n).getSurname());
+        }
+        System.out.println(list.toString());
+        if(this.view instanceof MainView mv) {
+            if(mv.getLeftPanel() instanceof LeftPanel lp) {
+                lp.populateUserWithMostPositiveReviews(list);;
+            }
+        }
+    }
+
+    public void populateMostUsedIngredients() {
+        final List<String> list = new LinkedList<>();
+        final var l = model.getMostUsedIngredients(10);
+        for(int n = 0; n < l.size(); n++) {
+            list.add(Integer.toString(n+1) + "-" + l.get(n));
+        }
+        System.out.println(list.toString());
+        if(this.view instanceof MainView mv) {
+            if(mv.getLeftPanel() instanceof LeftPanel lp) {
+                lp.populateUserWithMostPositiveReviews(list);;
+            }
+        }
+    }
+
+    public void populateTrendingKeywords() {
+        final List<String> list = new LinkedList<>();
+        final var l = model.getTrendingKeywords(30, 10);
+        for(int n = 0; n < l.size(); n++) {
+            list.add(Integer.toString(n+1) + "-" + l.get(n));
+        }
+        System.out.println(list.toString());
+        if(this.view instanceof MainView mv) {
+            if(mv.getLeftPanel() instanceof LeftPanel lp) {
+                lp.populateUserWithMostPositiveReviews(list);;
+            }
+        }
     }
 
 }

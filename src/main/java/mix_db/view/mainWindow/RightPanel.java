@@ -1,8 +1,8 @@
 package mix_db.view.mainWindow;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -21,7 +21,7 @@ public class RightPanel extends JPanel{
     private final JTextArea userInformations;
 
     public RightPanel() {
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new GridLayout(20, 1));
 
         this.searchBar = new JTextField("cerca drink");
         final var dim = this.getSize();
@@ -37,14 +37,14 @@ public class RightPanel extends JPanel{
 
         final User user = Session.getInstance().getLoggedUser();
         if(user != null) {
-            this.userInformations.setText(user.getName() + ", " + user.getSurname() + "\n" + user.getEmail());
+            this.userInformations.setText(user.getName() + " " + user.getSurname() + "\n" + user.getEmail());
         } else {
             this.userInformations.setEnabled(false);
         }
 
-        this.add(this.createDrinkButton);
-        this.add(this.userInformations);
-        this.add(this.searchBar);
+        this.add(this.createDrinkButton, 0);
+        this.add(this.userInformations, 1);
+        this.add(this.searchBar, 2);
     }
 
 }

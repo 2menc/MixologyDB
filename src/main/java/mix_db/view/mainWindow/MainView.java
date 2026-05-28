@@ -14,6 +14,8 @@ public class MainView extends JFrame {
     private JPanel mainPanel;
 
     private CentralPanel centralPanel;
+    private JPanel leftPanel;
+    private JPanel rightPanel;
 
     /**
      * constructor
@@ -25,6 +27,8 @@ public class MainView extends JFrame {
         this.mainPanel = new JPanel(new BorderLayout());
 
         this.centralPanel = centralPanel;
+        this.leftPanel = leftPanel;
+        this.rightPanel = rightPanel;
 
         this.mainPanel.add(centralPanel, BorderLayout.CENTER);
         this.mainPanel.add(leftPanel, BorderLayout.WEST);
@@ -32,6 +36,7 @@ public class MainView extends JFrame {
         
         this.add(this.mainPanel);
 
+        this.setResizable(false);
         this.setTitle("MixologyDB");
         super.setSize((int)(Toolkit.getDefaultToolkit().getScreenSize().width/1.3), (int)(Toolkit.getDefaultToolkit().getScreenSize().height/1.3));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -44,6 +49,14 @@ public class MainView extends JFrame {
      */
     public CentralPanel getMainPanel() {
         return this.centralPanel;
+    }
+
+    /**
+     * gets the left panel
+     * @return
+     */
+    public JPanel getLeftPanel() {
+        return this.leftPanel;
     }
 
     /**
