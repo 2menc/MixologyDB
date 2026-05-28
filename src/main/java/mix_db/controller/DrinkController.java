@@ -2,12 +2,25 @@ package mix_db.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.JOptionPane;
 
 import mix_db.model.Model;
+import mix_db.core.GeneralSettings;
+import mix_db.core.Session;
+import mix_db.data.dao.Composition;
+import mix_db.data.dao.Drink;
 import mix_db.model.IngredientData;
+import mix_db.view.ExceptionPanel;
 import mix_db.view.drinkCreationView.DrinkCreationView;
 
 public class DrinkController {
@@ -19,6 +32,8 @@ public class DrinkController {
         this.view = view;
         this.model = model;
 
+        this.view.getMainPanel().populateComboBox(this.model.getAllCategories());
+
         this.view.getMainPanel().addSaveListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -29,14 +44,89 @@ public class DrinkController {
 
     private void manageDrinkCreation() {
         try {
-            List<IngredientData> ingredients = this.view.getMainPanel().getIngredientsData();
+            final var panel = this.view.getMainPanel();
+
+            final List<IngredientData> ingredients = this.view.getMainPanel().getIngredientsData();
+            final String name = panel.getDrinkName();
+            final String description = panel.getDescription();
+            final String categoryName = panel.getCategoryName();
             
+            final List<String> keywords = panel.getKeywords();
+            if(keywords.isEmpty()) {
+                throw new IllegalStateException("keywords list cannot be empty");
+            }
 
-            JOptionPane.showMessageDialog(view, "Drink creato con successo", "SUCCESSO", JOptionPane.INFORMATION_MESSAGE);
-            this.view.dispose();
+            final File photo = panel.getDrinkImage();
+            if(! this.saveImage(photo, name)) {
+                throw new IllegalArgumentException("file not valid");
+            }
 
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(view, ex.getMessage(), "Errore di compilazione", JOptionPane.ERROR_MESSAGE);
+            // *actual drink creation
+            final Drink d = new Drink(
+                -1, 
+                name, 
+                description, 
+                photo.getName(), 
+                categoryName, 
+          false
+            );
+            final List<Composition> comp = new LinkedList<>();
+            for(var c: ingredients) {
+                final var i = new Composition(
+                    c.name(), 
+                    d.getDrinkID(), 
+                    c.quantity(),
+                    c.unit()
+                );
+                comp.add(i);
+            }
+
+            final Optional<Drink> newDrink = this.model.createDrink(d, Session.getInstance().getLoggedUser().getUserID(), Optional.empty(), comp, keywords);
+            if(newDrink.isEmpty()) {
+                throw new IllegalStateException("errore nella creazione del drink");
+            } else if (newDrink.get().equals(this.model.getDrink(newDrink.get().getDrinkID()).get())) {
+                JOptionPane.showMessageDialog(view, "Drink creato con successo", "SUCCESSO", JOptionPane.INFORMATION_MESSAGE);
+                this.view.dispose();
+            }
+
+        } catch (Exception ex) {
+            throw new ExceptionPanel(ex.getMessage(), this.view);
+        }
+    }
+
+    private boolean saveImage(File uploadedFile, String drinkName) throws IOException {
+
+        if (uploadedFile == null || !uploadedFile.exists() || drinkName == null || drinkName.isBlank()) {
+            return false;
+        }
+
+        try {
+            Path destFolder = Paths.get(GeneralSettings.fotoPath);
+            if (!Files.exists(destFolder)) {
+                Files.createDirectories(destFolder);
+            }
+
+            String originalName = uploadedFile.getName();
+            String extension = "";
+            int ext = originalName.lastIndexOf('.');
+            String safeImageName = originalName.trim().replaceAll("[ ,\\/]", "_") + extension;    //to exclude the possibility to have dupes
+            if (ext > 0) {
+                extension = safeImageName.substring(ext);
+            }
+
+            String safeDrinkName = drinkName;
+            
+            String finalFileName = safeDrinkName + extension;
+            Path targetPath = destFolder.resolve(finalFileName);
+
+            Files.copy(uploadedFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+            return true; 
+
+        } catch (IOException e) {
+            e.printStackTrace(); 
+            JOptionPane.showMessageDialog(this.view, "problema durante il salvataggio dell'immagine", "ERRORE", JOptionPane.WARNING_MESSAGE);
+            return false; 
         }
     }
 }

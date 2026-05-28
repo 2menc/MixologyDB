@@ -44,7 +44,7 @@ public interface Model {
      * @param keywords a {@link Map} of {@link (drinkID, keyword)}
      * @returnan empty Optional if the drink is not in the db, the drink otherwise 
      */
-    Optional<Drink> createDrink(Drink drink, int userID, Integer barID, List<Composition> composition, List<String> keywords);
+    Optional<Drink> createDrink(Drink drink, int userID, Optional<Integer> barID, List<Composition> composition, List<String> keywords);
 
     /**
      * links a user to a bar
@@ -115,6 +115,12 @@ public interface Model {
      * @return a List of all drinks found
      */
     List<Drink> searchByKeywords(String keyword);
+
+    /**
+     * gets all categories
+     * @return a list of categories
+     */
+    List<String> getAllCategories();
 
     /**
      * Calculates a leaderbord of the {@code numberOfResults} drinks with most positive reviews in the specified time intervall

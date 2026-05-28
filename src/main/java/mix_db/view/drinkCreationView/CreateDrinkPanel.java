@@ -22,7 +22,7 @@ public class CreateDrinkPanel extends JPanel {
 
     // *normal text fields
     private final JTextField name;
-    private final JTextField categoryName;
+    private final JComboBox<String> categoryName;
     private final JTextArea description;
     private final JTextArea keywords;
 
@@ -44,7 +44,7 @@ public class CreateDrinkPanel extends JPanel {
         final JPanel row1 = new JPanel(new GridLayout(1, 2, 10, 0));
         
         this.name = new JTextField("nome del drink");
-        this.categoryName = new JTextField("categoria");
+        this.categoryName = new JComboBox<>();
         
         row1.add(this.name);
         row1.add(this.categoryName);
@@ -222,20 +222,12 @@ public class CreateDrinkPanel extends JPanel {
         public String getUnitOfMeasure() { return unitField.getText().trim(); }
     }
 
-    public JPanel getIngredientsContainer() {
-        return ingredientsContainer;
-    }
-
-    public java.util.List<IngredientRow> getRowsList() {
-        return rowsList;
-    }
-
     public String getDrinkName() {
         return this.name.getText();
     }
 
     public String getCategoryName() {
-        return this.categoryName.getText();
+        return (String) this.categoryName.getSelectedItem();
     }
 
     public String getDescription() {
@@ -245,18 +237,25 @@ public class CreateDrinkPanel extends JPanel {
     public java.util.List<String> getKeywords() {
         final java.util.List<String> l = new LinkedList<>();
         
-        if(l.contains("parole chiave separate da virgola")) {
+        if(this.keywords.getText().contains("parole chiave separate da virgola")) {
             JOptionPane.showMessageDialog(this, "Il drink deve avere almeno un ingrediente!", "Attenzione", JOptionPane.WARNING_MESSAGE);
         } else {
-            for(var k: this.keywords.getText().split(",")) {
+            for(var k: this.keywords.getText().split(", ")) {
                 l.add(k);
             }
         }
+        System.out.println(l);
         return l;
     }
 
     public java.io.File getDrinkImage() {
-        return drinkImage;
+        return this.drinkImage;
+    }
+
+    public void populateComboBox(java.util.List<String> list) {
+        for(String c: list) {
+            this.categoryName.addItem(c);
+        }
     }
 
 }

@@ -42,9 +42,9 @@ public class DbModel implements Model{
     }
 
     @Override
-    public Optional<Drink> createDrink(Drink drink, int userID, Integer barID, List<Composition> composition, List<String> keywords) {
-        Drink.DAO.createDrink(connection, drink, userID, barID, composition, keywords);
-        return Drink.DAO.getDrink(connection, drink.getDrinkID());
+    public Optional<Drink> createDrink(Drink drink, int userID, Optional<Integer> barID, List<Composition> composition, List<String> keywords) {
+        Drink.DAO.createDrink(connection, drink, barID, userID, composition, keywords);
+        return Drink.DAO.searchByName(connection, drink.getName());
     }
 
     @Override
@@ -96,6 +96,11 @@ public class DbModel implements Model{
     @Override
     public List<Drink> searchByKeywords(String keyword) {
         return Drink.DAO.searchByKeyword(connection, keyword);
+    }
+
+    @Override
+    public List<String> getAllCategories() {
+        return Category.DAO.getAllCategories(connection);
     }
 
     @Override
