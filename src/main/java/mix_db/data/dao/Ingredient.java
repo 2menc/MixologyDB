@@ -138,31 +138,26 @@ public class Ingredient {
             }
         }
 
-        public static int getOrCreateId(Connection connection, String name) {
+        public static String getOrCreateIngredient(Connection connection, String name) {
 
             try (var statement = DatabaseConnection.prepare(connection, 
                 Queries.SEARCH_INGREDIENT, 
                 name);
                 var rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("nomeIngrediente"); 
+                    return rs.getString("nomeIngrediente"); 
                 }
             } catch (SQLException e) { throw new DAOException(e); }
 
-            // 2. Se non esiste, lo creo
-            try (var statement = DatabaseConnection.prepareWithKeys(connection,
+            try (var statement = DatabaseConnection.prepare(connection,
                 Queries.CREATE_INGREDIENT,
                 name);
             ) {
                 statement.executeUpdate();
-                try (var rs = statement.getGeneratedKeys()) {
-                    if (rs.next()) return rs.getInt(1);
-                }
+                return name;
             } catch (SQLException e) {
                 throw new DAOException(e); 
             }
-            
-            throw new DAOException("Cannot create the ingredient: " + name);
         }
 
 

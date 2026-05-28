@@ -174,7 +174,7 @@ public class Queries {
     /**
      * links the drink with the creator
      */
-    public static final String LINK_DRINK_WITH_USER =
+    public static final String LINK_DRINK_WITHOUT_BAR =
     """
     INSERT INTO creazioni (drinkID, dataCreazione, userID)
     VALUES (?, DATE(NOW()), ?);
@@ -220,7 +220,7 @@ public class Queries {
      */
     public static final String INSERT_DRINK_KEYWORD =
     """
-    INSERT INTO identificazioni (drinkID, keyword)
+    INSERT INTO identificazioni (drinkID, `keyword`)
     VALUES (?, ?);
     """;
     
@@ -245,7 +245,7 @@ public class Queries {
     public static final String CREATE_TAG =
     """
     INSERT INTO Tag (keyword) 
-    VALUES ?;        
+    VALUES (?);        
     """;
 
     /**
@@ -256,6 +256,13 @@ public class Queries {
     SELECT *
     FROM Tag
     WHERE keyword = ?;    
+    """;
+
+    public static final String SEARCH_DRINK_BY_NAME =
+    """
+    SELECT *
+    From Drink
+    WHERE nome = ?;        
     """;
 
     public static final String GET_DRINK_TAGS =
@@ -484,5 +491,11 @@ public class Queries {
     """
     DELETE FROM utenti
     WHERE userID = ?;        
+    """;
+
+    public static final String GET_ALL_CATEGORIES =
+    """
+    SELECT *
+    FROM Categorie;
     """;
 }

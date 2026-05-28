@@ -109,18 +109,25 @@ public class Drink {
          * @param keywords the keywords to identify the drink
          * @return {@code true} if can insert the drink, {@code false} otherwise
          */
-        public static void createDrink(Connection connection, Drink d, int barID, int userID, List<Composition> composition, List<String> keywords) {
+        public static void createDrink(Connection connection, Drink d, Optional<Integer> barID, int userID, List<Composition> composition, List<String> keywords) {
             
             try {
                 // !transaction start
                 connection.setAutoCommit(false);
                 int correctDrinkId;
-                
+                final String correctImagePath = d.getImagePath().trim().replaceAll("[ ,\\/]", "_");
+                String extension = "";
+                final int ext = d.getImagePath().lastIndexOf('.');
+                if(ext > 0) {
+                    extension = correctImagePath.substring(ext);
+                }
+                String finalPathName = correctImagePath + extension;
+
                 // *creates the drink
                 try(
                     final var statement = DatabaseConnection.prepareWithKeys(connection, 
                         Queries.CREATE_DRINK, 
-                    d.getName(), d.getDescription(), d.getImagePath(), d.getCategoryName());
+                    d.getName(), d.getDescription(), finalPathName, d.getCategoryName());
                 ) {
                     statement.executeUpdate();
 
@@ -138,19 +145,34 @@ public class Drink {
                 }
 
                 // *links drink to user
-                try (
-                    final var statement = DatabaseConnection.prepare(connection, 
-                        Queries.LINK_DRINK_WITH_BAR,
-                        correctDrinkId, barID, userID); 
-                ) {
-                    statement.executeUpdate();
-                } catch(final Exception e) {
-                    throw new DAOException(e);
+
+                //? no barID
+                if(barID.isEmpty()) {
+                    try (
+                        final var statement = DatabaseConnection.prepare(connection, 
+                                Queries.LINK_DRINK_WITHOUT_BAR,
+                                correctDrinkId, userID);
+                        ){                    
+                            statement.executeUpdate();
+                    } catch(final Exception e) {
+                        throw new DAOException(e);
+                    }
+                } else {
+                // ? with barID
+                    try (
+                        final var statement = DatabaseConnection.prepare(connection, 
+                            Queries.LINK_DRINK_WITH_BAR,
+                            correctDrinkId, barID.get(), userID); 
+                    ) {
+                        statement.executeUpdate();
+                    } catch(final Exception e) {
+                        throw new DAOException(e);
+                    }
                 }
 
                 // *inserts ingredients
                 for(var c: composition) {
-                    final int correctIngredientName = Ingredient.DAO.getOrCreateId(connection, c.getIngredientName());
+                    final String correctIngredientName = Ingredient.DAO.getOrCreateIngredient(connection, c.getIngredientName());
 
                     try (
                         final var statement = DatabaseConnection.prepare(connection, 
@@ -165,7 +187,7 @@ public class Drink {
 
                 // *inserts keywords
                 for(String k : keywords) {
-                    final int correctKeyword = Tag.DAO.getOrCreateId(connection, k);
+                    final String correctKeyword = Tag.DAO.getOrCreateTag(connection, k);
 
                     try (final var statement = DatabaseConnection.prepare(connection, 
                             Queries.INSERT_DRINK_KEYWORD, 
@@ -211,6 +233,35 @@ public class Drink {
                     //ignores the exception
                 }
             }
+        }
+
+        /**
+         * searches a drink by name
+         * @param name .
+         * @return Optional of Drink
+         */
+        public static Optional<Drink> searchByName(Connection connection, String name) {
+            try (
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.SEARCH_DRINK_BY_NAME,
+                    name);
+                final var rs = statement.executeQuery()
+            ) {
+                if(rs.next()) {
+                    final var d = new Drink(
+                        rs.getInt("drinkID"), 
+                        rs.getString("nome"),
+                        rs.getString("descrizione"), 
+                        rs.getString("foto"), 
+                        rs.getString("nomeCategoria"),
+                        rs.getBoolean("IBA")
+                        );
+                    return Optional.of(d);
+                } 
+            } catch(Exception e) {
+                throw new DAOException(e);
+            }
+            return Optional.empty();
         }
 
         /**

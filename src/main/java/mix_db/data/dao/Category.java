@@ -1,6 +1,8 @@
 package mix_db.data.dao;
 
 import java.sql.Connection;
+import java.util.LinkedList;
+import java.util.List;
 
 import mix_db.data.Queries;
 import mix_db.data.dbConnection.DAOException;
@@ -87,6 +89,27 @@ public class Category {
             ) {
                 return (statement.executeUpdate() == 1);
             } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        /**
+         * gets all categories
+         * @return a list of category names
+         */
+        public static List<String> getAllCategories(Connection connection) {
+            final var list = new LinkedList<String>();
+
+            try (
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_ALL_CATEGORIES);
+                final var rs = statement.executeQuery();
+            ) {
+                while(rs.next()) {
+                    list.add(rs.getString("nomeCategoria"));
+                }
+                return list;
+            } catch (Exception e) {
                 throw new DAOException(e);
             }
         }

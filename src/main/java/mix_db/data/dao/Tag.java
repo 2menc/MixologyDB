@@ -87,25 +87,30 @@ public class Tag {
             }
         }
 
-    public static int getOrCreateId(Connection connection, String keyword) {
+    public static String getOrCreateTag(Connection connection, String keyword) {
         try (var statement = DatabaseConnection.prepare(connection,
             Queries.SEARCH_TAG,
             keyword);
-            var rs = statement.executeQuery()) {
-            if (rs.next()) return rs.getInt("tagID");
-        } catch (SQLException e) { throw new DAOException(e); }
+            var rs = statement.executeQuery();
+        ){
+            if (rs.next()) {
+                return rs.getString("keyword");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
 
         try (var statement = DatabaseConnection.prepareWithKeys(connection,
             Queries.CREATE_TAG,
             keyword);
         ) {
-            statement.setString(1, keyword);
             statement.executeUpdate();
-            try (var rs = statement.getGeneratedKeys()) {
-                if (rs.next()) return rs.getInt(1);
-            }
-        } catch (SQLException e) { throw new DAOException(e); }
-        throw new DAOException("Cannot cerate the tag: " + keyword);
+            System.out.println(keyword);
+            return keyword;
+
+        } catch (SQLException e) { 
+            throw new DAOException(e); 
+        }
     }
 
     }
