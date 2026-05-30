@@ -113,7 +113,12 @@ public class ApplicationController {
         innerPanel.repaint();
     }
 
-    private JPanel createDrinkCard(Drink d) {
+    /**
+     * creates a drink card
+     * @param d the drink
+     * @return the card
+     */
+    public JPanel createDrinkCard(Drink d) {
         final JPanel card = new JPanel(new BorderLayout());
         final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
         card.setPreferredSize(dim);
@@ -122,6 +127,7 @@ public class ApplicationController {
         final int targetHeight = dim.height; 
 
         final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + d.getImagePath());
+        System.out.println(GeneralSettings.fotoPath + d.getImagePath());
 
         final Image scaledImage = image.getImage().getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
         final ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -158,7 +164,7 @@ public class ApplicationController {
         }
         if(this.view instanceof MainView mv) {
             if(mv.getLeftPanel() instanceof LeftPanel lp) {
-                lp.populateUserWithMostPositiveReviews(list);;
+                lp.populateMostUsedIngredients(list);;
             }
         }
     }
@@ -171,7 +177,7 @@ public class ApplicationController {
         }
         if(this.view instanceof MainView mv) {
             if(mv.getLeftPanel() instanceof LeftPanel lp) {
-                lp.populateUserWithMostPositiveReviews(list);;
+                lp.populateTrendingKeywords(list);;
             }
         }
     }

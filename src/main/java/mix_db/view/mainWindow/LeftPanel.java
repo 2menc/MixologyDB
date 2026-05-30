@@ -2,6 +2,10 @@ package mix_db.view.mainWindow;
 
 import java.awt.GridLayout;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import java.util.regex.Matcher;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,7 +24,6 @@ public class LeftPanel extends JPanel{
         this.setLayout(new GridLayout(8, 1));
 
         this.userWithMostPositiveReviews = new JTextArea();
-        this.userWithMostPositiveReviews.setEditable(false);
 
         this.mostUsedIngredients = new JTextArea();
         this.trendingKeywords = new JTextArea();
@@ -50,15 +53,30 @@ public class LeftPanel extends JPanel{
     }
 
     public void populateUserWithMostPositiveReviews(List<String> list) {
-        this.userWithMostPositiveReviews.setText(String.join("\n", list));   
+        this.userWithMostPositiveReviews.setText(String.join("\n", list)); 
+        this.userWithMostPositiveReviews.setEditable(false);  
     }
 
     public void populateMostUsedIngredients(List<String> list) {
-        this.mostUsedIngredients.setText(String.join("\n", list));   
+
+        final Pattern pattern = Pattern.compile("ingredientName=([^,\\s\\]]+).*?numUsed=(\\d+)");
+
+        final String result = list.stream().map(line -> {
+            Matcher matcher = pattern.matcher(line);
+            if (matcher.find()) {
+
+                return matcher.group(1) + " " + matcher.group(2);
+            }
+            return "";
+        }).filter(line -> !line.isEmpty()).collect(Collectors.joining("\n")); 
+
+        this.mostUsedIngredients.setText(result); 
+        this.mostUsedIngredients.setEditable(false);  
     }
 
     public void populateTrendingKeywords(List<String> list) {
-        this.trendingKeywords.setText(String.join("\n", list));   
+        this.trendingKeywords.setText(String.join("\n", list)); 
+        this.trendingKeywords.setEditable(false);  
     }
 
 }

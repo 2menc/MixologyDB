@@ -66,7 +66,7 @@ public class DrinkController {
                 -1, 
                 name, 
                 description, 
-                photo.getName(), 
+                this.createSecureFileName(photo, name), 
                 categoryName, 
           false
             );
@@ -94,6 +94,13 @@ public class DrinkController {
         }
     }
 
+    /**
+     * saves the drink image
+     * @param uploadedFile .
+     * @param drinkName .
+     * @return true if can save the image
+     * @throws IOException if an error occours
+     */
     private boolean saveImage(File uploadedFile, String drinkName) throws IOException {
 
         if (uploadedFile == null || !uploadedFile.exists() || drinkName == null || drinkName.isBlank()) {
@@ -106,18 +113,7 @@ public class DrinkController {
                 Files.createDirectories(destFolder);
             }
 
-            String originalName = uploadedFile.getName();
-            String extension = "";
-            int ext = originalName.lastIndexOf('.');
-            String safeImageName = originalName.trim().replaceAll("[ ,\\/]", "_") + extension;    //to exclude the possibility to have dupes
-            if (ext > 0) {
-                extension = safeImageName.substring(ext);
-            }
-
-            String safeDrinkName = drinkName;
-            
-            String finalFileName = safeDrinkName + extension;
-            Path targetPath = destFolder.resolve(finalFileName);
+            Path targetPath = destFolder.resolve(createSecureFileName(uploadedFile, drinkName));
 
             Files.copy(uploadedFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
@@ -129,4 +125,15 @@ public class DrinkController {
             return false; 
         }
     }
+
+    /**
+     * generates a secure file name
+     * @param uploadedFile .
+     * @param drinkName .
+     * @return the secure name
+     */
+    private String createSecureFileName(File uploadedFile, String drinkName) {
+                
+        return drinkName.trim().replaceAll("[^a-zA-Z0-9.-]", "_");
+    }    
 }

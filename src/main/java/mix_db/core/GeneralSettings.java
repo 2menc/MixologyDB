@@ -6,7 +6,7 @@ package mix_db.core;
 public interface GeneralSettings {
 
     /** standard path for drink photos */
-    String fotoPath = "src/main/resources/images/";
+    String fotoPath = "images/";
     
     /** standard path for pdf fonts */
     String fontEmojiPath = "src/main/resources/fonts/";
