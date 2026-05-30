@@ -244,7 +244,6 @@ public class CreateDrinkPanel extends JPanel {
                 l.add(k);
             }
         }
-        System.out.println(l);
         return l;
     }
 

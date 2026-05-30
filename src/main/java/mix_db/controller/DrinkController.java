@@ -57,9 +57,6 @@ public class DrinkController {
             }
 
             final File photo = panel.getDrinkImage();
-            if(! this.saveImage(photo, name)) {
-                throw new IllegalArgumentException("file not valid");
-            }
 
             // *actual drink creation
             final Drink d = new Drink(
@@ -70,6 +67,11 @@ public class DrinkController {
                 categoryName, 
           false
             );
+
+            if(! this.saveImage(photo, name)) {
+                throw new IllegalArgumentException("file not valid");
+            }
+
             final List<Composition> comp = new LinkedList<>();
             for(var c: ingredients) {
                 final var i = new Composition(
@@ -133,7 +135,8 @@ public class DrinkController {
      * @return the secure name
      */
     private String createSecureFileName(File uploadedFile, String drinkName) {
-                
-        return drinkName.trim().replaceAll("[^a-zA-Z0-9.-]", "_");
+        String safeDrinkName = drinkName.trim().replaceAll("[^a-zA-Z0-9.-]", "_");
+
+        return safeDrinkName;
     }    
 }

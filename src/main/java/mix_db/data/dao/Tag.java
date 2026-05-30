@@ -105,7 +105,6 @@ public class Tag {
             keyword);
         ) {
             statement.executeUpdate();
-            System.out.println(keyword);
             return keyword;
 
         } catch (SQLException e) { 

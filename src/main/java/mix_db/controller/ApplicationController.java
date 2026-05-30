@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -96,8 +98,11 @@ public class ApplicationController {
             drinkList = this.model.getRandomDrinkList(100);
         }
 
-        if(drinkList.isEmpty()) {
-            throw new IllegalStateException("Problema nella ricerca dei drink");
+        for(var d: drinkList) {
+            if(! Files.exists(Paths.get(GeneralSettings.fotoPath + d.getImagePath()))) {
+                new ExceptionPanel("Problema nel caricamento dei drink: alcuni drink non hanno foto", this.view);
+                break;
+            }
         }
 
         final CentralPanel centralPanel = mv.getMainPanel();
@@ -127,7 +132,6 @@ public class ApplicationController {
         final int targetHeight = dim.height; 
 
         final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + d.getImagePath());
-        System.out.println(GeneralSettings.fotoPath + d.getImagePath());
 
         final Image scaledImage = image.getImage().getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
         final ImageIcon scaledIcon = new ImageIcon(scaledImage);
