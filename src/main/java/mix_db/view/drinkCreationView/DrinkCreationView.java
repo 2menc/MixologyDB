@@ -24,7 +24,7 @@ public class DrinkCreationView extends JFrame{
         this.add(this.mainPanel);
 
         this.setTitle("Creazione drink");
-        this.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/3, (int) (Toolkit.getDefaultToolkit().getScreenSize().height/1.2));
+        this.setSize((int) (Toolkit.getDefaultToolkit().getScreenSize().width/2.6), (int) (Toolkit.getDefaultToolkit().getScreenSize().height/2.2));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
