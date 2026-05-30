@@ -121,7 +121,7 @@ public class ApplicationController {
         final int targetWidth = dim.width;
         final int targetHeight = dim.height; 
 
-        final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + "download.jpeg");//!d.getImagePath());
+        final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + d.getImagePath());
 
         final Image scaledImage = image.getImage().getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
         final ImageIcon scaledIcon = new ImageIcon(scaledImage);
