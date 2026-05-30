@@ -3,7 +3,6 @@ package mix_db.view.drinkCreationView;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 /**
  * drink creation separate window
@@ -11,7 +10,6 @@ import javax.swing.JPanel;
 public class DrinkCreationView extends JFrame{
 
     private final CreateDrinkPanel mainPanel;
-    private final JPanel previewPanel;
     
     /**
      * constructor
@@ -19,7 +17,6 @@ public class DrinkCreationView extends JFrame{
     public DrinkCreationView() {
 
         this.mainPanel = new CreateDrinkPanel();
-        this.previewPanel = new JPanel();
 
         this.add(this.mainPanel);
 

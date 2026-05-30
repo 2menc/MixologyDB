@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -125,6 +126,10 @@ public class ApplicationController {
      */
     public JPanel createDrinkCard(Drink d) {
         final JPanel card = new JPanel(new BorderLayout());
+        
+        final JButton infos = new JButton("info");
+        card.add(infos, BorderLayout.NORTH);
+
         final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
         card.setPreferredSize(dim);
 
