@@ -26,6 +26,7 @@ import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
 import mix_db.view.drinkCreationView.DrinkCreationView;
 import mix_db.view.mainWindow.CentralPanel;
+import mix_db.view.mainWindow.DrinkInformationsPanel;
 import mix_db.view.mainWindow.LeftPanel;
 import mix_db.view.mainWindow.MainView;
 
@@ -128,7 +129,16 @@ public class ApplicationController {
         final JPanel card = new JPanel(new BorderLayout());
         
         final JButton infos = new JButton("info");
-        card.add(infos, BorderLayout.NORTH);
+        card.add(infos, BorderLayout.SOUTH);
+        infos.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(view instanceof MainView mv) {
+                    mv.setMainPanel(new DrinkInformationsPanel());
+                }
+            }            
+        });
 
         final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
         card.setPreferredSize(dim);
@@ -145,7 +155,7 @@ public class ApplicationController {
         card.add(imageLabel, BorderLayout.CENTER);
 
         final JLabel nameLabel = new JLabel(d.getName() + " | " + d.getCategoryName());
-        card.add(nameLabel, BorderLayout.SOUTH);
+        card.add(nameLabel, BorderLayout.NORTH);
 
         card.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -189,5 +199,13 @@ public class ApplicationController {
                 lp.populateTrendingKeywords(list);;
             }
         }
+    }
+
+    /**
+     * sets a drink as favourite
+     * @param drinkID .
+     */
+    private void setFavourite(int drinkID) {
+        
     }
 }

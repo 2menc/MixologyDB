@@ -84,4 +84,5 @@ public class MainView extends JFrame {
         this.revalidate();
         this.repaint();
     }
+
 }
