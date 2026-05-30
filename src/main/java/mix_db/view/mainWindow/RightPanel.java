@@ -43,13 +43,28 @@ public class RightPanel extends JPanel{
             this.userInformations.setEnabled(false);
         }
 
+        if(! Session.getInstance().isLoggedIn()) {
+            this.disableButtonsForGuests();
+        }
+
         this.add(this.createDrinkButton, 0);
         this.add(this.userInformations, 1);
         this.add(this.searchBar, 2);
     }
 
+    /**
+     * sends a drink creation request
+     * @param al .
+     */
     public void requestedToCreateDrink(ActionListener al) {
         this.createDrinkButton.addActionListener(al);
+    }
+
+    /**
+     * if the user is not logged in disables logged-in user's butotns
+     */
+    private void disableButtonsForGuests() {
+        this.createDrinkButton.setEnabled(false);
     }
 
 }

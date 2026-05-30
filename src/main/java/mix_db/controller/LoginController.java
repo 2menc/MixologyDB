@@ -127,9 +127,9 @@ public class LoginController {
      * enters without an account
      */
     private void requestedToEnterAsGuest() {
-        //TODO
-
+        this.view.dispose();
         Session.getInstance().setLoggedUser(null);
+        new ApplicationController();
     }
 
     /**
@@ -156,6 +156,7 @@ public class LoginController {
                 if(this.model.registerUser(u).isEmpty()) {
                     throw new WrongCredentialsException("errore nella registrazione");
                 } else {
+                    Session.getInstance().setLoggedUser(u);
                     this.view.dispose();
                     new ApplicationController();
                 }
