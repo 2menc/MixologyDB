@@ -56,12 +56,15 @@ public class DrinkInformationsPanel extends JPanel{
         this.name = new JTextField(drink.getName());
         this.name.setEditable(false);
         descriptionPanel.add(name);
+
         this.description = new JTextArea(drink.getDescription());
         this.description.setEditable(false);
         descriptionPanel.add(description);
+
         this.category = new JTextField(drink.getCategoryName());
         this.category.setEditable(false);
         descriptionPanel.add(category);
+        
         this.ingredients = new JTextArea();
         this.ingredients.setEditable(false);
         descriptionPanel.add(this.ingredients);
