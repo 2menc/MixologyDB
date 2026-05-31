@@ -1,6 +1,7 @@
 package mix_db.view.mainWindow;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -13,7 +14,7 @@ public class MainView extends JFrame {
 
     private JPanel mainPanel;
 
-    private CentralPanel centralPanel;
+    private JPanel centralPanel;
     private LeftPanel leftPanel;
     private RightPanel rightPanel;
 
@@ -47,7 +48,7 @@ public class MainView extends JFrame {
      * gets the current main panel
      * @return the panel
      */
-    public CentralPanel getMainPanel() {
+    public JPanel getCentralPanel() {
         return this.centralPanel;
     }
 
@@ -65,6 +66,10 @@ public class MainView extends JFrame {
      */
     public RightPanel getRightPanel() {
         return this.rightPanel;
+    }
+    
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
 
     /**
@@ -85,4 +90,28 @@ public class MainView extends JFrame {
         this.repaint();
     }
 
+    /**
+     * changes the central Panel
+     * @param mainPanel the new mainPanel
+     */
+    public void setCentralPanel(JPanel centralPanel) {
+        
+        final BorderLayout layout = (BorderLayout) this.getContentPane().getLayout();
+        final Component oldCenter = layout.getLayoutComponent(BorderLayout.CENTER);
+        
+        if (oldCenter != null) {
+            this.getContentPane().remove(oldCenter);
+        }
+
+        if (this.centralPanel != null) {
+            this.remove(this.centralPanel);
+        }
+        
+        this.centralPanel = centralPanel;
+        
+        this.add(this.centralPanel, BorderLayout.CENTER);
+        
+        this.revalidate();
+        this.repaint();
+    }
 }

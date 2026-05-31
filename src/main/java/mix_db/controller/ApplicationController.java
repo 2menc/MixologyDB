@@ -107,8 +107,8 @@ public class ApplicationController {
             }
         }
 
-        final CentralPanel centralPanel = mv.getMainPanel();
-        final JPanel innerPanel = centralPanel.getContentPanel();
+        final CentralPanel centralPanel = (CentralPanel) mv.getCentralPanel();
+        final JPanel innerPanel = centralPanel;
 
         innerPanel.removeAll();
         for(var d: drinkList) {
@@ -128,17 +128,46 @@ public class ApplicationController {
     public JPanel createDrinkCard(Drink d) {
         final JPanel card = new JPanel(new BorderLayout());
         
+        // *Button
+
         final JButton infos = new JButton("info");
         card.add(infos, BorderLayout.SOUTH);
         infos.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(view instanceof MainView mv) {
-                    mv.setMainPanel(new DrinkInformationsPanel());
+
+                    JPanel innerPanel = (CentralPanel) mv.getCentralPanel();
+                    
+                    innerPanel.removeAll();
+                    innerPanel.setLayout(new java.awt.BorderLayout());                    
+                    innerPanel.add(new DrinkInformationsPanel(d, isDrinkSaved(d)), java.awt.BorderLayout.CENTER);
+
+                    innerPanel.revalidate();
+                    innerPanel.repaint();
+
+                    final DrinkInformationsPanel dp = (DrinkInformationsPanel) innerPanel.getComponent(0);
+                    
+                    // *listeners
+                    dp.requestedToAddToFavs(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            model.saveAsFavourite(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID());
+                            dp.setFavouriteButtonState(true);
+                        }
+                    });                    
+                    dp.requestedToRemoveToFavs(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            model.removeFromFavourites(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID());
+                            dp.setFavouriteButtonState(false);
+                        }
+                    });
                 }
             }            
         });
+
+        // *card
 
         final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
         card.setPreferredSize(dim);
@@ -202,10 +231,12 @@ public class ApplicationController {
     }
 
     /**
-     * sets a drink as favourite
+     * checks if the drink is already saved
      * @param drinkID .
+     * @return true if it is
      */
-    private void setFavourite(int drinkID) {
-        
+    private boolean isDrinkSaved(Drink d) {
+        return model.getFavourites(Session.getInstance().getLoggedUser().getUserID()).contains(d);
     }
+
 }

@@ -8,30 +8,30 @@ import javax.swing.JScrollPane;
 /**
  * central panel of {@link MainView}
  */
-public class CentralPanel extends JScrollPane{
+public class CentralPanel extends JPanel{
 
     private final static int COLUMNS = 4;
     private final static int ROWS = 30;
 
-    private final JPanel contentPanel;
+    private final JScrollPane mainPane = new  JScrollPane();
 
     /**
      * constructor
      */
     public CentralPanel() {
-        this.contentPanel = new JPanel(new GridLayout(0, COLUMNS));
+        this.setLayout(new GridLayout(0, COLUMNS));
 
-        this.setViewportView(this.contentPanel);
+        this.mainPane.setViewportView(this);
 
-        this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        this.mainPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     }
 
     /**
      * gets che content grid panel
      * @return the panel
      */
-    public JPanel getContentPanel() {
-        return this.contentPanel;
+    public JScrollPane getContentPane() {
+        return this.mainPane;
     }
 
     /**
