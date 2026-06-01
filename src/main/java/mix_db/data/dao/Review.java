@@ -19,7 +19,7 @@ public class Review {
     private final int userID;
     private final String description;
     private final Date reviewDate;
-    private final float score;
+    private final int score;
     
     /**
      * constructor
@@ -29,7 +29,7 @@ public class Review {
      * @param reviewDate reviewDate
      * @param score score
      */
-    public Review(int drinkID, int userID, String description, Date reviewDate, float score) {
+    public Review(int drinkID, int userID, String description, Date reviewDate, int score) {
         this.drinkID = drinkID;
         this.userID = userID;
         this.description = description;
@@ -237,7 +237,7 @@ public class Review {
         return reviewDate;
     }
 
-    public float getScore() {
+    public int getScore() {
         return score;
     }    
 }
