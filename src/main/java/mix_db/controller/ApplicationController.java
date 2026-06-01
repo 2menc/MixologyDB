@@ -147,7 +147,7 @@ public class ApplicationController {
                     innerPanel.repaint();
 
                     final DrinkInformationsPanel dp = (DrinkInformationsPanel) innerPanel.getComponent(0);
-                    dp.populateIngredients(model.
+                    dp.populateIngredients(model.getComposition(d.getDrinkID()));
                     
                     // *listeners
                     dp.requestedToAddToFavs(new ActionListener() {

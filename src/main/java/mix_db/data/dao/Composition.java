@@ -1,5 +1,13 @@
 package mix_db.data.dao;
 
+import java.sql.Connection;
+import java.util.LinkedList;
+import java.util.List;
+
+import mix_db.data.Queries;
+import mix_db.data.dbConnection.DAOException;
+import mix_db.data.dbConnection.DatabaseConnection;
+
 /**
  * Drink - Composition - Ingredient
  */
@@ -72,7 +80,34 @@ public class Composition {
      */
     public static final class DAO {
 
-        //TODO getComposition(String drinkID)
+        /**
+         * gets the composition of the drink
+         * @param drinkID .
+         * @return a list of campositions ingredientName, quantity, unit of measure
+         */
+        public static List<Composition> getComposition(Connection connection, int drinkID) {
+            final var l = new LinkedList<Composition>();
+
+            try (
+                final var statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_DRINK_COMPOSITION, 
+                drinkID);
+                final var rs = statement.executeQuery();
+            ) {
+                while(rs.next()) {
+                    final var c = new Composition(
+                        rs.getString("nomeIngrediente"), 
+                        rs.getInt("drinkID"), 
+                        rs.getFloat("quantita"), 
+                        rs.getString("unitaDiMisura")
+                    );
+                    l.add(c);
+                }
+                return l;
+            } catch (Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 
     public String getIngredientName() {

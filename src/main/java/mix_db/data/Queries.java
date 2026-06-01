@@ -137,6 +137,14 @@ public class Queries {
     VALUES (?,?);        
     """;
 
+    public static final String GET_DRINK_COMPOSITION =
+    """
+    SELECT C.*
+    FROM Drink d, Composizioni C
+    WHERE d.drinkID = ?
+    AND d.drinkID = C.drinkID;    
+    """;
+
     /**
      * deletes a category
      * ! ---

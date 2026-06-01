@@ -69,6 +69,11 @@ public class DbModel implements Model{
     }
 
     @Override
+    public List<Composition> getComposition(int drinkID) {
+        return Composition.DAO.getComposition(connection, drinkID);
+    }
+
+    @Override
     public List<Tag> getKeywords(int drinkID) {
         return Tag.DAO.ofDrink(connection, drinkID);
     }
