@@ -99,6 +99,11 @@ public class DbModel implements Model{
     }
 
     @Override
+    public List<Review> getDrinkReviews(int drinkID) {
+        return Review.DAO.searchDrinkReviews(connection, drinkID);
+    }
+
+    @Override
     public List<Drink> searchByKeywords(String keyword) {
         return Drink.DAO.searchByKeyword(connection, keyword);
     }

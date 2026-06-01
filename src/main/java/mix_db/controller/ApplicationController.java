@@ -147,8 +147,11 @@ public class ApplicationController {
                     innerPanel.repaint();
 
                     final DrinkInformationsPanel dp = (DrinkInformationsPanel) innerPanel.getComponent(0);
+                    dp.disableButtonsForGuests();
                     dp.populateIngredients(model.getComposition(d.getDrinkID()));
-                    
+                    dp.populateKeywords(model.getKeywords(d.getDrinkID()));
+                    dp.populateReviewsScrollPane(model.getDrinkReviews(d.getDrinkID()));
+
                     // *listeners
                     dp.requestedToAddToFavs(new ActionListener() {
                         @Override
@@ -162,6 +165,21 @@ public class ApplicationController {
                         public void actionPerformed(ActionEvent e) {
                             model.removeFromFavourites(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID());
                             dp.setFavouriteButtonState(false);
+                        }
+                    });
+                    dp.requestedToAddReview(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            dp.setUpReviewFrame();
+
+                            dp.reviewFinished(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    final var review = dp.getReviewInformation();
+
+                                    model.addReview(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), review.getDescription(), review.getScore());
+                                }
+                            });
                         }
                     });
                 }
@@ -237,6 +255,9 @@ public class ApplicationController {
      * @return true if it is
      */
     private boolean isDrinkSaved(Drink d) {
+        if(Session.getInstance().getLoggedUser() == null) {
+            return false;
+        }
         return model.getFavourites(Session.getInstance().getLoggedUser().getUserID()).contains(d);
     }
 

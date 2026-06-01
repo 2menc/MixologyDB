@@ -117,6 +117,13 @@ public interface Model {
     boolean addReview(int drinkID, int userID, String description, int score);
 
     /**
+     * gets a drink's reviews
+     * @param drinkID the drink
+     * @return a list of reviews
+     */
+    List<Review> getDrinkReviews(int drinkID);
+
+    /**
      * Searches a drink using keywords, drink name, drink description, category name, ingredients
      * @param keyword the word/phrase to search for
      * @return a List of all drinks found

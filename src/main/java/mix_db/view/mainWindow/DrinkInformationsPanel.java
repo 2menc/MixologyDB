@@ -13,8 +13,10 @@ import java.awt.Toolkit;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -22,23 +24,40 @@ import mix_db.core.GeneralSettings;
 import mix_db.core.Session;
 import mix_db.data.dao.Composition;
 import mix_db.data.dao.Drink;
+import mix_db.data.dao.Review;
+import mix_db.data.dao.Tag;
+import mix_db.view.ExceptionPanel;
 
 public class DrinkInformationsPanel extends JPanel{
 
     private final ButtonsPanel buttonsPanel;
 
+    private final Drink drink;
+
     private final JTextArea description;
     private final JTextField name;
     private final JTextField category;
     private final JTextArea ingredients;
-    //TODO private final JTextField keywords;
+    private final JTextField keywords;
+
+    private final JPanel reviews;
+
+    private final JFrame reviewFrame;
+    private final JPanel reviewPanel;    
+    private final JTextField score;
+    private final JTextArea reviewDescription;
+    private final JButton sendReview;
+
 
     public DrinkInformationsPanel(Drink drink, boolean isDrinkAlreaySaved) {
         this.setLayout(new BorderLayout());
 
+        this.drink = drink;
+
         this.buttonsPanel = new ButtonsPanel();
         final var subPanel = new JPanel(new GridLayout(1, 2, 10, 10));
         
+        final var imagePanel = new JPanel(new GridLayout(2, 1, 10, 10));
         // *image
         final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -47,21 +66,30 @@ public class DrinkInformationsPanel extends JPanel{
         final ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
         final JLabel imageLabel = new JLabel(scaledIcon);
-        subPanel.add(imageLabel);
+        imagePanel.add(imageLabel);
+
+        // *reviews
+        final JScrollPane reviewsPane = new JScrollPane();
+
+        this.reviews = new JPanel();
+        reviewsPane.setViewportView(this.reviews);
+        imagePanel.add(reviewsPane);      
+        
+        subPanel.add(imagePanel);
 
         // *description
         final JPanel descriptionPanel = new JPanel();
         descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.Y_AXIS));
 
-        this.name = new JTextField(drink.getName());
+        this.name = new JTextField("nome: " + drink.getName());
         this.name.setEditable(false);
         descriptionPanel.add(name);
 
-        this.description = new JTextArea(drink.getDescription());
+        this.description = new JTextArea("Descrizione:\n" + drink.getDescription());
         this.description.setEditable(false);
         descriptionPanel.add(description);
 
-        this.category = new JTextField(drink.getCategoryName());
+        this.category = new JTextField("Categoria: " + drink.getCategoryName());
         this.category.setEditable(false);
         descriptionPanel.add(category);
         
@@ -69,12 +97,22 @@ public class DrinkInformationsPanel extends JPanel{
         this.ingredients.setEditable(false);
         descriptionPanel.add(this.ingredients);
 
+        this.keywords = new JTextField();
+        this.keywords.setEditable(false);
+        descriptionPanel.add(this.keywords);
+
         subPanel.add(descriptionPanel);
 
         this.setFavouriteButtonState(isDrinkAlreaySaved);
 
         this.add(subPanel, BorderLayout.CENTER);
         this.add(this.buttonsPanel, BorderLayout.NORTH);
+
+        this.reviewFrame = new JFrame("Aggiungi una recensione");
+        this.reviewPanel = new JPanel();    
+        this.score = new JTextField("voto");
+        this.reviewDescription = new JTextArea("descrizione");
+        this.sendReview = new JButton("manda recensione");
     }
 
     /**
@@ -90,20 +128,49 @@ public class DrinkInformationsPanel extends JPanel{
             buttonsPanel.removeFavouriteButton.setEnabled(false);
         }
 
-        this.revalidate();
-        this.repaint();
+        this.updateView();;
     }
 
     public void requestedToAddToFavs(ActionListener e) {
         this.buttonsPanel.addFavouriteButton.addActionListener(e);
-        this.revalidate();
-        this.repaint();
+        this.updateView();
     }
 
     public void requestedToRemoveToFavs(ActionListener e) {
         this.buttonsPanel.removeFavouriteButton.addActionListener(e);
-        this.revalidate();
-        this.repaint();
+        this.updateView();;
+    }
+
+    public void requestedToAddReview(ActionListener e) {
+        this.buttonsPanel.addReviewButton.addActionListener(e);
+    }
+
+    public void setUpReviewFrame() {
+        this.reviewPanel.add(this.score);
+        this.reviewPanel.add(this.reviewDescription);
+        this.reviewPanel.add(this.sendReview);
+
+        this.reviewFrame.add(this.reviewPanel);
+        this.reviewFrame.setVisible(true);
+        this.reviewFrame.pack();
+    }
+
+    public void reviewFinished(ActionListener e) {
+        this.sendReview.addActionListener(e);
+    }
+
+    public Review getReviewInformation() {
+        try {
+            final var r =  new Review(drink.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), 
+                    this.reviewDescription.getText(), null, Integer.parseInt(this.score.getText()));
+
+            this.reviewFrame.dispose();
+
+            this.updateView();
+            return r;
+        } catch (NumberFormatException e) {
+            throw new ExceptionPanel(e, reviewFrame);
+        }
     }
 
     public void populateIngredients(List<Composition> ingredients) {
@@ -113,7 +180,65 @@ public class DrinkInformationsPanel extends JPanel{
             sb.append(i.getQuantity() + " ");
             sb.append(i.getMeasureUnit() + "\n");
         }
-        this.ingredients.setText(sb.toString());
+        this.ingredients.setText("Ingredienti:\n" + sb.toString());
+    }
+
+    public void populateReviewsScrollPane(List<Review> revs) {
+        this.reviews.removeAll(); 
+
+        if (revs == null || revs.isEmpty()) {
+            this.reviews.add(new JLabel("Nessuna recensione per questo drink."));
+        } else {
+            for(var r: revs) {
+                final StringBuilder sb = new StringBuilder();
+                sb.append("Data: ").append(r.getReviewDate());
+                sb.append(" - Punteggio: ").append(r.getScore()).append("/5\n");
+                sb.append(r.getDescription());
+
+                final JTextArea ta = new JTextArea(sb.toString());
+                ta.setEditable(false);
+                ta.setLineWrap(true);       
+                ta.setWrapStyleWord(true);  
+                
+                ta.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                    javax.swing.BorderFactory.createLineBorder(java.awt.Color.GRAY),
+                    javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5) 
+                ));
+
+                this.reviews.add(ta);
+                
+                this.reviews.add(javax.swing.Box.createRigidArea(new java.awt.Dimension(0, 10)));
+            }
+        }
+        this.updateView(); 
+    }   
+
+    public void populateKeywords(List<Tag> kws) {
+        final StringBuilder sb = new StringBuilder();
+        for(Tag k: kws) {
+            final String s = k.getKeyword();
+            sb.append(s + ", ");
+        }
+        this.keywords.setText(sb.toString());
+    }
+
+    /**
+     * updates all components of this panel
+     */
+    private void updateView() {
+        this.validate();
+        this.repaint();
+    }
+
+    /**
+     * if the user is a guest, disables buttons that requires login
+     */
+    public void disableButtonsForGuests() {
+        if(! Session.getInstance().isLoggedIn()) {
+            this.buttonsPanel.addFavouriteButton.setEnabled(false);
+            this.buttonsPanel.removeFavouriteButton.setEnabled(false);
+            this.buttonsPanel.addReviewButton.setEnabled(false);
+        }
     }
 
     private static class ButtonsPanel extends JPanel{
@@ -121,7 +246,7 @@ public class DrinkInformationsPanel extends JPanel{
         private final JButton addFavouriteButton;
         private final JButton removeFavouriteButton;
         private final JButton addReviewButton;
-
+        private final JButton backButton;
 
         private ButtonsPanel() {
             this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -130,23 +255,14 @@ public class DrinkInformationsPanel extends JPanel{
             this.addFavouriteButton.setForeground(Color.YELLOW);
             this.removeFavouriteButton = new JButton("rimuovi dai preferiti");
             this.removeFavouriteButton.setForeground(Color.RED);
-            this.addReviewButton = new JButton("Aggiungi una recensione");            
+            this.addReviewButton = new JButton("Aggiungi una recensione");        
+            
+            this.backButton = new JButton("torna alla lista dei drink");
 
             this.add(this.addFavouriteButton);
             this.add(this.removeFavouriteButton);
             this.add(this.addReviewButton);
+            this.add(this.backButton);
         }
-            
-        /**
-         * if the user is a guest, disables buttons that requires login
-         */
-        private void disableButtonsForGuests() {
-            if(! Session.getInstance().isLoggedIn()) {
-                this.addFavouriteButton.setEnabled(false);
-                this.removeFavouriteButton.setEnabled(false);
-                this.addReviewButton.setEnabled(false);
-            }
-        }
-
     }
 }
