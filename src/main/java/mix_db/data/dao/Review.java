@@ -108,9 +108,7 @@ public class Review {
                     drinkID, userID, description, score);
                 ) {
                     statement.executeUpdate();
-                } catch(Exception e) {
-                    throw new DAOException(e);
-                }
+                } 
 
                 // *2) updates user review couynter
                 try(
@@ -119,9 +117,7 @@ public class Review {
                     userID);
                 ) {
                     statement.executeUpdate();
-                } catch(Exception e) {
-                    throw new DAOException(e);
-                }
+                } 
 
                 // *3) updates user positive review counter
                 // ?verifies if score > 2 (positive) 
@@ -132,9 +128,7 @@ public class Review {
                         userID);
                     ) {
                         statement.executeUpdate();
-                    } catch(Exception e) {
-                        throw new DAOException(e);
-                    }
+                    } 
                 }
 
                 // !commit

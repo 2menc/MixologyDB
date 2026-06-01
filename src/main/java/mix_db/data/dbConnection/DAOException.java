@@ -44,7 +44,8 @@ public class DAOException extends RuntimeException{
      */
     private void notifyUser(String message) {
         final JFrame f = new JFrame("ERROR");
-        throw new ExceptionPanel(message, f);
+        new ExceptionPanel(message, f);
+        this.printStackTrace();
     }
 
 }
