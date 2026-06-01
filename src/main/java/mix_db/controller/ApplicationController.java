@@ -73,6 +73,14 @@ public class ApplicationController {
                     new DrinkController(v, model);
                 }
             });
+            mv.getRightPanel().requestedToLogOut(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mv.dispose();
+                    Session.getInstance().setLoggedUser(null);
+                    new LoginController();
+                }     
+            });
         }
     }
 

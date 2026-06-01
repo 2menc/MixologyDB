@@ -1,5 +1,6 @@
 package mix_db.view.mainWindow;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -21,6 +22,8 @@ public class RightPanel extends JPanel{
     private final JButton createDrinkButton;
     private final JTextArea userInformations;
 
+    private final JButton logoutButton;
+
     public RightPanel() {
         this.setLayout(new GridLayout(20, 1));
 
@@ -31,6 +34,9 @@ public class RightPanel extends JPanel{
 
         this.createDrinkButton = new JButton("crea un drink");
         this.createDrinkButton.setAlignmentX(LEFT_ALIGNMENT);
+
+        this.logoutButton = new JButton("log out");
+        this.logoutButton.setForeground(Color.RED);
 
         this.userInformations = new JTextArea();
         this.userInformations.setEditable(false);
@@ -50,6 +56,7 @@ public class RightPanel extends JPanel{
         this.add(this.createDrinkButton, 0);
         this.add(this.userInformations, 1);
         this.add(this.searchBar, 2);
+        this.add(this.logoutButton, 3);
     }
 
     /**
@@ -61,10 +68,21 @@ public class RightPanel extends JPanel{
     }
 
     /**
+     * requests to log out
+     * @param al .
+     */
+    public void requestedToLogOut(ActionListener al) {
+        this.logoutButton.addActionListener(al);
+    }
+
+    /**
      * if the user is not logged in disables logged-in user's butotns
      */
     private void disableButtonsForGuests() {
         this.createDrinkButton.setEnabled(false);
+
+        this.logoutButton.setText("iscriviti");
+        this.logoutButton.setForeground(Color.GREEN);
     }
 
 }
