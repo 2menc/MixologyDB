@@ -22,6 +22,13 @@ public class Queries {
     AND C.drinkID = ?;
     """;
 
+    public static final String GET_USER_FROM_ID =
+    """
+    SELECT *
+    FROM Utenti
+    WHERE userID = ?;        
+    """;
+
     /**
      * registers a new user
      */

@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Map;
 import java.awt.Image;
 import java.awt.Toolkit;
 
@@ -26,6 +27,7 @@ import mix_db.data.dao.Composition;
 import mix_db.data.dao.Drink;
 import mix_db.data.dao.Review;
 import mix_db.data.dao.Tag;
+import mix_db.data.dao.User;
 import mix_db.view.ExceptionPanel;
 
 public class DrinkInformationsPanel extends JPanel{
@@ -185,16 +187,17 @@ public class DrinkInformationsPanel extends JPanel{
         this.ingredients.setText("Ingredienti:\n" + sb.toString());
     }
 
-    public void populateReviewsScrollPane(List<Review> revs) {
+    public void populateReviewsScrollPane(Map<Review, User> revs) {
         this.reviews.removeAll(); 
 
         if (revs == null || revs.isEmpty()) {
             this.reviews.add(new JLabel("Nessuna recensione per questo drink."));
         } else {
-            for(var r: revs) {
+            for(var r: revs.keySet()) {
                 final StringBuilder sb = new StringBuilder();
-                sb.append("Data: ").append(r.getReviewDate());
-                sb.append(" - Punteggio: ").append(r.getScore()).append("/5\n");
+                sb.append(r .getReviewDate()).append(" - ");
+                sb.append(revs.get(r).getName() + " " + revs.get(r).getSurname());
+                sb.append(" - Punteggio: ").append(r.getScore()).append("\n");
                 sb.append(r.getDescription());
 
                 final JTextArea ta = new JTextArea(sb.toString());

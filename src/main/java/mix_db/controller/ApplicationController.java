@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import javax.swing.JPanel;
 import mix_db.core.GeneralSettings;
 import mix_db.core.Session;
 import mix_db.data.dao.Drink;
+import mix_db.data.dao.Review;
+import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
@@ -150,7 +153,16 @@ public class ApplicationController {
                     dp.disableButtonsForGuests();
                     dp.populateIngredients(model.getComposition(d.getDrinkID()));
                     dp.populateKeywords(model.getKeywords(d.getDrinkID()));
-                    dp.populateReviewsScrollPane(model.getDrinkReviews(d.getDrinkID()));
+
+                    final var reviewsMap = new HashMap<Review, User>();
+                    for(var k: model.getDrinkReviews(d.getDrinkID())) {
+                        final var u = model.getFullUserFromID(k.getUserID());
+                        
+                        if(u.isPresent()) {
+                            reviewsMap.put(k, u.get());
+                        }
+                    }
+                    dp.populateReviewsScrollPane(reviewsMap);
 
                     // *listeners
                     dp.requestedToAddToFavs(new ActionListener() {
@@ -179,7 +191,16 @@ public class ApplicationController {
                                         final var review = dp.getReviewInformation();
 
                                         model.addReview(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), review.getDescription(), review.getScore());
-                                        dp.populateReviewsScrollPane(model.getDrinkReviews(d.getDrinkID()));
+
+                                        final var reviewsMap = new HashMap<Review, User>();
+                                        for(var k: model.getDrinkReviews(d.getDrinkID())) {
+                                            final var u = model.getFullUserFromID(k.getUserID());
+                                            
+                                            if(u.isPresent()) {
+                                                reviewsMap.put(k, u.get());
+                                            }
+                                        }
+                                        dp.populateReviewsScrollPane(reviewsMap);
 
                                     } catch (Exception ex) {
                                         new ExceptionPanel(ex, view);

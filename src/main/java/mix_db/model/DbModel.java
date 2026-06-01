@@ -144,6 +144,11 @@ public class DbModel implements Model{
     }
 
     @Override
+    public Optional<User> getFullUserFromID(int userID) {
+        return User.DAO.getUserFromID(connection, userID);
+    }
+
+    @Override
     public boolean deleteReview(int userID, int drinkID) {
         return AdminUtils.DAO.removeReview(connection, drinkID, userID);
     }

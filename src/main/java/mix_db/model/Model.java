@@ -182,6 +182,13 @@ public interface Model {
     Map<User, List<Review>> getUsersAnalitics();
 
     /**
+     * gets the full {@link User}, knowing only his id
+     * @param userID .
+     * @return an Optional of User
+     */
+    Optional<User> getFullUserFromID(int userID);
+
+    /**
      * ONLY FOR ADMINS
      * deletes the specified review
      * @param userID .

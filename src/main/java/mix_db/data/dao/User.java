@@ -203,6 +203,45 @@ public class User {
         }
 
         /**
+         * gets a full user knowing his id
+         * @param connection .
+         * @param userID .
+         * @return an empty Optional if there is no such user in the db, 
+         * an Optional of the searched User otherwise
+         */
+        public static Optional<User> getUserFromID(Connection connection, int userID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_USER_FROM_ID, userID);
+                final ResultSet rs = statement.executeQuery();
+            ) {
+                
+                if(rs.next()) {
+                    final User u = new User(
+                        rs.getInt("userID"),
+                        rs.getString("email"),
+                        rs.getString("password"), 
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getDate("dataNascita"),
+                        rs.getString("ruoloUtente"),
+                        rs.getDate("dataIscrizione"),
+                        rs.getInt("numeroRicetteCreate"),
+                        rs.getInt("numeroRecensioniPositive"),
+                        rs.getInt("numeroRecensioniEffettuate")
+                    );
+
+                    return Optional.of(u);
+                }
+                return Optional.empty();
+                
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+
+        /**
          * gets a list of user's favourites
          * @param connection .
          * @param userID .
