@@ -173,7 +173,8 @@ public class DrinkInformationsPanel extends JPanel{
             this.updateView();
             return r;
         } catch (NumberFormatException e) {
-            throw new ExceptionPanel(e, reviewFrame);
+            new ExceptionPanel(e, reviewFrame);
+            return null;
         }
     }
 

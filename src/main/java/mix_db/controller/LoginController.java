@@ -114,6 +114,7 @@ public class LoginController {
                 public void actionPerformed(ActionEvent e) {
                     try {
                         manageSignInAttempt();
+                        System.out.println(Session.getInstance().getLoggedUser().toString());
                     } catch (Exception exception) {
                         new ExceptionPanel(exception, v);
                         return;
@@ -152,13 +153,21 @@ public class LoginController {
 
                 final var u = new User(0, email, password, name, surname, 
                     birthDate, surname, null, 0, 0, 0);
-                
+
+
                 if(this.model.registerUser(u).isEmpty()) {
                     throw new WrongCredentialsException("errore nella registrazione");
                 } else {
-                    Session.getInstance().setLoggedUser(u);
-                    this.view.dispose();
-                    new ApplicationController();
+                    final var actualUser = model.login(email, password);
+
+                    if(actualUser.isPresent()) {
+                        Session.getInstance().setLoggedUser(actualUser.get());
+                        this.view.dispose();
+                        new ApplicationController();
+                    }
+                    else {
+                        throw new WrongCredentialsException("errore nella registrazione");
+                    }
                 }
             }
         }

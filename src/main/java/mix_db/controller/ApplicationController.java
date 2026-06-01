@@ -183,31 +183,30 @@ public class ApplicationController {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             dp.setUpReviewFrame();
+                        }
+                    });
+                    dp.reviewFinished(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                final var review = dp.getReviewInformation();
 
-                            dp.reviewFinished(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    try {
-                                        final var review = dp.getReviewInformation();
+                                model.addReview(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), review.getDescription(), review.getScore());
 
-                                        model.addReview(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), review.getDescription(), review.getScore());
-
-                                        final var reviewsMap = new HashMap<Review, User>();
-                                        for(var k: model.getDrinkReviews(d.getDrinkID())) {
-                                            final var u = model.getFullUserFromID(k.getUserID());
-                                            
-                                            if(u.isPresent()) {
-                                                reviewsMap.put(k, u.get());
-                                            }
-                                        }
-                                        dp.populateReviewsScrollPane(reviewsMap);
-
-                                    } catch (Exception ex) {
-                                        new ExceptionPanel(ex, view);
-                                        ex.printStackTrace();
+                                final var reviewsMap = new HashMap<Review, User>();
+                                for(var k: model.getDrinkReviews(d.getDrinkID())) {
+                                    final var u = model.getFullUserFromID(k.getUserID());
+                                    
+                                    if(u.isPresent()) {
+                                        reviewsMap.put(k, u.get());
                                     }
                                 }
-                            });
+                                dp.populateReviewsScrollPane(reviewsMap);
+
+                            } catch (Exception ex) {
+                                new ExceptionPanel(ex, view);
+                                ex.printStackTrace();
+                            }
                         }
                     });
                     dp.requestedToGoBack(new ActionListener() {
