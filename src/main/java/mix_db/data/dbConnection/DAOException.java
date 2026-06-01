@@ -1,5 +1,9 @@
 package mix_db.data.dbConnection;
 
+import javax.swing.JFrame;
+
+import mix_db.view.ExceptionPanel;
+
 /**
  * DAO standard exception
  */
@@ -39,7 +43,8 @@ public class DAOException extends RuntimeException{
      * @param message
      */
     private void notifyUser(String message) {
-        //TODO 
+        final JFrame f = new JFrame("ERROR");
+        throw new ExceptionPanel(message, f);
     }
 
 }
