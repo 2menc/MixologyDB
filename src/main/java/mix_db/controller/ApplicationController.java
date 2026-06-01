@@ -61,10 +61,6 @@ public class ApplicationController {
             throw new ExceptionPanel(e, view);
         }
 
-        this.populateUsersWithMostPositiveReviewsLeaderboard();
-        this.populateMostUsedIngredients();
-        this.populateTrendingKeywords();
-
         if(this.view instanceof MainView mv) {
             mv.getRightPanel().requestedToCreateDrink(new ActionListener() {
 
@@ -115,6 +111,10 @@ public class ApplicationController {
             final JPanel drinkCard = this.createDrinkCard(d);
             innerPanel.add(drinkCard);
         }
+
+        this.populateUsersWithMostPositiveReviewsLeaderboard();
+        this.populateMostUsedIngredients();
+        this.populateTrendingKeywords();
 
         innerPanel.revalidate();
         innerPanel.repaint();
@@ -175,11 +175,28 @@ public class ApplicationController {
                             dp.reviewFinished(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    final var review = dp.getReviewInformation();
+                                    try {
+                                        final var review = dp.getReviewInformation();
 
-                                    model.addReview(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), review.getDescription(), review.getScore());
+                                        model.addReview(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), review.getDescription(), review.getScore());
+                                        dp.populateReviewsScrollPane(model.getDrinkReviews(d.getDrinkID()));
+
+                                    } catch (Exception ex) {
+                                        new ExceptionPanel(ex, view);
+                                        ex.printStackTrace();
+                                    }
                                 }
                             });
+                        }
+                    });
+                    dp.requestedToGoBack(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            mv.dispose();
+                            view = new MainView();
+                            view.setLocationRelativeTo(mv);
+                            
+                            populateDrinkGrid();
                         }
                     });
                 }
@@ -187,7 +204,6 @@ public class ApplicationController {
         });
 
         // *card
-
         final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
         card.setPreferredSize(dim);
 

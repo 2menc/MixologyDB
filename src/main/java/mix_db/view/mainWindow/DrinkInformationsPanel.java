@@ -69,12 +69,10 @@ public class DrinkInformationsPanel extends JPanel{
         imagePanel.add(imageLabel);
 
         // *reviews
-        final JScrollPane reviewsPane = new JScrollPane();
-
         this.reviews = new JPanel();
-        reviewsPane.setViewportView(this.reviews);
-        imagePanel.add(reviewsPane);      
-        
+        final JScrollPane reviewsPane = new JScrollPane(reviews);
+
+        imagePanel.add(reviewsPane);              
         subPanel.add(imagePanel);
 
         // *description
@@ -143,6 +141,10 @@ public class DrinkInformationsPanel extends JPanel{
 
     public void requestedToAddReview(ActionListener e) {
         this.buttonsPanel.addReviewButton.addActionListener(e);
+    }
+
+    public void requestedToGoBack(ActionListener e) {
+        this.buttonsPanel.backButton.addActionListener(e);
     }
 
     public void setUpReviewFrame() {
