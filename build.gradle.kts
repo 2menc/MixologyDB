@@ -51,7 +51,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("src/main/java/mix_db/Launcher.java")
+    mainClass.set("mix_db.Launcher")
 }
 
 tasks.withType<Test>().configureEach {
