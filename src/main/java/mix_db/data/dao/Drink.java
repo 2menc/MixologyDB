@@ -373,6 +373,10 @@ public class Drink {
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
                     Queries.SEARCH_BY_KEYWORD, 
+                    keyword,
+                    keyword,
+                    keyword,
+                    keyword,
                     keyword);
                 final var rs = statement.executeQuery();
             ) {

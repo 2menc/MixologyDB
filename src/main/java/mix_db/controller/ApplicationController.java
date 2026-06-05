@@ -106,6 +106,48 @@ public class ApplicationController {
         innerPanel.repaint();
     }
 
+    /**
+     * populates the grid with the drink searched from the databse
+     * @param searchKey the string the user searched 
+     */
+    private void populateDrinkGridWithSearches(String searchKey) {
+        List<Drink> drinkList = new ArrayList<>();
+
+        if (!(this.view instanceof MainView mv)) {
+            return; 
+        }
+ 
+        drinkList = this.model.searchByKeywords(searchKey);
+
+        if(drinkList.isEmpty()) {
+            new ExceptionPanel("nessun drink trovato", view);
+            return;
+        }
+
+        for(var d: drinkList) {
+            if(! Files.exists(Paths.get(GeneralSettings.fotoPath + d.getImagePath()))) {
+                new ExceptionPanel("Problema nel caricamento dei drink: alcuni drink non hanno foto", this.view);
+                break;
+            }
+        }
+
+        final CentralPanel centralPanel = (CentralPanel) mv.getCentralPanel();
+        final JPanel innerPanel = centralPanel;
+
+        innerPanel.removeAll();
+        for(var d: drinkList) {
+            final JPanel drinkCard = this.createDrinkCard(d);
+            innerPanel.add(drinkCard);
+        }
+
+        this.populateUsersWithMostPositiveReviewsLeaderboard();
+        this.populateMostUsedIngredients();
+        this.populateTrendingKeywords();
+
+        innerPanel.revalidate();
+        innerPanel.repaint();       
+    }
+
     private void populatePanels() {
 
         // *components population
@@ -118,7 +160,6 @@ public class ApplicationController {
 
         if(this.view instanceof MainView mv) {
             mv.getRightPanel().requestedToCreateDrink(new ActionListener() {
-
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     final var v = new DrinkCreationView();
@@ -133,6 +174,13 @@ public class ApplicationController {
                     new LoginController();
                 }     
             });
+            mv.getRightPanel().requestedToSearchDrink(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    populateDrinkGridWithSearches(mv.getRightPanel().getSearchBarContent());
+                }
+            });
+
         }
 
     }

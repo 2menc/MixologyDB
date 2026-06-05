@@ -19,6 +19,7 @@ import mix_db.data.dao.User;
 public class RightPanel extends JPanel{
 
     private final JTextField searchBar;
+    private final JButton searchButton;
     private final JButton createDrinkButton;
     private final JTextArea userInformations;
 
@@ -31,6 +32,10 @@ public class RightPanel extends JPanel{
         final var dim = this.getSize();
         this.searchBar.setPreferredSize(new Dimension(dim.width, dim.height/10));
         this.searchBar.setAlignmentX(LEFT_ALIGNMENT);
+
+        this.searchButton = new JButton("cerca");
+        this.searchButton.setPreferredSize(new Dimension(this.searchBar.getWidth()/2, this.searchBar.getHeight()));
+        this.searchButton.setAlignmentX(LEFT_ALIGNMENT);
 
         this.createDrinkButton = new JButton("crea un drink");
         this.createDrinkButton.setAlignmentX(LEFT_ALIGNMENT);
@@ -56,7 +61,8 @@ public class RightPanel extends JPanel{
         this.add(this.createDrinkButton, 0);
         this.add(this.userInformations, 1);
         this.add(this.searchBar, 2);
-        this.add(this.logoutButton, 3);
+        this.add(this.searchButton, 3);
+        this.add(this.logoutButton, 4);
     }
 
     /**
@@ -76,6 +82,14 @@ public class RightPanel extends JPanel{
     }
 
     /**
+     * requested to search the drink with informations in the search bar
+     * @param al .
+     */
+    public void requestedToSearchDrink(ActionListener al) {
+        this.searchButton.addActionListener(al);
+    }
+
+    /**
      * if the user is not logged in disables logged-in user's butotns
      */
     private void disableButtonsForGuests() {
@@ -85,4 +99,11 @@ public class RightPanel extends JPanel{
         this.logoutButton.setForeground(Color.GREEN);
     }
 
+    /**
+     * gets the search bar text
+     * @return the String searched
+     */
+    public String getSearchBarContent() {
+        return this.searchBar.getText();
+    }
 }
