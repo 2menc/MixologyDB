@@ -26,6 +26,8 @@ public class RightPanel extends JPanel{
     private final JButton createDrinkButton;
     private final JTextArea userInformations;
 
+    private final JButton showFavouritesButton;
+
     private final JButton logoutButton;
 
     public RightPanel() {
@@ -64,11 +66,14 @@ public class RightPanel extends JPanel{
         this.changePopulationButton = new JButton("torna indietro");
         this.changePopulationButton.setVisible(false);
 
+        this.showFavouritesButton = new JButton("mostra preferiti");
+
         this.add(this.createDrinkButton);
         this.add(this.userInformations);
         this.add(this.searchBar);
         this.add(this.searchButton);
         this.add(this.changePopulationButton);
+        this.add(this.showFavouritesButton);
         this.add(this.logoutButton);
     }
 
@@ -97,6 +102,14 @@ public class RightPanel extends JPanel{
     }
 
     /**
+     * requests to show favourites
+     * @param al
+     */
+    public void requestedToShowFavs(ActionListener al) {
+        this.searchButton.addActionListener(al);
+    }
+
+    /**
      * if the user is not logged in disables logged-in user's butotns
      */
     private void disableButtonsForGuests() {
@@ -104,6 +117,8 @@ public class RightPanel extends JPanel{
 
         this.logoutButton.setText("iscriviti");
         this.logoutButton.setForeground(Color.GREEN);
+
+        this.showFavouritesButton.setEnabled(false);
     }
 
     /**
@@ -140,7 +155,7 @@ public class RightPanel extends JPanel{
     }
 
     public void disableSearch() {
-        this.searchButton.setVisible(false);
+        this.searchButton.setEnabled(false);
 
         this.searchBar.setText("ricerca disattivata");
         this.searchBar.setEditable(false);

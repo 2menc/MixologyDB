@@ -188,6 +188,12 @@ public class ApplicationController {
                     populateDrinkGridWithSearches(mv.getRightPanel().getSearchBarContent());
                 }
             });
+            mv.getRightPanel().requestedToShowFavs(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    
+                }      
+            });
         }
 
     }
