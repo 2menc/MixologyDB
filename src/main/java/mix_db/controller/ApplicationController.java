@@ -177,10 +177,17 @@ public class ApplicationController {
             mv.getRightPanel().requestedToSearchDrink(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if(! mv.getRightPanel().isSearching()) {
+                        mv.getRightPanel().toggleSearching(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                populateDrinkGrid();
+                            }
+                        });
+                    }
                     populateDrinkGridWithSearches(mv.getRightPanel().getSearchBarContent());
                 }
             });
-
         }
 
     }

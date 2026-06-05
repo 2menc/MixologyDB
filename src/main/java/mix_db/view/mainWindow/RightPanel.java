@@ -18,6 +18,9 @@ import mix_db.data.dao.User;
  */
 public class RightPanel extends JPanel{
 
+    private boolean isSearching = false;
+    private final JButton changePopulationButton;
+
     private final JTextField searchBar;
     private final JButton searchButton;
     private final JButton createDrinkButton;
@@ -58,11 +61,15 @@ public class RightPanel extends JPanel{
             this.disableButtonsForGuests();
         }
 
-        this.add(this.createDrinkButton, 0);
-        this.add(this.userInformations, 1);
-        this.add(this.searchBar, 2);
-        this.add(this.searchButton, 3);
-        this.add(this.logoutButton, 4);
+        this.changePopulationButton = new JButton("torna indietro");
+        this.changePopulationButton.setVisible(false);
+
+        this.add(this.createDrinkButton);
+        this.add(this.userInformations);
+        this.add(this.searchBar);
+        this.add(this.searchButton);
+        this.add(this.changePopulationButton);
+        this.add(this.logoutButton);
     }
 
     /**
@@ -105,5 +112,30 @@ public class RightPanel extends JPanel{
      */
     public String getSearchBarContent() {
         return this.searchBar.getText();
+    }
+
+    /**
+     * returns the state of CentralPanel population
+     * @return true if the CentralPanel is populated by searched drinks, false otherwise
+     */
+    public boolean isSearching() {
+        return this.isSearching;
+    }
+
+    /**
+     * toggles the CentralPanel population state
+     * ! IMPORTANT: just a flag
+     */
+    public void toggleSearching(ActionListener al) {
+        this.changePopulationButton.addActionListener(al);
+        this.isSearching = ! this.isSearching;
+        this.toggleBackButton();
+    }
+
+    /**
+     * toggles the {@link changePopulationButton} button
+     */
+    private void toggleBackButton() {
+        this.changePopulationButton.setVisible(!this.changePopulationButton.isVisible());
     }
 }
