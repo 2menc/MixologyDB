@@ -28,10 +28,7 @@ import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
 import mix_db.view.drinkCreationView.DrinkCreationView;
-import mix_db.view.mainWindow.CentralPanel;
-import mix_db.view.mainWindow.DrinkInformationsPanel;
-import mix_db.view.mainWindow.LeftPanel;
-import mix_db.view.mainWindow.MainView;
+import mix_db.view.mainWindow.*;
 
 /**
  * main application controller
