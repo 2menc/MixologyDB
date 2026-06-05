@@ -148,6 +148,9 @@ public class ApplicationController {
         innerPanel.repaint();       
     }
 
+    /**
+     * populates central and right panel
+     */
     private void populatePanels() {
 
         // *components population
