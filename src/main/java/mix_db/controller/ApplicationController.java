@@ -55,33 +55,8 @@ public class ApplicationController {
         }
 
         this.view = new MainView();
+        this.populatePanels();
 
-        // *components population
-        try {
-            this.populateDrinkGrid();
-        } catch (Exception e) {
-            view.dispose();
-            throw new ExceptionPanel(e, view);
-        }
-
-        if(this.view instanceof MainView mv) {
-            mv.getRightPanel().requestedToCreateDrink(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    final var v = new DrinkCreationView();
-                    new DrinkController(v, model);
-                }
-            });
-            mv.getRightPanel().requestedToLogOut(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    mv.dispose();
-                    Session.getInstance().setLoggedUser(null);
-                    new LoginController();
-                }     
-            });
-        }
     }
 
     /**
@@ -129,6 +104,37 @@ public class ApplicationController {
 
         innerPanel.revalidate();
         innerPanel.repaint();
+    }
+
+    private void populatePanels() {
+
+        // *components population
+        try {
+            this.populateDrinkGrid();
+        } catch (Exception e) {
+            view.dispose();
+            throw new ExceptionPanel(e, view);
+        }
+
+        if(this.view instanceof MainView mv) {
+            mv.getRightPanel().requestedToCreateDrink(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    final var v = new DrinkCreationView();
+                    new DrinkController(v, model);
+                }
+            });
+            mv.getRightPanel().requestedToLogOut(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mv.dispose();
+                    Session.getInstance().setLoggedUser(null);
+                    new LoginController();
+                }     
+            });
+        }
+
     }
 
     /**
@@ -223,8 +229,7 @@ public class ApplicationController {
                             mv.dispose();
                             view = new MainView();
                             view.setLocationRelativeTo(mv);
-                            
-                            populateDrinkGrid();
+                            populatePanels();
                         }
                     });
                 }
