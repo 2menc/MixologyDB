@@ -138,4 +138,11 @@ public class RightPanel extends JPanel{
     private void toggleBackButton() {
         this.changePopulationButton.setVisible(!this.changePopulationButton.isVisible());
     }
+
+    public void disableSearch() {
+        this.searchButton.setVisible(false);
+
+        this.searchBar.setText("ricerca disattivata");
+        this.searchBar.setEditable(false);
+    }
 }

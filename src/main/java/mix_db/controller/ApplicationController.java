@@ -209,6 +209,9 @@ public class ApplicationController {
             public void actionPerformed(ActionEvent e) {
                 if(view instanceof MainView mv) {
 
+                    final RightPanel rp = mv.getRightPanel();
+                    rp.disableSearch();
+
                     JPanel innerPanel = (CentralPanel) mv.getCentralPanel();
                     
                     innerPanel.removeAll();
