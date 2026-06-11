@@ -34,7 +34,8 @@ import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
 import mix_db.view.bar.BarCreationPanel;
 import mix_db.view.bar.CreateBarView;
-import mix_db.view.drinkCreationView.DrinkCreationView;
+import mix_db.view.drink.DrinkCreationView;
+import mix_db.view.drink.DrinkInformationsPanel;
 import mix_db.view.mainWindow.*;
 
 /**

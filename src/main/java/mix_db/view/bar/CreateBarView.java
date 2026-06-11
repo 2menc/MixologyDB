@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import mix_db.view.drinkCreationView.CreateDrinkPanel;
+import mix_db.view.drink.CreateDrinkPanel;
 
 public class CreateBarView extends JFrame{
 

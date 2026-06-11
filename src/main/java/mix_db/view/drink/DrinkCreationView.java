@@ -1,4 +1,4 @@
-package mix_db.view.drinkCreationView;
+package mix_db.view.drink;
 
 import java.awt.Toolkit;
 

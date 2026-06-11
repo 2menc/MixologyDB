@@ -21,7 +21,7 @@ import mix_db.data.dao.Composition;
 import mix_db.data.dao.Drink;
 import mix_db.model.IngredientData;
 import mix_db.view.ExceptionPanel;
-import mix_db.view.drinkCreationView.DrinkCreationView;
+import mix_db.view.drink.DrinkCreationView;
 
 public class DrinkController {
 

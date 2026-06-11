@@ -1,4 +1,4 @@
-package mix_db.view.mainWindow;
+package mix_db.view.drink;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
