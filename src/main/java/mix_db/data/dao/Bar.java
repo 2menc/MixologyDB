@@ -206,13 +206,46 @@ public class Bar {
             }
         }
 
+        /**
+         * checks if the user is employed
+         * @param connection .
+         * @param userID .
+         * @return true if it is
+         */
         public static boolean isUserInABar(Connection connection, int userID) {
             try (
                 final PreparedStatement statement = DatabaseConnection.prepare(connection, 
-                    Queries.GET_FAVOURITES, userID);
+                    Queries.IS_USER_IN_BAR, userID);
                 final ResultSet rs = statement.executeQuery();
             ) {
                 return rs.next();
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        /**
+         * gets the bar in whick the user is employed
+         * @param connection .
+         * @param userID .
+         * @return an Opytional of bar
+         */
+        public static Optional<Bar> getBarEmployed(Connection connection, int userID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.SEARCH_BAR_BY_EMPLOYEE, userID);
+                final ResultSet rs = statement.executeQuery();
+            ) {
+                if(rs.next()) {
+                    final Bar b = new Bar(
+                        rs.getInt("barID"), 
+                        rs.getString("nomeBar"), 
+                        rs.getString("città"), 
+                        rs.getString("indirizzo")
+                    );
+                    return Optional.of(b);
+                }
+                return Optional.empty();
             } catch (final Exception e) {
                 throw new DAOException(e);
             }

@@ -140,6 +140,13 @@ public class Queries {
     AND indirizzo = ?;
     """;
 
+    public static final String SEARCH_BAR_BY_EMPLOYEE =
+    """
+    SELECT B.*
+    FROM Bar B, occupazioni O
+    WHERE B.barID = O.barID
+    AND O.userID = ?;    
+    """;
 
     public static final String GET_BAR = 
     """

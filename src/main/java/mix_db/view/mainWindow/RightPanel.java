@@ -186,7 +186,6 @@ public class RightPanel extends JPanel{
             this.createDrinkButton.setEnabled(! this.createDrinkButton.isEnabled());
             this.showFavouritesButton.setEnabled(! this.showFavouritesButton.isEnabled());
             this.createBarButton.setEnabled(! this.createBarButton.isEnabled());
-            this.createBarButton.setEnabled(! this.createBarButton.isEnabled());                   
         }
     }
 }

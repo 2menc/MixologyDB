@@ -69,6 +69,14 @@ public class DbModel implements Model{
     }
 
     @Override
+    public Optional<Bar> checkIfEmployed(int userID) {
+        if(Bar.DAO.isUserInABar(connection, userID)) {
+            return Bar.DAO.getBarEmployed(connection, userID);
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Drink> getDrink(int drinkID) {
         return Drink.DAO.getDrink(connection, drinkID);
     }

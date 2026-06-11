@@ -70,8 +70,8 @@ public class ApplicationController {
      * @return true if it should
      */
     private boolean enableCreateBarButton() {
-        return Session.getInstance().getLoggedUser() == null || 
-            this.model.isUserInABar(Session.getInstance().getLoggedUser().getUserID());
+        return Session.getInstance().getLoggedUser() != null &&
+            ! this.model.isUserInABar(Session.getInstance().getLoggedUser().getUserID());
     }
 
     /**
@@ -82,6 +82,8 @@ public class ApplicationController {
      */
     public void populateDrinkGrid() {
         List<Drink> drinkList = new ArrayList<>();
+        
+        if(this.view instanceof MainView mv) mv.getRightPanel().setupCreateBarButton(this.enableCreateBarButton());
 
         if (!(this.view instanceof MainView mv)) {
             return; 
@@ -367,6 +369,7 @@ public class ApplicationController {
                             view = new MainView();
                             view.setLocationRelativeTo(mv);
                             populatePanels();
+                            mv.getRightPanel().setupCreateBarButton(enableCreateBarButton());
                         }
                     });
                 }

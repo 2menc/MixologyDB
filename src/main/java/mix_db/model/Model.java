@@ -75,6 +75,13 @@ public interface Model {
     boolean isUserInABar(int userID);
 
     /**
+     * checks if a user is employed
+     * @param barID the bar
+     * @return an Optional containing the bar
+     */
+    Optional<Bar> checkIfEmployed(int userID);
+
+    /**
      * gets a drink
      * @param drinkID .
      * @return empty Optional if the drink is not in the db, the drink otherwise 
