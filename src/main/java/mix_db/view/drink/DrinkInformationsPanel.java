@@ -16,6 +16,7 @@ import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -366,8 +367,7 @@ public class DrinkInformationsPanel extends JPanel{
             this.removeFavouriteButton = new JButton("rimuovi dai preferiti");
             this.removeFavouriteButton.setForeground(Color.RED);
             this.addReviewButton = new JButton("Aggiungi una recensione");        
-            
-            this.backButton = new JButton("torna alla lista dei drink");
+            this.backButton = new JButton("torna indietro");
 
             this.add(this.addFavouriteButton);
             this.add(this.removeFavouriteButton);
