@@ -1,6 +1,7 @@
 package mix_db;
 
 import com.formdev.flatlaf.*;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 import mix_db.controller.LoginController;
 
@@ -10,7 +11,7 @@ import mix_db.controller.LoginController;
 public class Launcher {
 
     public static void main(String[] args) {
-        FlatDarculaLaf.setup();
+        FlatMacDarkLaf.setup();
 
         new LoginController();
     }

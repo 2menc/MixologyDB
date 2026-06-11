@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 import java.util.regex.Matcher;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -21,23 +24,66 @@ public class LeftPanel extends JPanel{
     private final JTextArea trendingKeywords;
 
     public LeftPanel() {
-        this.setLayout(new GridLayout(8, 1));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setOpaque(false); 
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        this.userWithMostPositiveReviews = new JTextArea();
+        this.userWithMostPositiveReviews = this.createStyledTextArea();
+        this.mostUsedIngredients = this.createStyledTextArea();
+        this.trendingKeywords = this.createStyledTextArea();
 
-        this.mostUsedIngredients = new JTextArea();
-        this.trendingKeywords = new JTextArea();
+        final JLabel l1 = this.createStyledHeader("UTENTI CON MIGLIORI RECENSIONI");
+        final JLabel l2 = this.createStyledHeader("INGREDIENTI PIÙ UTILIZZATI");
+        final JLabel l3 = this.createStyledHeader("GUSTI DI TENDENZA (ULTIMI 30 GIORNI)");
 
-        final JLabel l1 = new JLabel("utenti con migliori recensioni:");
-        final JLabel l2 = new JLabel("ingredienti più utilizzati: ");
-        final JLabel l3 = new JLabel("gusti di tendenza (ultimi 30 giorni): ");
+        this.add(l1);
+        this.add(Box.createRigidArea(new java.awt.Dimension(0, 8)));
+        this.add(this.userWithMostPositiveReviews);
+        this.add(Box.createRigidArea(new java.awt.Dimension(0, 30))); 
 
-        this.add(l1, 0);
-        this.add(this.userWithMostPositiveReviews, 1);
-        this.add(l2, 2);
-        this.add(this.mostUsedIngredients, 3);
-        this.add(l3, 4);
-        this.add(this.trendingKeywords, 5);
+        this.add(l2);
+        this.add(Box.createRigidArea(new java.awt.Dimension(0, 8)));
+        this.add(this.mostUsedIngredients);
+        this.add(Box.createRigidArea(new java.awt.Dimension(0, 30)));
+
+        this.add(l3);
+        this.add(Box.createRigidArea(new java.awt.Dimension(0, 8)));
+        this.add(this.trendingKeywords);
+
+        this.add(Box.createVerticalGlue());
+    }
+
+    /**
+     * creates a text area with custom stylr
+     * @return teh text area
+     */
+    private JTextArea createStyledTextArea() {
+        JTextArea ta = new JTextArea();
+        ta.setEditable(false);
+        ta.setOpaque(false); 
+        ta.setBorder(null); 
+        ta.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+        ta.setForeground(new java.awt.Color(220, 220, 220)); 
+        ta.setLineWrap(true);
+        ta.setWrapStyleWord(true);
+
+        ta.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT); 
+
+        return ta;
+    }
+
+    /**
+     * creates a text area header with custom style
+     * @return the header
+     */
+    private JLabel createStyledHeader(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 11));
+        label.setForeground(java.awt.Color.GRAY); 
+
+        label.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT); 
+
+        return label;
     }
 
     public JTextArea getUserWithMostPositiveReviewsTa() {
