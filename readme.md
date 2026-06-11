@@ -1,4 +1,3 @@
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=2menc)](https://github.com/anuraghazra/github-readme-stats)
 # Applicazione per visualizzazione, salvataggio e condivisione di ricette, preparazioni e ingredienti per cocktail riconosciuti e creati dall’utente.
 
 ### L’obiettivo è quello di creare un programma in cui un utente, iscritto con le proprie informazioni (nome, cognome, email, password e, opzionalmente, il bar in cui lavora) può visualizzare i cocktail riconosciuti dall’IBA (aggiornati fino ad una certa data), crearne di nuovi personalizzati e pubblicarli rendendoli visibili anche agli altri utenti. Inoltre, sarà possibile cercare i drink adatti ai propri gusti (tramite parole chiave, ad esempio: “dolce”, “amaro”, “rosso” ...  e ingredienti “gin”, “fragola” ...).
