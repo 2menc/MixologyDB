@@ -89,6 +89,7 @@ public class DrinkInformationsPanel extends JPanel{
         final JScrollPane reviewsPane = new JScrollPane(reviews);
         reviewsPane.setOpaque(false);
         reviewsPane.getViewport().setOpaque(false);
+        reviewsPane.getVerticalScrollBar().setUnitIncrement(5);
         
         reviewsPane.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createLineBorder(Color.DARK_GRAY), "Recensioni",
@@ -179,6 +180,7 @@ public class DrinkInformationsPanel extends JPanel{
         this.add(this.buttonsPanel, BorderLayout.NORTH);
 
         this.reviewFrame = new JFrame("Aggiungi una recensione");
+        
         this.reviewPanel = new JPanel();    
         this.score = new JTextField("voto");
         this.reviewDescription = new JTextArea("descrizione");
@@ -259,9 +261,10 @@ public class DrinkInformationsPanel extends JPanel{
         this.reviewPanel.add(this.reviewDescription);
         this.reviewPanel.add(this.sendReview);
 
+        final Dimension  dim = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());
+        this.reviewFrame.setSize(dim.width/7, dim.height/7);
         this.reviewFrame.add(this.reviewPanel);
         this.reviewFrame.setVisible(true);
-        this.reviewFrame.pack();
     }
 
     public void reviewFinished(ActionListener e) {

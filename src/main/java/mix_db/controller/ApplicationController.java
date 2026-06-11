@@ -1,6 +1,7 @@
 package mix_db.controller;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -297,16 +298,19 @@ public class ApplicationController {
 
                     rp.toggleAllButtons();
 
-                    JPanel innerPanel = (CentralPanel) mv.getCentralPanel();
-                    
-                    innerPanel.removeAll();
-                    innerPanel.setLayout(new java.awt.BorderLayout());                    
-                    innerPanel.add(new DrinkInformationsPanel(d, isDrinkSaved(d)), java.awt.BorderLayout.CENTER);
+                    final JPanel mainPanel = mv.getMainPanel();
+                    final BorderLayout layout = (BorderLayout) mainPanel.getLayout();
+                    final Component oldCenter = layout.getLayoutComponent(BorderLayout.CENTER);
+                    if (oldCenter != null) {
+                        mainPanel.remove(oldCenter);
+                    }
 
-                    innerPanel.revalidate();
-                    innerPanel.repaint();
+                    final DrinkInformationsPanel dp = new DrinkInformationsPanel(d, isDrinkSaved(d));
+                    mainPanel.add(dp, BorderLayout.CENTER);
 
-                    final DrinkInformationsPanel dp = (DrinkInformationsPanel) innerPanel.getComponent(0);
+                    mainPanel.revalidate();
+                    mainPanel.repaint();
+
                     dp.disableButtonsForGuests();
                     dp.populateIngredients(model.getComposition(d.getDrinkID()));
                     dp.populateKeywords(model.getKeywords(d.getDrinkID()));
@@ -320,7 +324,7 @@ public class ApplicationController {
                         }
                     }
                     dp.populateReviewsScrollPane(reviewsMap);
-
+                    
                     // *listeners
                     dp.requestedToAddToFavs(new ActionListener() {
                         @Override
