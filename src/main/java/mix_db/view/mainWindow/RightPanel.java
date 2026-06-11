@@ -63,9 +63,6 @@ public class RightPanel extends JPanel{
             this.userInformations.setEnabled(false);
         }
 
-        if(! Session.getInstance().isLoggedIn()) {
-            this.disableButtonsForGuests();
-        }
 
         this.changePopulationButton = new JButton("torna indietro");
         this.changePopulationButton.setVisible(false);
@@ -80,6 +77,10 @@ public class RightPanel extends JPanel{
         this.add(this.showFavouritesButton);
         this.add(this.createBarButton);
         this.add(this.logoutButton);
+
+        if(! Session.getInstance().isLoggedIn()) {
+            this.disableButtonsForGuests();
+        }
     }
 
     /**
@@ -177,5 +178,15 @@ public class RightPanel extends JPanel{
 
         this.searchBar.setText("ricerca disattivata");
         this.searchBar.setEditable(false);
+    }
+
+    public void toggleAllButtons() {
+        if(Session.getInstance().getLoggedUser() != null) {
+            this.createBarButton.setEnabled(! this.createBarButton.isEnabled());
+            this.createDrinkButton.setEnabled(! this.createDrinkButton.isEnabled());
+            this.showFavouritesButton.setEnabled(! this.showFavouritesButton.isEnabled());
+            this.createBarButton.setEnabled(! this.createBarButton.isEnabled());
+            this.createBarButton.setEnabled(! this.createBarButton.isEnabled());                   
+        }
     }
 }

@@ -70,7 +70,8 @@ public class ApplicationController {
      * @return true if it should
      */
     private boolean enableCreateBarButton() {
-        return this.model.isUserInABar(Session.getInstance().getLoggedUser().getUserID());
+        return Session.getInstance().getLoggedUser() == null || 
+            this.model.isUserInABar(Session.getInstance().getLoggedUser().getUserID());
     }
 
     /**
@@ -286,6 +287,8 @@ public class ApplicationController {
 
                     final RightPanel rp = mv.getRightPanel();
                     rp.disableSearch();
+
+                    rp.toggleAllButtons();
 
                     JPanel innerPanel = (CentralPanel) mv.getCentralPanel();
                     
