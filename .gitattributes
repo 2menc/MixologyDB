@@ -3,8 +3,11 @@
 *.[bB][aA][tT] text eol=crlf
 *.[pP][sS]1 text eol=crlf
 
-*.sql linguist-detectable=true
-*.sql linguist-documentation=false
+*.sql linguist-detectable
+*.sql linguist-language=SQL
+*.sql -linguist-documentation
+
 main/mysql/** -linguist-vendored
 main/mysql/** -linguist-documentation
-main/mysql/** linguist-detectable=true
+main/mysql/** linguist-detectable
+main/mysql/** linguist-language=SQL
