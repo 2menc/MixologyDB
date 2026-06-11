@@ -430,11 +430,13 @@ public class ApplicationController {
         final List<String> list = new LinkedList<>();
         final var l = model.getMostUsedIngredients(10);
         for(int n = 0; n < l.size(); n++) {
-            list.add(Integer.toString(n+1) + "-" + l.get(n));
+            final var ingredient = l.get(n);
+
+            list.add((n + 1) + "- " + ingredient.getIngredientName() + " (" + ingredient.getNumUsed() + " volte)");
         }
         if(this.view instanceof MainView mv) {
             if(mv.getLeftPanel() instanceof LeftPanel lp) {
-                lp.populateMostUsedIngredients(list);;
+                lp.populateMostUsedIngredients(list);
             }
         }
     }
@@ -443,11 +445,13 @@ public class ApplicationController {
         final List<String> list = new LinkedList<>();
         final var l = model.getTrendingKeywords(30, 10);
         for(int n = 0; n < l.size(); n++) {
-            list.add(Integer.toString(n+1) + "-" + l.get(n));
+            final var tag = l.get(n);
+
+            list.add((n + 1) + "- " + tag.getKeyword()); 
         }
         if(this.view instanceof MainView mv) {
             if(mv.getLeftPanel() instanceof LeftPanel lp) {
-                lp.populateTrendingKeywords(list);;
+                lp.populateTrendingKeywords(list);
             }
         }
     }

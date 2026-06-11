@@ -180,4 +180,12 @@ public class Ingredient {
         }
 
     }
+
+    public String getIngredientName() {
+        return ingredientName;
+    }
+
+    public int getNumUsed() {
+        return numUsed;
+    }
 }

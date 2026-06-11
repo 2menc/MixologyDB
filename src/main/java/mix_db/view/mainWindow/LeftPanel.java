@@ -37,7 +37,7 @@ public class LeftPanel extends JPanel{
         this.add(l2, 2);
         this.add(this.mostUsedIngredients, 3);
         this.add(l3, 4);
-        this.add(this.trendingKeywords, 3);
+        this.add(this.trendingKeywords, 5);
     }
 
     public JTextArea getUserWithMostPositiveReviewsTa() {
@@ -58,19 +58,8 @@ public class LeftPanel extends JPanel{
     }
 
     public void populateMostUsedIngredients(List<String> list) {
-
-        final Pattern pattern = Pattern.compile("ingredientName=([^,\\s\\]]+).*?numUsed=(\\d+)");
-
-        final String result = list.stream().map(line -> {
-            Matcher matcher = pattern.matcher(line);
-            if (matcher.find()) {
-
-                return matcher.group(1) + " " + matcher.group(2);
-            }
-            return "";
-        }).filter(line -> !line.isEmpty()).collect(Collectors.joining("\n")); 
-
-        this.mostUsedIngredients.setText(result); 
+        // Semplificato: ora accetta e stampa direttamente le stringhe pulite inviate dal controller! [1]
+        this.mostUsedIngredients.setText(String.join("\n", list)); 
         this.mostUsedIngredients.setEditable(false);  
     }
 
@@ -78,5 +67,4 @@ public class LeftPanel extends JPanel{
         this.trendingKeywords.setText(String.join("\n", list)); 
         this.trendingKeywords.setEditable(false);  
     }
-
 }
