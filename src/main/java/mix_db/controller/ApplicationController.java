@@ -216,12 +216,13 @@ public class ApplicationController {
 
                     final StringBuilder sb = new StringBuilder();
                     for(var d: model.getFavourites(Session.getInstance().getLoggedUser().getUserID())) {
-                        sb.append("-").append(d.getName() + "\n ").append(d.getDescription() + "\n");
+                        sb.append("----\n").append(d.getName() + "\n").append(d.getDescription() + "\n");
                     }
 
                     panel.add(new JTextArea(sb.toString()));
                     frame.add(panel);
                     frame.pack();
+                    frame.setResizable(false);
                     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     frame.setVisible(true);
                 }      
