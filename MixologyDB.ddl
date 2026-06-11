@@ -7,9 +7,6 @@ use MixologyDB;
 -- Tables Section
 -- _____________ 
 
--- Tables Section
--- _____________ 
-
 create table Bar (
      barID int auto_increment not null,
      nomeBar varchar(128) not null,
