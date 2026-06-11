@@ -26,6 +26,8 @@ public class CreateDrinkPanel extends JPanel {
     private final JTextArea description;
     private final JTextArea keywords;
 
+    private final JCheckBox asBarCreation;
+
     private java.io.File drinkImage;
 
     /**
@@ -112,13 +114,22 @@ public class CreateDrinkPanel extends JPanel {
         addButton.addActionListener(e -> addIngredientRow());
         
         this.saveButton = new JButton("Crea Drink");
+        this.asBarCreation = new JCheckBox("creazione bar");
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        bottomPanel.add(this.asBarCreation);
         bottomPanel.add(addButton);
         bottomPanel.add(saveButton);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         addIngredientRow();
+    }
+
+    public void setCheckBoxStatus(boolean setActive) {
+        if(setActive) {
+            this.asBarCreation.setSelected(false);
+        }
+        this.asBarCreation.setEnabled(setActive);
     }
 
     /**
@@ -133,10 +144,29 @@ public class CreateDrinkPanel extends JPanel {
         this.ingredientsContainer.repaint();
     }
     
+    /**
+     * requests to save the drink
+     * @param al .
+     */
     public void addSaveListener(ActionListener al) {
         this.saveButton.addActionListener(al);
     }
+    
+    /**
+     * requests to save the drink by the bar
+     * @param al .
+     */
+    public void addAsBarListener(ActionListener al) {
+        this.asBarCreation.addActionListener(al);
+    }
 
+    /**
+     * gets the checkBox status
+     * @return the checkBox status
+     */
+    public boolean getCheckBoxStatus() {
+        return this.asBarCreation.isSelected();
+    }
     /**
      * Estrae i dati grafici e li converte in una lista di oggetti modello puri.
      * Lancia un'eccezione se i dati inseriti dall'utente non sono validi.

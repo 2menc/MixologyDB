@@ -34,6 +34,8 @@ public class DrinkController {
 
         this.view.getMainPanel().populateComboBox(this.model.getAllCategories());
 
+        this.view.getMainPanel().setCheckBoxStatus(this.model.isUserInABar(Session.getInstance().getLoggedUser().getUserID()));
+
         this.view.getMainPanel().addSaveListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -83,7 +85,27 @@ public class DrinkController {
                 comp.add(i);
             }
 
-            final Optional<Drink> newDrink = this.model.createDrink(d, Session.getInstance().getLoggedUser().getUserID(), Optional.empty(), comp, keywords);
+            final Optional<Drink> newDrink;
+            
+            // *checks if it has to be a bar drink or a private user drink
+            if(panel.getCheckBoxStatus()) {
+                //bar
+                newDrink = this.model.createDrink(
+                    d, 
+                    Session.getInstance().getLoggedUser().getUserID(), 
+                    Optional.of(this.model.checkIfEmployed(Session.getInstance().getLoggedUser().getUserID()).get().getBarID()), 
+                    comp, 
+                    keywords);
+            } else {
+                //single user
+                newDrink = this.model.createDrink(
+                    d, 
+                    Session.getInstance().getLoggedUser().getUserID(), 
+                    Optional.empty(), 
+                    comp, 
+                    keywords);
+            }
+
             if(newDrink.isEmpty()) {
                 throw new IllegalStateException("errore nella creazione del drink");
             } else if (newDrink.get().equals(this.model.getDrink(newDrink.get().getDrinkID()).get())) {
