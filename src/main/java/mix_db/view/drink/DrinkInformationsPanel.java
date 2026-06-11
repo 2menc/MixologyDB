@@ -2,8 +2,10 @@ package mix_db.view.drink;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.Map;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -53,26 +57,47 @@ public class DrinkInformationsPanel extends JPanel{
 
     public DrinkInformationsPanel(Drink drink, boolean isDrinkAlreaySaved) {
         this.setLayout(new BorderLayout());
+        this.setOpaque(false);
 
         this.drink = drink;
 
         this.buttonsPanel = new ButtonsPanel();
-        final var subPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        
-        final var imagePanel = new JPanel(new GridLayout(2, 1, 10, 10));
-        // *image
-        final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
+        final var subPanel = new JPanel(new GridLayout(1, 2, 20, 10));
+        subPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 15, 15));
+        subPanel.setOpaque(false);
+
+        final var imagePanel = new JPanel();
+        imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
+        imagePanel.setOpaque(false);
+
+        // *image (scaled)
+        final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + drink.getImagePath());
         final Image scaledImage = image.getImage().getScaledInstance(dim.width/4, dim.height/3, Image.SCALE_SMOOTH);
         final ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
         final JLabel imageLabel = new JLabel(scaledIcon);
+        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         imagePanel.add(imageLabel);
+
+        imagePanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
         // *reviews
         this.reviews = new JPanel();
+        this.reviews.setLayout(new BoxLayout(this.reviews, BoxLayout.Y_AXIS));
+        this.reviews.setOpaque(false);
+
         final JScrollPane reviewsPane = new JScrollPane(reviews);
+        reviewsPane.setOpaque(false);
+        reviewsPane.getViewport().setOpaque(false);
+        
+        reviewsPane.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(Color.DARK_GRAY), "Recensioni",
+            javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP,
+            new Font("Segoe UI", Font.BOLD, 12), Color.GRAY
+        ));
 
         imagePanel.add(reviewsPane);              
         subPanel.add(imagePanel);
@@ -80,25 +105,73 @@ public class DrinkInformationsPanel extends JPanel{
         // *description
         final JPanel descriptionPanel = new JPanel();
         descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.Y_AXIS));
+        descriptionPanel.setOpaque(false);
+        descriptionPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
-        this.name = new JTextField("nome: " + drink.getName());
+        this.name = new JTextField(drink.getName().toUpperCase());
         this.name.setEditable(false);
-        descriptionPanel.add(name);
+        this.name.setOpaque(false);
+        this.name.setBorder(null);
+        this.name.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        this.name.setForeground(Color.WHITE);        
+        descriptionPanel.add(this.name);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 2)));
 
-        this.description = new JTextArea("Descrizione:\n" + drink.getDescription());
-        this.description.setEditable(false);
-        descriptionPanel.add(description);
-
-        this.category = new JTextField("Categoria: " + drink.getCategoryName());
+        this.category = new JTextField(drink.getCategoryName());
         this.category.setEditable(false);
-        descriptionPanel.add(category);
+        this.category.setOpaque(false);
+        this.category.setBorder(null);
+        this.category.setFont(new Font("Segoe UI", Font.ITALIC, 14));
+        this.category.setForeground(Color.LIGHT_GRAY);
+        descriptionPanel.add(this.category);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 25))); // Spazio abbondante prima dei blocchi di testo
         
+        JLabel descriptionHeader = new JLabel("DESCRIZIONE");
+        descriptionHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        descriptionHeader.setForeground(Color.GRAY);
+        descriptionPanel.add(descriptionHeader);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+
+        this.description = new JTextArea(drink.getDescription());
+        this.description.setEditable(false);
+        this.description.setOpaque(false);
+        this.description.setBorder(null);
+        this.description.setLineWrap(true);
+        this.description.setWrapStyleWord(true);
+        this.description.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        this.description.setForeground(new Color(210, 210, 210));
+        descriptionPanel.add(this.description);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JLabel ingredientsHeader = new JLabel("INGREDIENTI");
+        ingredientsHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        ingredientsHeader.setForeground(Color.GRAY);
+        descriptionPanel.add(ingredientsHeader);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+
         this.ingredients = new JTextArea();
         this.ingredients.setEditable(false);
+        this.ingredients.setOpaque(false);
+        this.ingredients.setBorder(null);
+        this.ingredients.setLineWrap(true);
+        this.ingredients.setWrapStyleWord(true);
+        this.ingredients.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        this.ingredients.setForeground(new Color(210, 210, 210));
         descriptionPanel.add(this.ingredients);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JLabel tagHeader = new JLabel("TAG / PAROLE CHIAVE");
+        tagHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        tagHeader.setForeground(Color.GRAY);
+        descriptionPanel.add(tagHeader);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 6)));
 
         this.keywords = new JTextField();
         this.keywords.setEditable(false);
+        this.keywords.setOpaque(false);
+        this.keywords.setBorder(null);
+        this.keywords.setFont(new Font("Segoe UI", Font.ITALIC, 13));
+        this.keywords.setForeground(Color.LIGHT_GRAY);
         descriptionPanel.add(this.keywords);
 
         subPanel.add(descriptionPanel);
