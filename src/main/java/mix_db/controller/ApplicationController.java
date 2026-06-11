@@ -3,6 +3,7 @@ package mix_db.controller;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Files;
@@ -18,6 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import mix_db.core.GeneralSettings;
 import mix_db.core.Session;
@@ -191,7 +194,21 @@ public class ApplicationController {
             mv.getRightPanel().requestedToShowFavs(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    final JFrame frame = new JFrame();
+                    frame.setTitle("preferiti");
                     
+                    final JPanel panel = new JPanel();
+
+                    final StringBuilder sb = new StringBuilder();
+                    for(var d: model.getFavourites(Session.getInstance().getLoggedUser().getUserID())) {
+                        sb.append("-").append(d.getName() + "\n ").append(d.getDescription() + "\n");
+                    }
+
+                    panel.add(new JTextArea(sb.toString()));
+                    frame.add(panel);
+                    frame.pack();
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.setVisible(true);
                 }      
             });
         }

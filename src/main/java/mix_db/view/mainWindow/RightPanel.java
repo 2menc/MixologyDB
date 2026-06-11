@@ -106,7 +106,7 @@ public class RightPanel extends JPanel{
      * @param al
      */
     public void requestedToShowFavs(ActionListener al) {
-        this.searchButton.addActionListener(al);
+        this.showFavouritesButton.addActionListener(al);
     }
 
     /**
