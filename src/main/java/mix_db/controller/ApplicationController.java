@@ -60,7 +60,6 @@ public class ApplicationController {
         }
 
         this.view = new MainView();
-        if(this.view instanceof MainView mv) mv.getRightPanel().setupCreateBarButton(this.enableCreateBarButton());
 
         this.populatePanels();
 
@@ -84,7 +83,6 @@ public class ApplicationController {
     public void populateDrinkGrid() {
         List<Drink> drinkList = new ArrayList<>();
         
-        if(this.view instanceof MainView mv) mv.getRightPanel().setupCreateBarButton(this.enableCreateBarButton());
 
         if (!(this.view instanceof MainView mv)) {
             return; 
@@ -180,6 +178,9 @@ public class ApplicationController {
         }
 
         if(this.view instanceof MainView mv) {
+
+            mv.getRightPanel().setupCreateBarButton(this.enableCreateBarButton());
+
             mv.getRightPanel().requestedToCreateDrink(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -198,15 +199,13 @@ public class ApplicationController {
             mv.getRightPanel().requestedToSearchDrink(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(! mv.getRightPanel().isSearching()) {
-                        mv.getRightPanel().toggleSearching(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                populateDrinkGrid();
-                            }
-                        });
-                    }
                     populateDrinkGridWithSearches(mv.getRightPanel().getSearchBarContent());
+                }
+            });
+            mv.getRightPanel().requestedReload(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    populateDrinkGrid();
                 }
             });
             mv.getRightPanel().requestedToShowFavs(new ActionListener() {
@@ -260,7 +259,9 @@ public class ApplicationController {
                                     for(var email: emails) {
                                         model.addUserToBar(bar.get().getBarID(), model.getUserFromEmail(email).get().getUserID());
                                     }
+                                    model.addUserToBar(bar.get().getBarID(), Session.getInstance().getLoggedUser().getUserID());
                                     barFrame.dispose();
+                                    mv.getRightPanel().setupCreateBarButton(enableCreateBarButton());
                                 } catch (Exception ex) {
                                     throw new ExceptionPanel(ex, barFrame);
                                 }
@@ -370,7 +371,6 @@ public class ApplicationController {
                             view = new MainView();
                             view.setLocationRelativeTo(mv);
                             populatePanels();
-                            mv.getRightPanel().setupCreateBarButton(enableCreateBarButton());
                         }
                     });
                 }

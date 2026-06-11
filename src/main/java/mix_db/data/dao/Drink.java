@@ -115,14 +115,9 @@ public class Drink {
                 // !transaction start
                 connection.setAutoCommit(false);
                 int correctDrinkId;
-                final String correctImagePath = d.getImagePath().trim().replaceAll("[ ,\\/]", "_");
-                String extension = "";
-                final int ext = d.getImagePath().lastIndexOf('.');
-                if(ext > 0) {
-                    extension = correctImagePath.substring(ext);
-                }
-                String finalPathName = correctImagePath + extension;
 
+                final String finalPathName = d.getImagePath();
+                
                 // *creates the drink
                 try(
                     final var statement = DatabaseConnection.prepareWithKeys(connection, 

@@ -18,7 +18,6 @@ import mix_db.data.dao.User;
  */
 public class RightPanel extends JPanel{
 
-    private boolean isSearching = false;
     private final JButton changePopulationButton;
 
     private final JTextField searchBar;
@@ -64,8 +63,7 @@ public class RightPanel extends JPanel{
         }
 
 
-        this.changePopulationButton = new JButton("torna indietro");
-        this.changePopulationButton.setVisible(false);
+        this.changePopulationButton = new JButton("ricarica");
 
         this.showFavouritesButton = new JButton("mostra preferiti");
 
@@ -149,28 +147,10 @@ public class RightPanel extends JPanel{
     }
 
     /**
-     * returns the state of CentralPanel population
-     * @return true if the CentralPanel is populated by searched drinks, false otherwise
+     * requests to reload the drink page
      */
-    public boolean isSearching() {
-        return this.isSearching;
-    }
-
-    /**
-     * toggles the CentralPanel population state
-     * ! IMPORTANT: just a flag
-     */
-    public void toggleSearching(ActionListener al) {
+    public void requestedReload(ActionListener al) {
         this.changePopulationButton.addActionListener(al);
-        this.isSearching = ! this.isSearching;
-        this.toggleBackButton();
-    }
-
-    /**
-     * toggles the {@link changePopulationButton} button
-     */
-    private void toggleBackButton() {
-        this.changePopulationButton.setVisible(!this.changePopulationButton.isVisible());
     }
 
     public void disableSearch() {
@@ -186,6 +166,7 @@ public class RightPanel extends JPanel{
             this.createDrinkButton.setEnabled(! this.createDrinkButton.isEnabled());
             this.showFavouritesButton.setEnabled(! this.showFavouritesButton.isEnabled());
             this.createBarButton.setEnabled(! this.createBarButton.isEnabled());
+            this.changePopulationButton.setEnabled(! this.createBarButton.isEnabled());
         }
     }
 }

@@ -157,8 +157,17 @@ public class DrinkController {
      * @return the secure name
      */
     private String createSecureFileName(File uploadedFile, String drinkName) {
-        String safeDrinkName = drinkName.trim().replaceAll("[^a-zA-Z0-9.-]", "_");
+        final StringBuilder sb = new StringBuilder();
+        sb.append(drinkName.trim().replaceAll("[^a-zA-Z0-9.-]", "_"));
 
-        return safeDrinkName;
+        final int ext = uploadedFile.getName().lastIndexOf(".");
+
+        if(ext > 0) {
+            sb.append(uploadedFile.getName().substring(ext));
+        } else {
+            sb.append(".jpg");  //default format
+        }
+
+        return sb.toString();
     }    
 }
