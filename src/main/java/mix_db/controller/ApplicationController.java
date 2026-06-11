@@ -221,7 +221,9 @@ public class ApplicationController {
                         sb.append("----\n").append(d.getName() + "\n").append(d.getDescription() + "\n");
                     }
 
-                    panel.add(new JTextArea(sb.toString()));
+                    final var ta = new JTextArea(sb.toString());
+                    ta.setEditable(false);
+                    panel.add(ta); 
                     frame.add(panel);
                     frame.pack();
                     frame.setResizable(false);
