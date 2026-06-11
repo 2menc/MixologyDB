@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import mix_db.core.GeneralSettings;
+
 /**
  * Establishes a connection to a MySQL local server on port 3306
  */
@@ -20,7 +22,7 @@ public class DatabaseConnection {
      */
     public static Connection localConnection(final String databaseName, final String userName, final String password) {
         try {
-            final String host = "localHost";
+            final String host = GeneralSettings.databseIP;
             final String port = "3306";
             final String connectionString = "jdbc:mysql://" + host + ":" + port + "/" + databaseName;
             
