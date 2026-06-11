@@ -24,12 +24,16 @@ import javax.swing.JTextArea;
 
 import mix_db.core.GeneralSettings;
 import mix_db.core.Session;
+import mix_db.data.dao.Bar;
 import mix_db.data.dao.Drink;
 import mix_db.data.dao.Review;
 import mix_db.data.dao.User;
+import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
+import mix_db.view.bar.BarCreationPanel;
+import mix_db.view.bar.CreateBarView;
 import mix_db.view.drinkCreationView.DrinkCreationView;
 import mix_db.view.mainWindow.*;
 
@@ -55,8 +59,18 @@ public class ApplicationController {
         }
 
         this.view = new MainView();
+        if(this.view instanceof MainView mv) mv.getRightPanel().setupCreateBarButton(this.enableCreateBarButton());
+
         this.populatePanels();
 
+    }
+
+    /**
+     * decides if the createBar button should be enabled
+     * @return true if it should
+     */
+    private boolean enableCreateBarButton() {
+        return this.model.isUserInABar(Session.getInstance().getLoggedUser().getUserID());
     }
 
     /**
@@ -211,8 +225,46 @@ public class ApplicationController {
                     frame.setVisible(true);
                 }      
             });
-        }
+            mv.getRightPanel().requestedToCreateBar(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    final CreateBarView barFrame = new CreateBarView();
+                    
+                    if(barFrame.getMainPanel() instanceof BarCreationPanel panel) {
+                        panel.addSaveListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                final var emails = panel.getEmails();
 
+                                for(var email: emails) {
+                                    if(! model.userExists(email)) {
+                                        new ExceptionPanel("hai inserito utenti che non esistono", barFrame);
+                                        break;
+                                    }
+                                }
+
+                                final Bar barToCreate = new Bar(
+                                    -1, 
+                                    panel.getBarName(),
+                                    panel.getCity(), 
+                                    panel.getAddress()
+                                );
+
+                                try {
+                                    final var bar = model.createBar(barToCreate);
+                                    for(var email: emails) {
+                                        model.addUserToBar(bar.get().getBarID(), model.getUserFromEmail(email).get().getUserID());
+                                    }
+                                    barFrame.dispose();
+                                } catch (Exception ex) {
+                                    throw new ExceptionPanel(ex, barFrame);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     /**

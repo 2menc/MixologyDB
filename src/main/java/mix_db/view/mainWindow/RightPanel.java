@@ -27,6 +27,7 @@ public class RightPanel extends JPanel{
     private final JTextArea userInformations;
 
     private final JButton showFavouritesButton;
+    private final JButton createBarButton;
 
     private final JButton logoutButton;
 
@@ -52,6 +53,9 @@ public class RightPanel extends JPanel{
         this.userInformations.setEditable(false);
         this.userInformations.setAlignmentX(LEFT_ALIGNMENT);
 
+        this.createBarButton = new JButton("registra il tuo bar");
+        this.createBarButton.setAlignmentX(LEFT_ALIGNMENT);
+
         final User user = Session.getInstance().getLoggedUser();
         if(user != null) {
             this.userInformations.setText(user.getName() + " " + user.getSurname() + "\n" + user.getEmail());
@@ -74,6 +78,7 @@ public class RightPanel extends JPanel{
         this.add(this.searchButton);
         this.add(this.changePopulationButton);
         this.add(this.showFavouritesButton);
+        this.add(this.createBarButton);
         this.add(this.logoutButton);
     }
 
@@ -103,10 +108,18 @@ public class RightPanel extends JPanel{
 
     /**
      * requests to show favourites
-     * @param al
+     * @param al .
      */
     public void requestedToShowFavs(ActionListener al) {
         this.showFavouritesButton.addActionListener(al);
+    }
+
+    /**
+     * requests to create a new bar
+     * @param al .
+     */
+    public void requestedToCreateBar(ActionListener al) {
+        this.createBarButton.addActionListener(al);
     }
 
     /**
@@ -119,6 +132,11 @@ public class RightPanel extends JPanel{
         this.logoutButton.setForeground(Color.GREEN);
 
         this.showFavouritesButton.setEnabled(false);
+        this.createBarButton.setEnabled(false);
+    }
+
+    public void setupCreateBarButton(boolean setActive) {
+        this.createBarButton.setEnabled(setActive);
     }
 
     /**

@@ -240,6 +240,61 @@ public class User {
             }
         }
 
+        /**
+         * gets a full user knowing his email
+         * @param connection .
+         * @param email .
+         * @return an empty Optional if there is no such user in the db, 
+         * an Optional of the searched User otherwise
+         */
+        public static Optional<User> getUserFromEmail(Connection connection, String email) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_USER_FROM_EMAIL, email);
+                final ResultSet rs = statement.executeQuery();
+            ) {
+                
+                if(rs.next()) {
+                    final User u = new User(
+                        rs.getInt("userID"),
+                        rs.getString("email"),
+                        rs.getString("password"), 
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getDate("dataNascita"),
+                        rs.getString("ruoloUtente"),
+                        rs.getDate("dataIscrizione"),
+                        rs.getInt("numeroRicetteCreate"),
+                        rs.getInt("numeroRecensioniPositive"),
+                        rs.getInt("numeroRecensioniEffettuate")
+                    );
+
+                    return Optional.of(u);
+                }
+                return Optional.empty();
+                
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        /**
+         * checks if a user exists
+         * @param connection .
+         * @param userID .
+         * @return false if there is no such user in the db, true otherwise
+         */
+        public static boolean userExists(Connection connection, String email) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_USER_FROM_EMAIL, email);
+                final ResultSet rs = statement.executeQuery();
+            ) {
+                return rs.next();                
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
 
         /**
          * gets a list of user's favourites

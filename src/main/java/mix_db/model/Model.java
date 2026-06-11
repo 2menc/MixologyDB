@@ -28,6 +28,20 @@ public interface Model {
     Optional<User> login(String email, String password);
 
     /**
+     * checks if a user exists, based on his email
+     * @param email the email
+     * @return {@code true} if exists, false otherwise
+     */
+    boolean userExists(String email);
+
+    /**
+     * gets a user by his email
+     * @param email the email
+     * @return an optional of user
+     */
+    Optional<User> getUserFromEmail(String email);
+
+    /**
      * creates a new bar
      * @param bar the bar to create
      * @return anOptional of Bar
@@ -52,6 +66,13 @@ public interface Model {
      * @param userID the user
      */
     boolean addUserToBar(int barID, int userID);
+
+    /**
+     * tells if a user is in a bar
+     * @param userID the user
+     * @return {@code true} if he is, {@code false} otherwise
+     */
+    boolean isUserInABar(int userID);
 
     /**
      * gets a drink

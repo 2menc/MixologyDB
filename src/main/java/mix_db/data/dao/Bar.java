@@ -3,6 +3,8 @@ package mix_db.data.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import mix_db.data.Queries;
@@ -174,6 +176,48 @@ public class Bar {
             }
         }
 
+        public static List<User> getUsersInBarList(Connection connection, int barID) {
+            final List<User> users = new LinkedList<>();
+
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.USERS_IN_BAR, barID);
+                final ResultSet rs = statement.executeQuery();
+            ) {
+                while(rs.next()) {
+                    final User u = new User(
+                        rs.getInt("userID"),
+                        rs.getString("email"),
+                        rs.getString("password"), 
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getDate("dataNascita"),
+                        rs.getString("ruoloUtente"),
+                        rs.getDate("dataIscrizione"),
+                        rs.getInt("numeroRicetteCreate"),
+                        rs.getInt("numeroRecensioniPositive"),
+                        rs.getInt("numeroRecensioniEffettuate")
+                    );
+                    users.add(u);
+                }
+                return new LinkedList<>(users);
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static boolean isUserInABar(Connection connection, int userID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_FAVOURITES, userID);
+                final ResultSet rs = statement.executeQuery();
+            ) {
+                return rs.next();
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+
+        }
 
         /**
          * deletes a bar

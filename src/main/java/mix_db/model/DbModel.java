@@ -36,6 +36,16 @@ public class DbModel implements Model{
     }
 
     @Override
+    public boolean userExists(String email) {
+        return User.DAO.userExists(connection, email);        
+    }
+
+    @Override
+    public Optional<User> getUserFromEmail(String email) {
+        return User.DAO.getUserFromEmail(connection, email);
+    }
+
+    @Override
     public Optional<Bar> createBar(Bar bar) {
         Bar.DAO.createBar(connection, bar);
         return Bar.DAO.searchBarByParams(connection, bar.getBarName(), bar.getCity(), bar.getAddress());
@@ -51,6 +61,11 @@ public class DbModel implements Model{
     public boolean addUserToBar(int barID, int userID) {
         Bar.DAO.addUserToBar(connection, userID, barID);
         return ! Bar.DAO.searchBar(connection, barID).isEmpty();
+    }
+
+    @Override
+    public boolean isUserInABar(int userID) {
+        return Bar.DAO.isUserInABar(connection, userID);
     }
 
     @Override

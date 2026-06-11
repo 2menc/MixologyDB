@@ -96,6 +96,28 @@ public class Queries {
     VALUES (?, ?);
     """;
 
+    public static final String USERS_IN_BAR =
+    """
+    SELECT U.*
+    FROM utenti U, occupazioni O
+    WHERE U.userID = O.userID
+    AND O.barID = ?;
+    """;
+
+    public static final String IS_USER_IN_BAR =
+    """
+    SELECT *
+    FROM occupazioni
+    WHERE userID = ?        
+    """;
+
+    public static final String  GET_USER_FROM_EMAIL =
+    """
+    SELECT *
+    FROM utenti
+    WHERE email = ?;
+    """;
+
     /**
      * searches a bar
      */
