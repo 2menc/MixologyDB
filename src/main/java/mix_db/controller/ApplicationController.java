@@ -381,10 +381,23 @@ public class ApplicationController {
         final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
         card.setPreferredSize(dim);
 
-        final int targetWidth = dim.width;
-        final int targetHeight = dim.height; 
+        int targetWidth = dim.width;
+        int targetHeight = dim.height; 
 
         final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + d.getImagePath());
+
+        int originalWidth = image.getIconWidth();
+        int originalHeight = image.getIconHeight();
+
+        // *image size/stretch check
+        if (originalWidth > 0 && originalHeight > 0 && targetWidth > 0 && targetHeight > 0) {
+            double widthRatio = (double) targetWidth / originalWidth;
+            double heightRatio = (double) targetHeight / originalHeight;
+            double ratio = Math.min(widthRatio, heightRatio); // Mantiene le proporzioni originali [1]
+
+            targetWidth = (int) (originalWidth * ratio);
+            targetHeight = (int) (originalHeight * ratio);
+        }
 
         final Image scaledImage = image.getImage().getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
         final ImageIcon scaledIcon = new ImageIcon(scaledImage);

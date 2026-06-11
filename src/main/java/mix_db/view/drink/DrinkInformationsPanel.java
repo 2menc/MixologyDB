@@ -73,16 +73,12 @@ public class DrinkInformationsPanel extends JPanel{
         imagePanel.setOpaque(false);
 
         // *image (scaled)
-        final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + drink.getImagePath());
-        final Image scaledImage = image.getImage().getScaledInstance(dim.width/4, dim.height/3, Image.SCALE_SMOOTH);
-        final ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        final var imageLabel = this.getScaledImage(image);
 
-        final JLabel imageLabel = new JLabel(scaledIcon);
-        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imageLabel.setVerticalAlignment(javax.swing.SwingConstants.CENTER);
         imagePanel.add(imageLabel);
-
-        imagePanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
         // *reviews
         this.reviews = new JPanel();
@@ -186,6 +182,41 @@ public class DrinkInformationsPanel extends JPanel{
         this.score = new JTextField("voto");
         this.reviewDescription = new JTextArea("descrizione");
         this.sendReview = new JButton("manda recensione");
+    }
+
+    /**
+     * checks if the image has to be scaled. If it has to, this methos automatically does it
+     * @param image
+     * @return a new JLabel containing the correct-sized image
+     */
+    private JLabel getScaledImage(ImageIcon image) {
+        final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+        int originalWidth = image.getIconWidth();
+        int originalHeight = image.getIconHeight();
+
+        final int targetWidth = dim.width / 4;
+        final int targetHeight = dim.height / 3;
+
+        int newWidth = targetWidth;
+        int newHeight = targetHeight;
+
+        if (originalWidth > 0 && originalHeight > 0) {
+
+            double widthRatio = (double) targetWidth / originalWidth;
+            double heightRatio = (double) targetHeight / originalHeight;
+            
+            double ratio = Math.min(widthRatio, heightRatio);
+
+            newWidth = (int) (originalWidth * ratio);
+            newHeight = (int) (originalHeight * ratio);
+        }
+
+        final Image scaledImage = image.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        final ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        return new JLabel(scaledIcon);
+
     }
 
     /**
