@@ -307,13 +307,13 @@ INSERT INTO composizioni VALUES ('Tequila Blanco',36,5,'cl');
 INSERT INTO composizioni VALUES ('Soda al Pompelmo',36,10,'cl');
 INSERT INTO composizioni VALUES ('Succo di Lime Fresco',36,1.5,'cl');
 
- -- POPOLAZIONE TABELLA TAG (In italiano per evitare errori di Foreign Key) [1]
+ -- POPOLAZIONE TABELLA TAG
 INSERT INTO Tag (keyword) VALUES 
 ('Amaro'), ('Forte'), ('Classico'), ('Rinfrescante'), 
 ('Dolce'), ('Tropicale'), ('Frizzante'), ('Caffè'), ('Analcolico'),
 ('Agrumato'), ('Secco'), ('Speziato'), ('Elegante'), ('Aperitivo');
 
--- IDENTIFICAZIONI (Associazione Drink-Tag in italiano) [1]
+-- IDENTIFICAZIONI
 INSERT INTO identificazioni (drinkID, keyword) VALUES
 (1, 'Amaro'), (1, 'Forte'), (1, 'Classico'),
 (2, 'Rinfrescante'), (2, 'Dolce'), (2, 'Tropicale'),
@@ -352,7 +352,7 @@ INSERT INTO identificazioni (drinkID, keyword) VALUES
 (35, 'Classico'), (35, 'Forte'), (35, 'Elegante'), (35, 'Agrumato'),
 (36, 'Rinfrescante'), (36, 'Frizzante'), (36, 'Agrumato'), (36, 'Aperitivo');
 
--- AGGIORNAMENTO CONTATORI (Nomi ingredienti aggiornati in italiano)
+-- AGGIORNAMENTO CONTATORI 
 
 UPDATE Ingredienti SET volteUtilizzato = volteUtilizzato + 1 WHERE nomeIngrediente IN ('Gin', 'Campari', 'Vermouth Rosso Dolce');
 UPDATE Ingredienti SET volteUtilizzato = volteUtilizzato + 1 WHERE nomeIngrediente IN ('Rum Bianco', 'Succo di Lime Fresco', 'Foglie di Menta', 'Zucchero di Canna Bianco', 'Soda');
