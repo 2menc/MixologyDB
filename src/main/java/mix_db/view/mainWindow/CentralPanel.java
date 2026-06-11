@@ -22,6 +22,7 @@ public class CentralPanel extends JPanel{
         this.setLayout(new GridLayout(0, COLUMNS));
 
         this.mainPane.setViewportView(this);
+        this.mainPane.getVerticalScrollBar().setUnitIncrement(12);
 
         this.mainPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     }

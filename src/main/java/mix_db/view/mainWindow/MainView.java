@@ -14,7 +14,7 @@ public class MainView extends JFrame {
 
     private JPanel mainPanel;
 
-    private JPanel centralPanel;
+    private CentralPanel centralPanel;
     private LeftPanel leftPanel;
     private RightPanel rightPanel;
 
@@ -31,7 +31,7 @@ public class MainView extends JFrame {
         this.leftPanel = new LeftPanel();
         this.rightPanel = new RightPanel();
 
-        this.mainPanel.add(centralPanel, BorderLayout.CENTER);
+        this.mainPanel.add(this.centralPanel.getContentPane(), BorderLayout.CENTER); 
         this.mainPanel.add(leftPanel, BorderLayout.WEST);
         this.mainPanel.add(rightPanel, BorderLayout.EAST);
         
@@ -107,7 +107,7 @@ public class MainView extends JFrame {
             this.remove(this.centralPanel);
         }
         
-        this.centralPanel = centralPanel;
+        this.centralPanel = (CentralPanel) centralPanel;
         
         this.add(this.centralPanel, BorderLayout.CENTER);
         

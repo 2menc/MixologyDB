@@ -17,7 +17,7 @@ INSERT INTO Drink (drinkID, nome, descrizione, foto, nomeCategoria, IBA) VALUES
 (3, 'Moscow Mule', 'Un vodka buck speziato e rinfrescante, tipicamente servito in una tazza di rame.', 'moscow_mule.jpeg', 'Contemporary Classics', TRUE),
 (4, 'Espresso Martini', 'Un cocktail freddo al gusto di caffè, perfetto per darsi una carica.', 'espresso_martini.jpeg', 'New Era Drinks', TRUE),
 (5, 'Mai Tai', 'Il cocktail Tiki per eccellenza, inventato da Trader Vic nel 1944.', 'mai_tai.jpeg', 'Tiki', TRUE),
-(6, 'Shirley Temple', 'Una bevanda analcolica dolce, intitolata alla famosa bambina prodigio del cinema.', 'shirley_temple.jpeg', 'Mocktail', TRUE);
+(6, 'Shirley Temple', 'Una bevanda analcolica dolce, intitolata alla famosa bambina prodigio del cinema.', 'shirley_temple.jpeg', 'Mocktail', TRUE),
 (7, 'Americano', 'Cocktail italiano leggero e amaricante, servito con ghiaccio e scorza d''arancia.', 'americano.jpg', 'The Unforgettables', TRUE),
 (8, 'Dry Martini', 'Elegante cocktail a base di gin e vermouth dry, simbolo della mixology classica.', 'dry_martini.jpg', 'The Unforgettables', TRUE),
 (9, 'Manhattan', 'Cocktail classico americano a base di whiskey e vermouth rosso.', 'manhattan.jpg', 'The Unforgettables', TRUE),
@@ -27,7 +27,7 @@ INSERT INTO Drink (drinkID, nome, descrizione, foto, nomeCategoria, IBA) VALUES
 (13, 'Cosmopolitan', 'Cocktail moderno a base di vodka, triple sec, lime e cranberry.', 'cosmopolitan.jpg', 'Contemporary Classics', TRUE),
 (14, 'Bloody Mary', 'Cocktail speziato a base di vodka e succo di pomodoro.', 'bloody_mary.jpg', 'Contemporary Classics', TRUE),
 (15, 'French 75', 'Cocktail frizzante con gin e champagne.', 'french_75.jpg', 'Contemporary Classics', TRUE),
-(16, 'Vesper', 'Celebre cocktail associato a James Bond.', 'vesper.jpg', 'New Era Drinks', TRUE);
+(16, 'Vesper', 'Celebre cocktail associato a James Bond.', 'vesper.jpg', 'New Era Drinks', TRUE),
 (17, 'Boulevardier', 'Versione whiskey del Negroni, intensa e strutturata.', 'boulevardier.jpg', 'Contemporary Classics', TRUE),
 (18, 'Caipirinha', 'Cocktail brasiliano a base di cachaca, lime e zucchero.', 'caipirinha.jpg', 'Contemporary Classics', TRUE),
 (19, 'Clover Club', 'Cocktail elegante con gin, lampone e limone.', 'clover_club.jpg', 'Contemporary Classics', TRUE),
@@ -320,9 +320,8 @@ INSERT INTO identificazioni (drinkID, keyword) VALUES
 (3, 'Frizzante'), (3, 'Rinfrescante'),
 (4, 'Caffè'), (4, 'Forte'),
 (5, 'Tropicale'), (5, 'Dolce'), (5, 'Forte'),
-(6, 'Analcolico'), (6, 'Dolce'), (6, 'Frizzante');
-(7, 'Aperitivo'),
-(7, 'Amaro'),
+(6, 'Analcolico'), (6, 'Dolce'), (6, 'Frizzante'),
+(7, 'Aperitivo'), (7, 'Amaro'),
 (8, 'Secco'), (8, 'Elegante'),
 (9, 'Forte'), (9, 'Classico'),
 (10, 'Agrumato'), (10, 'Rinfrescante'),
@@ -331,7 +330,7 @@ INSERT INTO identificazioni (drinkID, keyword) VALUES
 (13, 'Dolce'), (13, 'Agrumato'),
 (14, 'Speziato'),(14, 'Forte'),
 (15, 'Frizzante'), (15, 'Elegante'),
-(16, 'Forte'), (16, 'Elegante');
+(16, 'Forte'), (16, 'Elegante'),
 (17, 'Classico'), (17, 'Amaro'), (17, 'Forte'), (17, 'Aperitivo'),
 (18, 'Rinfrescante'), (18, 'Dolce'), (18, 'Tropicale'),
 (19, 'Classico'), (19, 'Elegante'), (19, 'Dolce'), (19, 'Agrumato'),
