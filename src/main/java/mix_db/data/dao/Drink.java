@@ -403,7 +403,7 @@ public class Drink {
             public static Optional<User> getCreator(Connection connection, int drinkID) {
                 try(
                     final var statement = DatabaseConnection.prepare(connection, 
-                        Queries.CREATE_DRINK, 
+                        Queries.GET_DRINK_CREATOR, 
                         drinkID);
                     final var rs = statement.executeQuery();
                 ) {

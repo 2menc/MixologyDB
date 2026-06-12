@@ -31,7 +31,7 @@ public class Leaderboards {
             final var drinks = new HashMap<Drink, Integer>();
             try(
                 final var statement = DatabaseConnection.prepare(connection, 
-                    Queries.CREATE_DRINK, 
+                    Queries.MORE_POSITIVE_REVIEWS_DRINK_LEADERBOARD, 
                     daysToFilter, numberOfResults);
                 final var rs = statement.executeQuery();
             ) {
