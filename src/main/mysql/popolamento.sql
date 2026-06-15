@@ -8,7 +8,7 @@ INSERT INTO Categorie (nomeCategoria, descrizione) VALUES
 
 -- UTENTE ANONIMO
 INSERT INTO Utenti(email, password, nome, cognome, dataNascita, ruoloUtente, dataIscrizione, numeroRicetteCreate, numeroRecensioniPositive, numeroRecensioniEffettuate)
-VALUES ('anonimo', '0', 'anonimo', 'anonimo', '2000-01-01', 'Anonimo', DATE(NOW()), 0, 0, 0);
+VALUES ('anonimo', '0', 'utente', 'anonimo', '2000-01-01', 'Anonimo', DATE(NOW()), 0, 0, 0);
 
 -- DRINK IBA 
 INSERT INTO Drink (drinkID, nome, descrizione, foto, nomeCategoria, IBA) VALUES
