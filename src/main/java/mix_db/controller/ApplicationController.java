@@ -94,7 +94,7 @@ public class ApplicationController {
         final var loggedUser = Session.getInstance().getLoggedUser();
 
         if(loggedUser != null) {
-            drinkList = this.model.getFavourites(loggedUser.getUserID());
+            drinkList = this.model.getSuggestions(loggedUser.getUserID(), 10);
         }
 
         if(loggedUser == null || drinkList.size() < 6) {
