@@ -76,7 +76,7 @@ public class FileExportService {
                 drinkCreator.setSpacingAfter(15);
                 document.add(drinkCreator);
             } else {
-                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: " + creator.getName() + ", " + creator.getSurname(), textFont);
+                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: " + creator.getName() + " " + creator.getSurname(), textFont);
                 drinkCreator.setSpacingAfter(15);
                 document.add(drinkCreator);
             }
