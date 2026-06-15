@@ -119,7 +119,7 @@ public class DrinkInformationsPanel extends JPanel{
         this.category.setFont(new Font("Segoe UI", Font.ITALIC, 14));
         this.category.setForeground(Color.LIGHT_GRAY);
         descriptionPanel.add(this.category);
-        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 25))); // Spazio abbondante prima dei blocchi di testo
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 25)));
         
         JLabel descriptionHeader = new JLabel("DESCRIZIONE");
         descriptionHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
