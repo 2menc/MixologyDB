@@ -308,7 +308,7 @@ public class ApplicationController {
         if (originalWidth > 0 && originalHeight > 0 && targetWidth > 0 && targetHeight > 0) {
             double widthRatio = (double) targetWidth / originalWidth;
             double heightRatio = (double) targetHeight / originalHeight;
-            double ratio = Math.min(widthRatio, heightRatio); // Mantiene le proporzioni originali [1]
+            double ratio = Math.min(widthRatio, heightRatio);
 
             targetWidth = (int) (originalWidth * ratio);
             targetHeight = (int) (originalHeight * ratio);
@@ -392,6 +392,10 @@ public class ApplicationController {
                         public void actionPerformed(ActionEvent e) {
                             try {
                                 final var review = dp.getReviewInformation();
+
+                                if(review.getScore() < 1 || review.getScore() > 5) {
+                                    throw new IllegalArgumentException("Il voto deve essere compreso tra 1 e 5");
+                                }
 
                                 model.addReview(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), review.getDescription(), review.getScore());
 
