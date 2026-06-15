@@ -58,8 +58,13 @@ public class Session {
 
         try (final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password")) {
 
+            if(email.equals("anonimo") && password.equals("0")) {
+                throw new IllegalArgumentException("cannot login as anonymous user");
+            }
+
             final Model model = new DbModel(connection);
             final Optional<User> userOpt = model.login(email, password);
+
 
             if(userOpt.isPresent()) {
                 this.loggedUser = userOpt.get();
