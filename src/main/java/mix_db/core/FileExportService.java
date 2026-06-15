@@ -44,7 +44,20 @@ public class FileExportService {
             document.open();
             
             // *font
-            final BaseFont font = BaseFont.createFont(GeneralSettings.fontEmojiPath + FONT_NAME + ".ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            //final BaseFont font = BaseFont.createFont(GeneralSettings.fontEmojiPath + 
+                    //FONT_NAME + ".ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);    //? not working with jar
+
+            byte[] fontBytes;
+            try (java.io.InputStream is = FileExportService.class.getResourceAsStream("/fonts/Symbola.ttf")) {
+
+                if (is == null) {
+                    throw new java.io.FileNotFoundException("Font " + FONT_NAME + " non trovato nelle risorse del jar");
+                }
+                fontBytes = is.readAllBytes();
+            }
+            final BaseFont font = BaseFont.createFont("Symbola.ttf", 
+                    BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, fontBytes, null);    //? baseFont from the informations extracted from the jar
+
             final Font titleFont = new Font(font, 30, Font.BOLD);
             final Font textFont = new Font(font, 16, Font.NORMAL);
             final Font italicFont = new Font(font, 16, Font.ITALIC);
