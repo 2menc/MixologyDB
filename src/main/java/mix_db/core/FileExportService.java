@@ -21,6 +21,8 @@ import mix_db.data.dbConnection.DAOException;
  */
 public class FileExportService {
 
+    private final static String FONT_NAME = "Symbola";
+
     /** 0-args constructor */
     public FileExportService() { }
 
@@ -42,11 +44,11 @@ public class FileExportService {
             document.open();
             
             // *font
-            final BaseFont font = BaseFont.createFont(GeneralSettings.fontEmojiPath + "symbola.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            final Font titleFont = new Font(font, 20, Font.BOLD);
-            final Font textFont = new Font(font, 11, Font.NORMAL);
-            final Font italicFont = new Font(font, 11, Font.ITALIC);
-            final Font listFont = new Font(font, 9, Font.NORMAL);
+            final BaseFont font = BaseFont.createFont(GeneralSettings.fontEmojiPath + FONT_NAME + ".ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            final Font titleFont = new Font(font, 30, Font.BOLD);
+            final Font textFont = new Font(font, 16, Font.NORMAL);
+            final Font italicFont = new Font(font, 16, Font.ITALIC);
+            final Font listFont = new Font(font, 13, Font.NORMAL);
 
 
             final Paragraph title = new Paragraph("🍹" + drink.getName() + "🍹", titleFont);
