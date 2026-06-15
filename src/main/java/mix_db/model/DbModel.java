@@ -63,6 +63,14 @@ public class DbModel implements Model{
     }
 
     @Override
+    public Optional<Bar> getDrinkBar(int drinkID) {
+        final var b = Bar.DAO.getCreationBar(connection, drinkID);
+
+        if(b.isEmpty()) return Optional.empty();
+        return Bar.DAO.searchBarByParams(connection, b.get().getBarName(), b.get().getCity(), b.get().getAddress());
+    }
+
+    @Override
     public boolean addUserToBar(int barID, int userID) {
         Bar.DAO.addUserToBar(connection, userID, barID);
         return ! Bar.DAO.searchBar(connection, barID).isEmpty();

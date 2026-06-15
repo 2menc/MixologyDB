@@ -356,6 +356,11 @@ public class ApplicationController {
                     dp.populateIngredients(model.getComposition(d.getDrinkID()));
                     dp.populateKeywords(model.getKeywords(d.getDrinkID()));
 
+                    final Optional<User> creatorOpt = model.getDrinkCreator(d.getDrinkID());
+                    final User creator = creatorOpt.isEmpty() ? model.getAnonymUser() : creatorOpt.get();
+                    final Optional<Bar> barOpt = model.getDrinkBar(d.getDrinkID());
+                    dp.populateCreatorAndBar(creator, barOpt.orElse(null));
+
                     final var reviewsMap = new HashMap<Review, User>();
                     for(var k: model.getDrinkReviews(d.getDrinkID())) {
                         final var u = model.getFullUserFromID(k.getUserID());
@@ -430,9 +435,12 @@ public class ApplicationController {
                             final Optional<User> creatorOpt = model.getDrinkCreator(d.getDrinkID());
                             final List<String> keywords = model.getKeywords(d.getDrinkID());
 
-                            final User creator;
-                            creator = creatorOpt.isEmpty() ?  model.getAnonymUser() : creatorOpt.get(); 
-                            managePdfGeneration(d, creator, keywords);
+                            final Optional<Bar> barOpt = model.getDrinkBar(d.getDrinkID());
+                            final Bar actualBar = barOpt.isPresent() ? barOpt.get() : null;
+
+                            final User creator = creatorOpt.isEmpty() ?  model.getAnonymUser() : creatorOpt.get(); 
+
+                            managePdfGeneration(d, creator, actualBar, keywords);
                         }
                     });
                 }
@@ -498,7 +506,7 @@ public class ApplicationController {
     /**
      * manages pdf file generation, getting output path
      */
-    private void managePdfGeneration(Drink drink, User creator, java.util.List<String> keywords) {
+    private void managePdfGeneration(Drink drink, User creator, Bar creationBar, java.util.List<String> keywords) {
 
         final File directory = new File("shares");
         if(!directory.exists()) {
@@ -507,7 +515,7 @@ public class ApplicationController {
 
         final String outputPath = directory.getPath() + File.separator + drink.getName() + ".pdf";
         try {
-            FileExportService.createPdf(drink, creator, keywords, outputPath);
+            FileExportService.createPdf(drink, creator, creationBar, keywords, outputPath);
             new MessageDialog("Successo", "salvataggio effettuato", JOptionPane.INFORMATION_MESSAGE, this.view);
         } catch (Exception ex) {
             new ExceptionPanel("Errore durante la creazione del PDF: ", this.view);

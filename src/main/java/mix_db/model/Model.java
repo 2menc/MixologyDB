@@ -67,6 +67,13 @@ public interface Model {
     Optional<Drink> createDrink(Drink drink, int userID, Optional<Integer> barID, List<Composition> composition, List<String> keywords);
 
     /**
+     * gets the bar in wich the drink was created (assuming it is a bar creation)
+     * @param drinkID .
+     * @return an Optional of Bar
+     */
+    Optional<Bar> getDrinkBar(int drinkID);
+    
+    /**
      * links a user to a bar
      * @param barID the bar
      * @param userID the user

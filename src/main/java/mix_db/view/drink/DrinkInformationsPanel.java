@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 
 import mix_db.core.GeneralSettings;
 import mix_db.core.Session;
+import mix_db.data.dao.Bar;
 import mix_db.data.dao.Composition;
 import mix_db.data.dao.Drink;
 import mix_db.data.dao.Review;
@@ -44,6 +45,9 @@ public class DrinkInformationsPanel extends JPanel{
     private final JTextArea ingredients;
     private final JTextField keywords;
 
+    private final JTextField creator;
+    private final JTextField bar;
+
     private final JPanel reviews;
 
     private final JFrame reviewFrame;
@@ -52,6 +56,8 @@ public class DrinkInformationsPanel extends JPanel{
     private final JTextArea reviewDescription;
     private final JButton sendReview;
 
+    JLabel creatorHeader;
+    JLabel barCreatorHeader;
 
     public DrinkInformationsPanel(Drink drink, boolean isDrinkAlreaySaved) {
         this.setLayout(new BorderLayout());
@@ -112,6 +118,12 @@ public class DrinkInformationsPanel extends JPanel{
         descriptionPanel.add(this.name);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 2)));
 
+        JLabel categoryHeader = new JLabel("CATEGORIA:");
+        categoryHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        categoryHeader.setForeground(Color.GRAY);
+        descriptionPanel.add(categoryHeader);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+
         this.category = new JTextField(drink.getCategoryName());
         this.category.setEditable(false);
         this.category.setOpaque(false);
@@ -121,6 +133,36 @@ public class DrinkInformationsPanel extends JPanel{
         descriptionPanel.add(this.category);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 25)));
         
+        this.creatorHeader = new JLabel("CREATO DA");
+        creatorHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        creatorHeader.setForeground(Color.GRAY);
+        descriptionPanel.add(creatorHeader);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+
+        this.creator = new JTextField();
+        this.creator.setEditable(false);
+        this.creator.setOpaque(false);
+        this.creator.setBorder(null);
+        this.creator.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        this.creator.setForeground(new Color(180, 180, 180));
+        descriptionPanel.add(this.creator);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 4)));
+
+        barCreatorHeader = new JLabel("IDEATO PRESSO");
+        barCreatorHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        barCreatorHeader.setForeground(Color.GRAY);
+        descriptionPanel.add(barCreatorHeader);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 6)));
+
+        this.bar = new JTextField();
+        this.bar.setEditable(false);
+        this.bar.setOpaque(false);
+        this.bar.setBorder(null);
+        this.bar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        this.bar.setForeground(new Color(180, 180, 180));
+        descriptionPanel.add(this.bar);
+        descriptionPanel.add(Box.createRigidArea(new Dimension(0, 25))); 
+
         JLabel descriptionHeader = new JLabel("DESCRIZIONE");
         descriptionHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
         descriptionHeader.setForeground(Color.GRAY);
@@ -217,6 +259,27 @@ public class DrinkInformationsPanel extends JPanel{
 
         return new JLabel(scaledIcon);
 
+    }
+
+
+    public void populateCreatorAndBar(User creatorUser, Bar bar) {
+        if (drink.isIBA()) {
+            this.creator.setText("Ricetta IBA");
+            this.creator.setVisible(true);
+            this.barCreatorHeader.setVisible(false);
+        } else {
+            this.creator.setText(creatorUser.getName().toUpperCase() + " " + creatorUser.getSurname().toUpperCase());
+            this.creator.setVisible(true);
+            
+            if (bar != null) {
+                this.bar.setText(bar.getBarName().toUpperCase() + " (" + bar.getCity().toUpperCase() + ")");
+                this.bar.setVisible(true);
+            } else {
+                this.bar.setText("");
+                this.barCreatorHeader.setVisible(false);
+            }
+        }
+        this.updateView();
     }
 
     /**
@@ -340,7 +403,7 @@ public class DrinkInformationsPanel extends JPanel{
      * updates all components of this panel
      */
     private void updateView() {
-        this.validate();
+        this.revalidate();
         this.repaint();
     }
 

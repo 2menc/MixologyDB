@@ -253,6 +253,33 @@ public class Bar {
         }
 
         /**
+         * gets the bar in which the drink was created
+         * @param connection .
+         * @param barID .
+         * @return an Opytional of bar
+         */
+        public static Optional<Bar> getCreationBar(Connection connection, int drinkID) {
+            try (
+                final PreparedStatement statement = DatabaseConnection.prepare(connection, 
+                    Queries.GET_DRINK_CREATOR_BAR, drinkID);
+                final ResultSet rs = statement.executeQuery();
+            ) {
+                if(rs.next()) {
+                    final Bar b = new Bar(
+                        rs.getInt("barID"), 
+                        rs.getString("nomeBar"), 
+                        rs.getString("città"), 
+                        rs.getString("indirizzo")
+                    );
+                    return Optional.of(b);
+                }
+                return Optional.empty();
+            } catch (final Exception e) {
+                throw new DAOException(e);
+            }
+        }
+
+        /**
          * deletes a bar
          * @param connection .
          * @param barID .

@@ -12,6 +12,7 @@ import org.openpdf.text.Paragraph;
 import org.openpdf.text.pdf.BaseFont;
 import org.openpdf.text.pdf.PdfWriter;
 
+import mix_db.data.dao.Bar;
 import mix_db.data.dao.Drink;
 import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DAOException;
@@ -33,7 +34,7 @@ public class FileExportService {
      * @param keywords .
      * @param outputPath .
      */
-    public static void createPdf(Drink drink, User creator, java.util.List<String> keywords, String outputPath) {
+    public static void createPdf(Drink drink, User creator, Bar bar, java.util.List<String> keywords, String outputPath) {
 
         final Document document = new Document();
 
@@ -84,12 +85,23 @@ public class FileExportService {
             drinkName.setSpacingAfter(5);
             document.add(drinkName);
 
+            final Paragraph drinkCreator;
             if(drink.isIBA()) {
-                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: ricetta IBA", textFont);
+                drinkCreator = new Paragraph("🧑🏻Creatore: ricetta IBA", textFont);
                 drinkCreator.setSpacingAfter(15);
-                document.add(drinkCreator);
             } else {
-                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: " + creator.getName() + " " + creator.getSurname(), textFont);
+                drinkCreator = new Paragraph("🧑🏻Creatore: " + creator.getName() + " " + creator.getSurname(), textFont);
+                drinkCreator.setSpacingAfter(15);
+            }
+
+            if (bar != null) {
+                drinkCreator.setSpacingAfter(5);
+                document.add(drinkCreator);
+                
+                final Paragraph drinkBar = new Paragraph("🏪Creato presso: " + bar.getBarName() + " (" + bar.getCity() + ", " + bar.getAddress() + ")", textFont);
+                drinkBar.setSpacingAfter(15);
+                document.add(drinkBar);
+            } else {
                 drinkCreator.setSpacingAfter(15);
                 document.add(drinkCreator);
             }

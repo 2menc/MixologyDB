@@ -325,6 +325,14 @@ public class Queries {
     AND U.userID = C.userID;         
     """;
 
+    public static final String GET_DRINK_CREATOR_BAR =
+    """
+    SELECT B.*
+    FROM Bar B, creazioni C
+    WHERE C.drinkID = ?
+    AND B.barID = C.barID;         
+    """;
+
     /**
      * saves a drink in the favourites section
      */
