@@ -7,10 +7,8 @@ import java.sql.Date;
 
 import javax.swing.JFrame;
 
-import mix_db.core.FileExportService;
 import mix_db.core.Session;
 import mix_db.core.exceptions.WrongCredentialsException;
-import mix_db.data.dao.Drink;
 import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
@@ -114,7 +112,6 @@ public class LoginController {
                 public void actionPerformed(ActionEvent e) {
                     try {
                         manageSignInAttempt();
-                        System.out.println(Session.getInstance().getLoggedUser().toString());
                     } catch (Exception exception) {
                         new ExceptionPanel(exception, v);
                         return;
@@ -172,12 +169,5 @@ public class LoginController {
             }
         }
     }
-
-    /**
-     * manages pdf file generation, getting output path
-     */
-    private void managePdfGeneration(Drink drink, String creator, java.util.List<String> keywords) {
-        final String outputPath = "";
-        FileExportService.createPdf(drink, creator, keywords, outputPath);
-    }
 }
+

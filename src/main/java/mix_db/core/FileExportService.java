@@ -13,6 +13,7 @@ import org.openpdf.text.pdf.BaseFont;
 import org.openpdf.text.pdf.PdfWriter;
 
 import mix_db.data.dao.Drink;
+import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DAOException;
 
 /**
@@ -30,7 +31,7 @@ public class FileExportService {
      * @param keywords .
      * @param outputPath .
      */
-    public static void createPdf(Drink drink, String creator, java.util.List<String> keywords, String outputPath) {
+    public static void createPdf(Drink drink, User creator, java.util.List<String> keywords, String outputPath) {
 
         final Document document = new Document();
 
@@ -73,7 +74,7 @@ public class FileExportService {
                 drinkCreator.setSpacingAfter(15);
                 document.add(drinkCreator);
             } else {
-                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: " + creator, textFont);
+                final Paragraph drinkCreator = new Paragraph("🧑🏻Creatore: " + creator.getName() + ", " + creator.getSurname(), textFont);
                 drinkCreator.setSpacingAfter(15);
                 document.add(drinkCreator);
             }

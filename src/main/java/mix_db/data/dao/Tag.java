@@ -65,7 +65,7 @@ public class Tag {
          * @param drinkID .
          * @return a list of tags
          */
-        public static List<Tag> ofDrink(Connection connection, int drinkID) {
+        public static List<String> ofDrink(Connection connection, int drinkID) {
             final List<Tag> tags = new LinkedList<>();
 
             try(
@@ -81,7 +81,12 @@ public class Tag {
 
                     tags.add(t);
                 }
-                return tags;
+
+                final List<String> tagList = new LinkedList<>();
+                for(var t: tags) {
+                    tagList.add(t.getKeyword());
+                }
+                return tagList;
             } catch (Exception e) {
                 throw new DAOException(e);
             }

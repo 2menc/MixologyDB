@@ -36,6 +36,11 @@ public class DbModel implements Model{
     }
 
     @Override
+    public User getAnonymUser() {
+        return User.DAO.getUser(connection, "anonimo", "0").get();
+    }
+
+    @Override
     public boolean userExists(String email) {
         return User.DAO.userExists(connection, email);        
     }
@@ -82,6 +87,11 @@ public class DbModel implements Model{
     }
 
     @Override
+    public Optional<User> getDrinkCreator(int drinkID) {
+        return Drink.DAO.getCreator(connection, drinkID);
+    }
+
+    @Override
     public List<Drink> getRandomDrinkList(int numberOfResults) {
         return Drink.DAO.getRandomDrinkList(connection,numberOfResults);
     }
@@ -97,7 +107,7 @@ public class DbModel implements Model{
     }
 
     @Override
-    public List<Tag> getKeywords(int drinkID) {
+    public List<String> getKeywords(int drinkID) {
         return Tag.DAO.ofDrink(connection, drinkID);
     }
 

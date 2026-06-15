@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -13,14 +14,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import mix_db.core.FileExportService;
 import mix_db.core.GeneralSettings;
 import mix_db.core.Session;
 import mix_db.data.dao.Bar;
@@ -30,6 +34,7 @@ import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
+import mix_db.view.MessageDialog;
 import mix_db.view.bar.BarCreationPanel;
 import mix_db.view.bar.CreateBarView;
 import mix_db.view.drink.DrinkCreationView;
@@ -285,7 +290,46 @@ public class ApplicationController {
 
         final JButton infos = new JButton("info");
         card.add(infos, BorderLayout.SOUTH);
-        infos.addActionListener(new ActionListener() {
+        this.drinkInfoPanelCreationHelper(infos, d);
+
+        // *card
+        final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
+        card.setPreferredSize(dim);
+
+        int targetWidth = dim.width;
+        int targetHeight = dim.height; 
+
+        final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + d.getImagePath());
+
+        int originalWidth = image.getIconWidth();
+        int originalHeight = image.getIconHeight();
+
+        // *image size/stretch check
+        if (originalWidth > 0 && originalHeight > 0 && targetWidth > 0 && targetHeight > 0) {
+            double widthRatio = (double) targetWidth / originalWidth;
+            double heightRatio = (double) targetHeight / originalHeight;
+            double ratio = Math.min(widthRatio, heightRatio); // Mantiene le proporzioni originali [1]
+
+            targetWidth = (int) (originalWidth * ratio);
+            targetHeight = (int) (originalHeight * ratio);
+        }
+
+        final Image scaledImage = image.getImage().getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+        final ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        final JLabel imageLabel = new JLabel(scaledIcon);
+        card.add(imageLabel, BorderLayout.CENTER);
+
+        final JLabel nameLabel = new JLabel(d.getName() + " | " + d.getCategoryName());
+        card.add(nameLabel, BorderLayout.NORTH);
+
+        card.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        return card;
+    }
+
+    private void drinkInfoPanelCreationHelper(JButton button, Drink d) {
+        button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(view instanceof MainView mv) {
@@ -376,44 +420,20 @@ public class ApplicationController {
                             populatePanels();
                         }
                     });
+                    dp.requestedToSavePdf(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            final Optional<User> creatorOpt = model.getDrinkCreator(d.getDrinkID());
+                            final List<String> keywords = model.getKeywords(d.getDrinkID());
+
+                            final User creator;
+                            creator = creatorOpt.isEmpty() ?  model.getAnonymUser() : creatorOpt.get(); 
+                            managePdfGeneration(d, creator, keywords);
+                        }
+                    });
                 }
             }            
         });
-
-        // *card
-        final Dimension dim = new Dimension(this.view.getSize().width/6, this.view.getSize().height/3);
-        card.setPreferredSize(dim);
-
-        int targetWidth = dim.width;
-        int targetHeight = dim.height; 
-
-        final ImageIcon image = new ImageIcon(GeneralSettings.fotoPath + d.getImagePath());
-
-        int originalWidth = image.getIconWidth();
-        int originalHeight = image.getIconHeight();
-
-        // *image size/stretch check
-        if (originalWidth > 0 && originalHeight > 0 && targetWidth > 0 && targetHeight > 0) {
-            double widthRatio = (double) targetWidth / originalWidth;
-            double heightRatio = (double) targetHeight / originalHeight;
-            double ratio = Math.min(widthRatio, heightRatio); // Mantiene le proporzioni originali [1]
-
-            targetWidth = (int) (originalWidth * ratio);
-            targetHeight = (int) (originalHeight * ratio);
-        }
-
-        final Image scaledImage = image.getImage().getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
-        final ImageIcon scaledIcon = new ImageIcon(scaledImage);
-
-        final JLabel imageLabel = new JLabel(scaledIcon);
-        card.add(imageLabel, BorderLayout.CENTER);
-
-        final JLabel nameLabel = new JLabel(d.getName() + " | " + d.getCategoryName());
-        card.add(nameLabel, BorderLayout.NORTH);
-
-        card.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        return card;
     }
 
     private void populateUsersWithMostPositiveReviewsLeaderboard() {
@@ -469,6 +489,26 @@ public class ApplicationController {
             return false;
         }
         return model.getFavourites(Session.getInstance().getLoggedUser().getUserID()).contains(d);
+    }
+
+    /**
+     * manages pdf file generation, getting output path
+     */
+    private void managePdfGeneration(Drink drink, User creator, java.util.List<String> keywords) {
+
+        final File directory = new File("shares");
+        if(!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        final String outputPath = directory.getPath() + File.separator + drink.getName() + ".pdf";
+        try {
+            FileExportService.createPdf(drink, creator, keywords, outputPath);
+            new MessageDialog("Successo", "salvataggio effettuato", JOptionPane.INFORMATION_MESSAGE, this.view);
+        } catch (Exception ex) {
+            new ExceptionPanel("Errore durante la creazione del PDF: ", this.view);
+            ex.printStackTrace();
+        }
     }
 
 }

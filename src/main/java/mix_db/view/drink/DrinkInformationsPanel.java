@@ -29,7 +29,6 @@ import mix_db.core.Session;
 import mix_db.data.dao.Composition;
 import mix_db.data.dao.Drink;
 import mix_db.data.dao.Review;
-import mix_db.data.dao.Tag;
 import mix_db.data.dao.User;
 import mix_db.view.ExceptionPanel;
 
@@ -254,6 +253,10 @@ public class DrinkInformationsPanel extends JPanel{
         this.buttonsPanel.backButton.addActionListener(e);
     }
 
+    public void requestedToSavePdf(ActionListener al) {
+        this.buttonsPanel.saveAsPdfButton.addActionListener(al);
+    }
+
     public void setUpReviewFrame() {
         this.reviewPanel.add(this.score);
         this.reviewPanel.add(this.reviewDescription);
@@ -325,10 +328,9 @@ public class DrinkInformationsPanel extends JPanel{
         this.updateView(); 
     }   
 
-    public void populateKeywords(List<Tag> kws) {
+    public void populateKeywords(List<String> kws) {
         final StringBuilder sb = new StringBuilder();
-        for(Tag k: kws) {
-            final String s = k.getKeyword();
+        for(String s: kws) {
             sb.append(s + ", ");
         }
         this.keywords.setText(sb.toString());
@@ -359,6 +361,7 @@ public class DrinkInformationsPanel extends JPanel{
         private final JButton removeFavouriteButton;
         private final JButton addReviewButton;
         private final JButton backButton;
+        private final JButton saveAsPdfButton;
 
         private ButtonsPanel() {
             this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -369,11 +372,13 @@ public class DrinkInformationsPanel extends JPanel{
             this.removeFavouriteButton.setForeground(Color.RED);
             this.addReviewButton = new JButton("Aggiungi una recensione");        
             this.backButton = new JButton("torna indietro");
+            this.saveAsPdfButton = new JButton("condividi come pdf");
 
             this.add(this.addFavouriteButton);
             this.add(this.removeFavouriteButton);
             this.add(this.addReviewButton);
             this.add(this.backButton);
+            this.add(this.saveAsPdfButton);
         }
     }
 }

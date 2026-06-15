@@ -28,6 +28,12 @@ public interface Model {
     Optional<User> login(String email, String password);
 
     /**
+     * gets the anonym user
+     * @return the User
+     */
+    User getAnonymUser();
+
+    /**
      * checks if a user exists, based on his email
      * @param email the email
      * @return {@code true} if exists, false otherwise
@@ -89,6 +95,13 @@ public interface Model {
     Optional<Drink> getDrink(int drinkID);
 
     /**
+     * gets the creator of a drink
+     * @param drinkID .
+     * @return an Optional of User
+     */
+    Optional<User> getDrinkCreator(int drinkID);
+
+    /**
      * gets a random list of drinks
      * @param numberOfResults the number of results to show
      * @return a list of drinks
@@ -114,7 +127,7 @@ public interface Model {
      * @param drinkID the id of the drink to get the keywords from
      * @return empty Optional if the drink is not in the db, a list with all Tags otherwise
      */
-    List<Tag> getKeywords(int drinkID);
+    List<String> getKeywords(int drinkID);
 
     /**
      * saves a drink in favourites
