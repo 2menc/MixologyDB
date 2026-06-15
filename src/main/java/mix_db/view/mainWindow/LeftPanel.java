@@ -1,11 +1,6 @@
 package mix_db.view.mainWindow;
 
-import java.awt.GridLayout;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import java.util.regex.Matcher;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;

@@ -20,8 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import mix_db.view.drink.CreateDrinkPanel;
-
 public class BarCreationPanel extends JPanel{
 
     private final JTextField barName;

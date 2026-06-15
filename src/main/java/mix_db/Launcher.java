@@ -1,6 +1,5 @@
 package mix_db;
 
-import com.formdev.flatlaf.*;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 import mix_db.controller.LoginController;

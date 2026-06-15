@@ -11,5 +11,5 @@ public interface GeneralSettings {
     /** standard path for pdf fonts */
     final String fontEmojiPath = "src/main/resources/fonts/";
 
-    final String databseIP = "100.88.202.120";
+    final String databseIP = "127.0.0.1";
 }
