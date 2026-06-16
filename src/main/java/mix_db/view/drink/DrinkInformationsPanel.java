@@ -448,6 +448,7 @@ public class DrinkInformationsPanel extends JPanel{
             
             this.removeDrink = new JButton("elimina ricetta");
             this.removeDrink.setVisible(false);
+            this.removeDrink.setForeground(Color.ORANGE);
 
             this.add(this.addFavouriteButton);
             this.add(this.removeFavouriteButton);

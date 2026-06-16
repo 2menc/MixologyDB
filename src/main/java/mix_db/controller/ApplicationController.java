@@ -290,7 +290,7 @@ public class ApplicationController {
 
                             if (userToBan != null) {
 
-                                int confirm = JOptionPane.showConfirmDialog(
+                                final int confirm = JOptionPane.showConfirmDialog(
                                     analiticsView, 
                                     "Sei sicuro di voler bannare l'utente " + userToBan.getName().toUpperCase() + " " + userToBan.getSurname().toUpperCase() + "?",
                                     "Conferma Azione", 
@@ -486,11 +486,22 @@ public class ApplicationController {
                     dp.adminRequestedToRemoveDrink(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if(model.deleteDrink(d.getDrinkID())) { 
-                                new MessageDialog("Successo", "Drink eliminato con successo", JOptionPane.INFORMATION_MESSAGE, dp);
-                            } else {
-                                new MessageDialog("Errore", "Drink non eliminato", JOptionPane.CANCEL_OPTION, dp);
-                            }
+                                final int confirm = JOptionPane.showConfirmDialog(
+                                    mv, 
+                                    "Stai eliminando: " + d.getName() + ".\nSicuro?",
+                                    "Conferma Eliminazione", 
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.WARNING_MESSAGE
+                                );
+
+                                if (confirm == JOptionPane.YES_OPTION) {
+                                    if(model.deleteDrink(d.getDrinkID())) { 
+                                        new MessageDialog("Successo", "Drink eliminato con successo", JOptionPane.INFORMATION_MESSAGE, dp);
+                                    } else {
+                                        new MessageDialog("Errore", "Drink non eliminato", JOptionPane.CANCEL_OPTION, dp);
+                                    }
+                                }
+
                             mv.dispose();
                             view = new MainView();
                             view.setLocationRelativeTo(mv);
