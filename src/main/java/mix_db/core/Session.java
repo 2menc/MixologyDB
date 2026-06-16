@@ -49,6 +49,14 @@ public class Session {
     }
 
     /**
+     * tells if the current user is an admin
+     * @return
+     */
+    public boolean isAdmin() {
+        return this.loggedUser.getUserRole().equals("Admin");
+    }
+
+    /**
      * logs in
      * @param email .
      * @param password .
