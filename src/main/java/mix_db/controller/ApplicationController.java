@@ -36,6 +36,7 @@ import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
 import mix_db.view.ExceptionPanel;
+import mix_db.view.FrameIcon;
 import mix_db.view.MessageDialog;
 import mix_db.view.bar.BarCreationPanel;
 import mix_db.view.bar.CreateBarView;
@@ -218,6 +219,7 @@ public class ApplicationController {
                 public void actionPerformed(ActionEvent e) {
                     final JFrame frame = new JFrame();
                     frame.setTitle("preferiti");
+                    new FrameIcon(frame);
                     
                     final JPanel panel = new JPanel();
 

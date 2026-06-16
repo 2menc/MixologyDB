@@ -33,6 +33,7 @@ import mix_db.data.dao.Drink;
 import mix_db.data.dao.Review;
 import mix_db.data.dao.User;
 import mix_db.view.ExceptionPanel;
+import mix_db.view.FrameIcon;
 
 public class DrinkInformationsPanel extends JPanel{
 
@@ -229,6 +230,7 @@ public class DrinkInformationsPanel extends JPanel{
         this.add(this.buttonsPanel, BorderLayout.NORTH);
 
         this.reviewFrame = new JFrame("Aggiungi una recensione");
+        new FrameIcon(this.reviewFrame);
         
         this.reviewPanel = new JPanel();    
         this.score = new JTextField("voto");
