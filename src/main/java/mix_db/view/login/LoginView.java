@@ -16,7 +16,7 @@ public class LoginView extends JFrame{
      */
     public LoginView() {
         super.setTitle("MixologyDB_login");
-        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/7, Toolkit.getDefaultToolkit().getScreenSize().height/4);
+        super.setSize(Toolkit.getDefaultToolkit().getScreenSize().width/6, Toolkit.getDefaultToolkit().getScreenSize().height/3);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.panel = new LoginPanel();
