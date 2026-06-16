@@ -45,7 +45,7 @@ public class FileExportService {
             document.open();
             
             // *font
-            //final BaseFont font = BaseFont.createFont(GeneralSettings.fontEmojiPath + 
+            //final BaseFont font = BaseFont.createFont(GeneralSettings.fontiPath + 
                     //FONT_NAME + ".ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);    //? not working with jar
 
             byte[] fontBytes;
