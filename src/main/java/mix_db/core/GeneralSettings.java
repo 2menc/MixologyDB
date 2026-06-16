@@ -9,7 +9,10 @@ public interface GeneralSettings {
     final String fotoPath = "images/";
     
     /** standard path for pdf fonts */
-    final String fontEmojiPath = "src/main/resources/fonts/";
+    final String fontPath = "src/main/resources/fonts/";
+
+    /** standard path for icons */
+    final String iconsPath = "src/main/resources/icons/";
 
     final String databseIP = "127.0.0.1";
 }
