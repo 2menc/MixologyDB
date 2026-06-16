@@ -352,7 +352,7 @@ public class ApplicationController {
                     mainPanel.revalidate();
                     mainPanel.repaint();
 
-                    dp.disableButtonsForGuests();
+                    dp.configureButtons();
                     dp.populateIngredients(model.getComposition(d.getDrinkID()));
                     dp.populateKeywords(model.getKeywords(d.getDrinkID()));
 
@@ -441,6 +441,20 @@ public class ApplicationController {
                             final User creator = creatorOpt.isEmpty() ?  model.getAnonymUser() : creatorOpt.get(); 
 
                             managePdfGeneration(d, creator, actualBar, keywords);
+                        }
+                    });
+                    dp.adminRequestedToRemoveDrink(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if(model.deleteDrink(d.getDrinkID())) { 
+                                new MessageDialog("Successo", "Drink eliminato con successo", JOptionPane.INFORMATION_MESSAGE, dp);
+                            } else {
+                                new MessageDialog("Errore", "Drink non eliminato", JOptionPane.CANCEL_OPTION, dp);
+                            }
+                            mv.dispose();
+                            view = new MainView();
+                            view.setLocationRelativeTo(mv);
+                            populatePanels();
                         }
                     });
                 }

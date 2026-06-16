@@ -56,8 +56,8 @@ public class DrinkInformationsPanel extends JPanel{
     private final JTextArea reviewDescription;
     private final JButton sendReview;
 
-    JLabel creatorHeader;
-    JLabel barCreatorHeader;
+    private JLabel creatorHeader;
+    private JLabel barCreatorHeader;
 
     public DrinkInformationsPanel(Drink drink, boolean isDrinkAlreaySaved) {
         this.setLayout(new BorderLayout());
@@ -320,6 +320,10 @@ public class DrinkInformationsPanel extends JPanel{
         this.buttonsPanel.saveAsPdfButton.addActionListener(al);
     }
 
+    public void adminRequestedToRemoveDrink(ActionListener al) {
+        this.buttonsPanel.removeDrink.addActionListener(al);
+    }
+
     public void setUpReviewFrame() {
         this.reviewPanel.add(this.score);
         this.reviewPanel.add(this.reviewDescription);
@@ -408,13 +412,16 @@ public class DrinkInformationsPanel extends JPanel{
     }
 
     /**
-     * if the user is a guest, disables buttons that requires login
+     * if the user is a guest, disables buttons that requires login / if the user is an admin adds the required buttons
      */
-    public void disableButtonsForGuests() {
+    public void configureButtons() {
         if(! Session.getInstance().isLoggedIn()) {
             this.buttonsPanel.addFavouriteButton.setEnabled(false);
             this.buttonsPanel.removeFavouriteButton.setEnabled(false);
             this.buttonsPanel.addReviewButton.setEnabled(false);
+        }
+        if(Session.getInstance().isAdmin()) {
+            this.buttonsPanel.removeDrink.setVisible(true);;
         }
     }
 
@@ -426,6 +433,8 @@ public class DrinkInformationsPanel extends JPanel{
         private final JButton backButton;
         private final JButton saveAsPdfButton;
 
+        private final JButton removeDrink;
+
         private ButtonsPanel() {
             this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
@@ -436,12 +445,16 @@ public class DrinkInformationsPanel extends JPanel{
             this.addReviewButton = new JButton("Aggiungi una recensione");        
             this.backButton = new JButton("torna indietro");
             this.saveAsPdfButton = new JButton("condividi come pdf");
+            
+            this.removeDrink = new JButton("elimina ricetta");
+            this.removeDrink.setVisible(false);
 
             this.add(this.addFavouriteButton);
             this.add(this.removeFavouriteButton);
             this.add(this.addReviewButton);
             this.add(this.backButton);
             this.add(this.saveAsPdfButton);
+            this.add(this.removeDrink);
         }
     }
 }
