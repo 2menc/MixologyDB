@@ -64,12 +64,10 @@ public class FrameIcon extends Image{
      * gets a graphics context for drawing to this image.
      *
      * @return a graphics context to draw to this image
-     * @throws UnsupportedOperationException always, as this operation is not supported
      */
     @Override
     public Graphics getGraphics() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getGraphics'");
+        return this.getGraphics();
     }
 
     /**
@@ -78,11 +76,9 @@ public class FrameIcon extends Image{
      * @param name the name of the property
      * @param observer the image observer waiting for the image to be loaded
      * @return the value of the named property
-     * @throws UnsupportedOperationException always, as this operation is not supported
      */
     @Override
     public Object getProperty(String name, ImageObserver observer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProperty'");
+        return this.getProperty(name, observer);
     }
 }
