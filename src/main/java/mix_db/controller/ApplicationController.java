@@ -389,29 +389,6 @@ public class ApplicationController {
                     }
 
                     final DrinkInformationsPanel dp = new DrinkInformationsPanel(d, isDrinkSaved(d));
-                    mainPanel.add(dp, BorderLayout.CENTER);
-
-                    mainPanel.revalidate();
-                    mainPanel.repaint();
-
-                    dp.configureButtons();
-                    dp.populateIngredients(model.getComposition(d.getDrinkID()));
-                    dp.populateKeywords(model.getKeywords(d.getDrinkID()));
-
-                    final Optional<User> creatorOpt = model.getDrinkCreator(d.getDrinkID());
-                    final User creator = creatorOpt.isEmpty() ? model.getAnonymUser() : creatorOpt.get();
-                    final Optional<Bar> barOpt = model.getDrinkBar(d.getDrinkID());
-                    dp.populateCreatorAndBar(creator, barOpt.orElse(null));
-
-                    final var reviewsMap = new HashMap<Review, User>();
-                    for(var k: model.getDrinkReviews(d.getDrinkID())) {
-                        final var u = model.getFullUserFromID(k.getUserID());
-                        
-                        if(u.isPresent()) {
-                            reviewsMap.put(k, u.get());
-                        }
-                    }
-                    dp.populateReviewsScrollPane(reviewsMap);
                     
                     // *listeners
                     dp.requestedToAddToFavs(new ActionListener() {
@@ -516,6 +493,71 @@ public class ApplicationController {
                             populatePanels();
                         }
                     });
+                    dp.adminRequestedToRemoveReview(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            final JButton sourceButton = (JButton) e.getSource();
+                            final Review reviewToDelete = (Review) sourceButton.getClientProperty("review");
+                            
+                            if (reviewToDelete != null) {
+                                final int confirm = JOptionPane.showConfirmDialog(
+                                    mv, 
+                                    "Vuoi eliminare questa recensione?",
+                                    "Conferma Eliminazione", 
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.WARNING_MESSAGE
+                                );
+
+                                if (confirm == JOptionPane.YES_OPTION) {
+                                    try {
+                                        if (model.deleteReview(reviewToDelete.getUserID(), reviewToDelete.getDrinkID())) {
+                                            new MessageDialog("Successo", "Recensione eliminata con successo", JOptionPane.INFORMATION_MESSAGE, dp);
+                                        } else {
+                                            new MessageDialog("Errore", "Impossibile eliminare la recensione", JOptionPane.ERROR_MESSAGE, dp);
+                                        }
+                                        
+                                        final var reviewsMap = new HashMap<Review, User>();
+                                        for(var k: model.getDrinkReviews(d.getDrinkID())) {
+                                            final var u = model.getFullUserFromID(k.getUserID());
+                                            if(u.isPresent()) {
+                                                reviewsMap.put(k, u.get());
+                                            }
+                                        }
+                                        dp.populateReviewsScrollPane(reviewsMap);
+                                        
+                                    } catch (Exception ex) {
+                                        new ExceptionPanel(ex, view);
+                                        ex.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    mainPanel.add(dp, BorderLayout.CENTER);
+
+
+                    mainPanel.revalidate();
+                    mainPanel.repaint();
+
+                    dp.configureButtons();
+                    dp.populateIngredients(model.getComposition(d.getDrinkID()));
+                    dp.populateKeywords(model.getKeywords(d.getDrinkID()));
+
+                    final Optional<User> creatorOpt = model.getDrinkCreator(d.getDrinkID());
+                    final User creator = creatorOpt.isEmpty() ? model.getAnonymUser() : creatorOpt.get();
+                    final Optional<Bar> barOpt = model.getDrinkBar(d.getDrinkID());
+                    dp.populateCreatorAndBar(creator, barOpt.orElse(null));
+
+                    final var reviewsMap = new HashMap<Review, User>();
+                    for(var k: model.getDrinkReviews(d.getDrinkID())) {
+                        final var u = model.getFullUserFromID(k.getUserID());
+                        
+                        if(u.isPresent()) {
+                            reviewsMap.put(k, u.get());
+                        }
+                    }
+                    dp.populateReviewsScrollPane(reviewsMap);
                 }
             }            
         });

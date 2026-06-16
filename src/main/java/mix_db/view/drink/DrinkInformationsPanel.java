@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -59,6 +60,8 @@ public class DrinkInformationsPanel extends JPanel{
     private JLabel creatorHeader;
     private JLabel barCreatorHeader;
 
+    private ActionListener removeReviewListener;
+
     public DrinkInformationsPanel(Drink drink, boolean isDrinkAlreaySaved) {
         this.setLayout(new BorderLayout());
         this.setOpaque(false);
@@ -109,6 +112,7 @@ public class DrinkInformationsPanel extends JPanel{
         descriptionPanel.setOpaque(false);
         descriptionPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
+        // *name
         this.name = new JTextField(drink.getName().toUpperCase());
         this.name.setEditable(false);
         this.name.setOpaque(false);
@@ -118,6 +122,7 @@ public class DrinkInformationsPanel extends JPanel{
         descriptionPanel.add(this.name);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 2)));
 
+        // *category
         JLabel categoryHeader = new JLabel("CATEGORIA:");
         categoryHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
         categoryHeader.setForeground(Color.GRAY);
@@ -133,6 +138,7 @@ public class DrinkInformationsPanel extends JPanel{
         descriptionPanel.add(this.category);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 25)));
         
+        // *creator
         this.creatorHeader = new JLabel("CREATO DA");
         creatorHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
         creatorHeader.setForeground(Color.GRAY);
@@ -148,6 +154,7 @@ public class DrinkInformationsPanel extends JPanel{
         descriptionPanel.add(this.creator);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 4)));
 
+        // *bar
         barCreatorHeader = new JLabel("IDEATO PRESSO");
         barCreatorHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
         barCreatorHeader.setForeground(Color.GRAY);
@@ -163,6 +170,7 @@ public class DrinkInformationsPanel extends JPanel{
         descriptionPanel.add(this.bar);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 25))); 
 
+        // *description
         JLabel descriptionHeader = new JLabel("DESCRIZIONE");
         descriptionHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
         descriptionHeader.setForeground(Color.GRAY);
@@ -180,6 +188,7 @@ public class DrinkInformationsPanel extends JPanel{
         descriptionPanel.add(this.description);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
+        // *infredients
         JLabel ingredientsHeader = new JLabel("INGREDIENTI");
         ingredientsHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
         ingredientsHeader.setForeground(Color.GRAY);
@@ -197,6 +206,7 @@ public class DrinkInformationsPanel extends JPanel{
         descriptionPanel.add(this.ingredients);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
+        // *tags
         JLabel tagHeader = new JLabel("TAG / PAROLE CHIAVE");
         tagHeader.setFont(new Font("Segoe UI", Font.BOLD, 11));
         tagHeader.setForeground(Color.GRAY);
@@ -324,6 +334,10 @@ public class DrinkInformationsPanel extends JPanel{
         this.buttonsPanel.removeDrink.addActionListener(al);
     }
 
+    public void adminRequestedToRemoveReview(ActionListener al) {
+        this.removeReviewListener = al;
+    }
+
     public void setUpReviewFrame() {
         this.reviewPanel.add(this.score);
         this.reviewPanel.add(this.reviewDescription);
@@ -387,8 +401,25 @@ public class DrinkInformationsPanel extends JPanel{
                     javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5) 
                 ));
 
-                this.reviews.add(ta);
+                final JPanel reviewRow = new JPanel(new BorderLayout(5, 5));
+                reviewRow.setOpaque(false);
+                reviewRow.add(ta, BorderLayout.CENTER);
                 
+                if (Session.getInstance().isAdmin() && this.removeReviewListener != null) {
+                    final JButton deleteBtn = new JButton("elimina");
+                    deleteBtn.setForeground(Color.RED);
+                    deleteBtn.putClientProperty("review", r);
+                    deleteBtn.addActionListener(this.removeReviewListener);
+
+                    final JPanel buttonContainer = new JPanel(new GridBagLayout());
+                    buttonContainer.setOpaque(false);
+                    buttonContainer.add(deleteBtn);
+                    
+                    reviewRow.add(buttonContainer, BorderLayout.EAST);
+                }
+
+                this.reviews.add(reviewRow);
+
                 this.reviews.add(javax.swing.Box.createRigidArea(new java.awt.Dimension(0, 10)));
             }
         }
@@ -421,7 +452,7 @@ public class DrinkInformationsPanel extends JPanel{
             this.buttonsPanel.addReviewButton.setEnabled(false);
         }
         if(Session.getInstance().isAdmin()) {
-            this.buttonsPanel.removeDrink.setVisible(true);;
+            this.buttonsPanel.removeDrink.setVisible(true);
         }
     }
 
