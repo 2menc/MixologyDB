@@ -3,6 +3,7 @@ package mix_db.core;
 import java.sql.Connection;
 import java.util.Optional;
 
+import mix_db.data.Role;
 import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
@@ -53,7 +54,7 @@ public class Session {
      * @return
      */
     public boolean isAdmin() {
-        return this.loggedUser.getUserRole().equals("Admin");
+        return this.loggedUser.getUserRole().equals(Role.ADMIN);
     }
 
     /**

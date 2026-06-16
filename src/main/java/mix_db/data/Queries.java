@@ -18,7 +18,7 @@ public class Queries {
     """
     SELECT I.nomeIngrediente, volteUtilizzato
     FROM composizioni C, ingredienti I
-    WHERE C.nomeIngrediente = C.nomeIngrediente
+    WHERE C.nomeIngrediente = I.nomeIngrediente
     AND C.drinkID = ?;
     """;
 
