@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * central panel of {@link MainView}
@@ -23,6 +24,7 @@ public class CentralPanel extends JPanel{
 
         this.mainPane.setViewportView(this);
         this.mainPane.getVerticalScrollBar().setUnitIncrement(12);
+        this.mainPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         this.mainPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     }
