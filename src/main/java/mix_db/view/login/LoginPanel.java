@@ -17,7 +17,7 @@ public class LoginPanel extends JPanel{
     private final JButton guestButton;
 
     /**
-     * constructor
+     * creates the login panel with interactive input components
      */
     public LoginPanel() {
 
@@ -65,7 +65,7 @@ public class LoginPanel extends JPanel{
 
     /**
      * signs in as new user
-     * @param al .
+     * @param al the ActionEvent listener managed by controller
      */
     public void requestSignIn(ActionListener al) {
         this.signInButton.addActionListener(al);
@@ -73,7 +73,7 @@ public class LoginPanel extends JPanel{
 
     /**
      * enters as a guest
-     * @param al .
+     * @param al the ActionEvent listener managed by controller
      */
     public void requestToEnterAsGuest(ActionListener al) {
         this.guestButton.addActionListener(al);

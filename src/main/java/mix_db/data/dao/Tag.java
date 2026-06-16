@@ -18,7 +18,7 @@ public class Tag {
 
     /**
      * constructor
-     * @param keyword .
+     * @param keyword the tag keyword string value
      */
     public Tag(String keyword) {
         this.keyword = keyword;
@@ -61,8 +61,8 @@ public class Tag {
 
         /**
          * gets a dirnk's tags
-         * @param connection .
-         * @param drinkID .
+         * @param connection the database query connection
+         * @param drinkID the distinct drink identifier
          * @return a list of tags
          */
         public static List<String> ofDrink(Connection connection, int drinkID) {
@@ -92,6 +92,12 @@ public class Tag {
             }
         }
 
+        /**
+         * gets or creates a tag on connection
+         * @param connection the database query connection
+         * @param keyword the tag keyword value
+         * @return the processed tag keyword
+         */
     public static String getOrCreateTag(Connection connection, String keyword) {
         try (var statement = DatabaseConnection.prepare(connection,
             Queries.SEARCH_TAG,
@@ -119,6 +125,10 @@ public class Tag {
 
     }
 
+    /**
+     * gets the keyword of this tag
+     * @return the keyword string
+     */
     public String getKeyword() {
         return keyword;
     }

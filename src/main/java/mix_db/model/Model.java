@@ -22,7 +22,8 @@ public interface Model {
 
     /**
      * logs in with user's credentials
-     * @param user the user
+     * @param email the user email
+     * @param password the user password
      * @return an empty Optional if the user is not in the db, the User otherwise 
      */
     Optional<User> login(String email, String password);
@@ -50,25 +51,25 @@ public interface Model {
     /**
      * creates a new bar
      * @param bar the bar to create
-     * @return anOptional of Bar
+     * @return an Optional of Bar
      */
     public Optional<Bar> createBar(Bar bar);
 
     /**
      * Creates a new Drink, also saving its composition (ingredients) and identification (keywords). 
      * Automatically links the drink to the user and saves the creationDate
-     * @param drink .
+     * @param drink the drink entity to create
      * @param barID NULL if is a single user creation
-     * @param userID .
+     * @param userID the creating user ID
      * @param composition a {@link Set} of {@link Composition}
-     * @param keywords a {@link Map} of {@link (drinkID, keyword)}
-     * @returnan empty Optional if the drink is not in the db, the drink otherwise 
+     * @param keywords a {@link Map} of tag keys and values
+     * @return an empty Optional if the drink is not in the db, the drink otherwise 
      */
     Optional<Drink> createDrink(Drink drink, int userID, Optional<Integer> barID, List<Composition> composition, List<String> keywords);
 
     /**
      * gets the bar in wich the drink was created (assuming it is a bar creation)
-     * @param drinkID .
+     * @param drinkID the distinct drink identifier
      * @return an Optional of Bar
      */
     Optional<Bar> getDrinkBar(int drinkID);
@@ -89,21 +90,21 @@ public interface Model {
 
     /**
      * checks if a user is employed
-     * @param barID the bar
+     * @param userID the user
      * @return an Optional containing the bar
      */
     Optional<Bar> checkIfEmployed(int userID);
 
     /**
      * gets a drink
-     * @param drinkID .
+     * @param drinkID the distinct drink identifier
      * @return empty Optional if the drink is not in the db, the drink otherwise 
      */
     Optional<Drink> getDrink(int drinkID);
 
     /**
      * gets the creator of a drink
-     * @param drinkID .
+     * @param drinkID the distinct drink identifier
      * @return an Optional of User
      */
     Optional<User> getDrinkCreator(int drinkID);
@@ -231,7 +232,7 @@ public interface Model {
 
     /**
      * gets the full {@link User}, knowing only his id
-     * @param userID .
+     * @param userID the integer user identifier
      * @return an Optional of User
      */
     Optional<User> getFullUserFromID(int userID);
@@ -239,8 +240,8 @@ public interface Model {
     /**
      * ONLY FOR ADMINS
      * deletes the specified review
-     * @param userID .
-     * @param drinkID .
+     * @param userID the integer user identifier
+     * @param drinkID the distinct drink identifier
      * @return {@code true} if the review has been successfully deleted, {@code false} otherwise
      */
     boolean deleteReview(int userID, int drinkID);
@@ -248,7 +249,7 @@ public interface Model {
     /**
      * ONLY FOR ADMINS
      * deletes the specified drink
-     * @param drinkID .
+     * @param drinkID the distinct drink identifier
      * @return {@code true} if the drink has been successfully deleted, {@code false} otherwise
      */
     boolean deleteDrink(int drinkID);
@@ -256,8 +257,8 @@ public interface Model {
     /**
      * ONLY FOR ADMINS
      * deletes a user, maintains recipes as anonymous {@code(special User with userID=0)}
-     * @param userID
-     * @return
+     * @param userID the integer user identifier to ban
+     * @return {@code true} if the user is successfully banned, {@code false} otherwise
      */
     boolean banUser(int userID);
 }

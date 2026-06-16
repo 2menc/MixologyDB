@@ -62,3 +62,11 @@ tasks.withType<Test>().configureEach {
         showStandardStreams = true // Show the standard output
     }
 }
+
+tasks.withType<Javadoc>().configureEach {
+    options {
+        if (this is StandardJavadocDocletOptions) {
+            addStringOption("Xdoclint:all,-missing", "-quiet")
+        }
+    }
+}

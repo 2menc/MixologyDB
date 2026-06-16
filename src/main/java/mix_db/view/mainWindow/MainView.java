@@ -21,10 +21,7 @@ public class MainView extends JFrame {
     private RightPanel rightPanel;
 
     /**
-     * constructor
-     * @param centralPanel main scroll panel
-     * @param leftPanel panel with informations and leaderboards
-     * @param rightPanel panel with user informations, search bar and create drink
+     * creates the central frame and coordinates left, right, and central panels
      */
     public MainView() {
         this.mainPanel = new JPanel(new BorderLayout());
@@ -57,7 +54,7 @@ public class MainView extends JFrame {
 
     /**
      * gets the left panel
-     * @return
+     * @return the LeftPanel container component reference
      */
     public LeftPanel getLeftPanel() {
         return this.leftPanel;
@@ -65,12 +62,16 @@ public class MainView extends JFrame {
 
     /**
      * gets the right panel
-     * @return
+     * @return the RightPanel container component reference
      */
     public RightPanel getRightPanel() {
         return this.rightPanel;
     }
     
+    /**
+     * gets the current dynamic main panel
+     * @return the main JPanel container
+     */
     public JPanel getMainPanel() {
         return mainPanel;
     }
@@ -95,7 +96,7 @@ public class MainView extends JFrame {
 
     /**
      * changes the central Panel
-     * @param mainPanel the new mainPanel
+     * @param centralPanel the new centralPanel component
      */
     public void setCentralPanel(JPanel centralPanel) {
         

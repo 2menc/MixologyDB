@@ -165,9 +165,9 @@ public class User {
 
         /**
          * logs in with email and password
-         * @param connection .
-         * @param email .
-         * @param password .
+         * @param connection the database query connection
+         * @param email the user email address
+         * @param password the hashing database password
          * @return an empty Optional if there is no such user in the db, 
          * an Optional of the searched User otherwise
          */
@@ -204,8 +204,8 @@ public class User {
 
         /**
          * gets a full user knowing his id
-         * @param connection .
-         * @param userID .
+         * @param connection the database connection
+         * @param userID the integer user identifier
          * @return an empty Optional if there is no such user in the db, 
          * an Optional of the searched User otherwise
          */
@@ -242,8 +242,8 @@ public class User {
 
         /**
          * gets a full user knowing his email
-         * @param connection .
-         * @param email .
+         * @param connection the database connection
+         * @param email the user email address
          * @return an empty Optional if there is no such user in the db, 
          * an Optional of the searched User otherwise
          */
@@ -280,8 +280,8 @@ public class User {
 
         /**
          * checks if a user exists
-         * @param connection .
-         * @param userID .
+         * @param connection the database connection
+         * @param email the user email address
          * @return false if there is no such user in the db, true otherwise
          */
         public static boolean userExists(Connection connection, String email) {
@@ -298,8 +298,8 @@ public class User {
 
         /**
          * gets a list of user's favourites
-         * @param connection .
-         * @param userID .
+         * @param connection the database connection
+         * @param userID the integer user identifier
          * @return the list
          */
         public static List<Drink> getFavourites(Connection connection, int userID) {
@@ -329,8 +329,9 @@ public class User {
 
         /**
          * sets a drink as favourite
-         * @param connection .
-         * @param drinkID .
+         * @param connection the database connection
+         * @param drinkID the integer drink identifier
+         * @param userID the integer user identifier
          * @return true if success, false otherwise
          */
         public static boolean setFavourite(Connection connection, int drinkID, int userID) {
@@ -347,8 +348,9 @@ public class User {
 
         /**
          * removees a drink from favourites
-         * @param connection .
-         * @param drinkID .
+         * @param connection the database connection
+         * @param drinkID the integer drink identifier
+         * @param userID the integer user identifier
          * @return true if success, false otherwise
          */
         public static boolean deleteFavourite(Connection connection, int drinkID, int userID) {
@@ -365,9 +367,9 @@ public class User {
 
         /**
          * gets suggested drinks
-         * @param connection .
-         * @param userID .
-         * @param numberOfResults .
+         * @param connection the database connection
+         * @param userID the integer user identifier
+         * @param numberOfResults maximum results amount
          * @return a list of Drinks
          */
         public static List<Drink> getSuggestedDrinks(Connection connection, int userID, int numberOfResults) {
@@ -398,46 +400,90 @@ public class User {
         }
     }
 
+    /**
+     * gets the userID of this user
+     * @return the userID integer
+     */
     public int getUserID() {
         return userID;
     }
 
+    /**
+     * gets the email of this user
+     * @return the email string
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * gets the password of this user
+     * @return the password string
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * gets the name of this user
+     * @return the name string
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * gets the surname of this user
+     * @return the surname string
+     */
     public String getSurname() {
         return surname;
     }
 
+    /**
+     * gets the birthDate of this user
+     * @return the birthDate sql Date
+     */
     public Date getBirthDate() {
         return birthDate;
     }
 
+    /**
+     * gets the userRole of this user
+     * @return the userRole string
+     */
     public String getUserRole() {
         return userRole;
     }
 
+    /**
+     * gets the subsctriptionDate of this user
+     * @return the subsctriptionDate sql Date
+     */
     public Date getSubsctriptionDate() {
         return subsctriptionDate;
     }
 
+    /**
+     * gets the numCreatedRecipes of this user
+     * @return the numCreatedRecipes integer
+     */
     public int getNumCreatedRecipes() {
         return numCreatedRecipes;
     }
 
+    /**
+     * gets the numPositiveReviews of this user
+     * @return the numPositiveReviews integer
+     */
     public int getNumPositiveReviews() {
         return numPositiveReviews;
     }
 
+    /**
+     * gets the numCreatedReviews of this user
+     * @return the numCreatedReviews integer
+     */
     public int getNumCreatedReviews() {
         return numCreatedReviews;
     }

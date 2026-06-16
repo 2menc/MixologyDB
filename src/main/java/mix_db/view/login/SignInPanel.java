@@ -97,7 +97,7 @@ public class SignInPanel extends JPanel{
     }
     
     /**
-     * gets the birth date as {@link sql.date}
+     * gets the birth date as {@link java.sql.Date}
      * @return the date
      */
     @SuppressWarnings("deprecation")

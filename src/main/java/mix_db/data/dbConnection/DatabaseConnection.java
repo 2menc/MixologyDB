@@ -59,9 +59,9 @@ public class DatabaseConnection {
 
     /**
      * gets auto_increment keys
-     * @param connection .
-     * @param query .
-     * @param params .
+     * @param connection the database query connection
+     * @param query the SQL query string
+     * @param params the query parameters to bind
      * @return the previewsly createe keys
      */
     public static PreparedStatement prepareWithKeys(Connection connection, String query, Object... params) {
@@ -77,9 +77,9 @@ public class DatabaseConnection {
 
     /**
      * inseets the parameters into the statement
-     * @param statement .
-     * @param params .
-     * @throws SQLException .
+     * @param statement the statement to inject values into
+     * @param params the parameter objects
+     * @throws SQLException if an error occurs while setting parameters
      */
     private static void setParameters(PreparedStatement statement, Object... params) throws SQLException {
         if (params != null) {

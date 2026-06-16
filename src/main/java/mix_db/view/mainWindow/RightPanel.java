@@ -14,7 +14,7 @@ import mix_db.core.Session;
 import mix_db.data.dao.User;
 
 /**
- * right main panel: user informations, search bar, create drink button 
+ * right main panel containing user information, search bar, and drink/bar creation controls
  */
 public class RightPanel extends JPanel{
 
@@ -32,6 +32,9 @@ public class RightPanel extends JPanel{
 
     private final JButton showAnaliticsButton;
 
+    /**
+     * creates the RightPanel elements and registers the buttons layout
+     */
     public RightPanel() {
         this.setLayout(new GridLayout(20, 1));
 
@@ -88,7 +91,7 @@ public class RightPanel extends JPanel{
 
     /**
      * sends a drink creation request
-     * @param al .
+     * @param al the ActionEvent listener managed by controller
      */
     public void requestedToCreateDrink(ActionListener al) {
         this.createDrinkButton.addActionListener(al);
@@ -96,7 +99,7 @@ public class RightPanel extends JPanel{
 
     /**
      * requests to log out
-     * @param al .
+     * @param al the ActionEvent listener managed by controller
      */
     public void requestedToLogOut(ActionListener al) {
         this.logoutButton.addActionListener(al);
@@ -104,7 +107,7 @@ public class RightPanel extends JPanel{
 
     /**
      * requested to search the drink with informations in the search bar
-     * @param al .
+     * @param al the ActionEvent listener managed by controller
      */
     public void requestedToSearchDrink(ActionListener al) {
         this.searchButton.addActionListener(al);
@@ -112,7 +115,7 @@ public class RightPanel extends JPanel{
 
     /**
      * requests to show favourites
-     * @param al .
+     * @param al the ActionEvent listener managed by controller
      */
     public void requestedToShowFavs(ActionListener al) {
         this.showFavouritesButton.addActionListener(al);
@@ -120,12 +123,16 @@ public class RightPanel extends JPanel{
 
     /**
      * requests to create a new bar
-     * @param al .
+     * @param al the ActionEvent listener managed by controller
      */
     public void requestedToCreateBar(ActionListener al) {
         this.createBarButton.addActionListener(al);
     }
 
+    /**
+     * requests to show admin metrics/analytics
+     * @param al the ActionEvent listener managed by controller
+     */
     public void adminRequestedToShowAnalitics(ActionListener al) {
         this.showAnaliticsButton.addActionListener(al);
     }
@@ -147,6 +154,10 @@ public class RightPanel extends JPanel{
         }
     }
 
+    /**
+     * configures/modifies the state of the bar creation button component
+     * @param setActive the activation state boolean flag
+     */
     public void setupCreateBarButton(boolean setActive) {
         this.createBarButton.setEnabled(setActive);
     }
@@ -166,6 +177,9 @@ public class RightPanel extends JPanel{
         this.changePopulationButton.addActionListener(al);
     }
 
+    /**
+     * disables search elements and field inputs
+     */
     public void disableSearch() {
         this.searchButton.setEnabled(false);
 
@@ -173,6 +187,9 @@ public class RightPanel extends JPanel{
         this.searchBar.setEditable(false);
     }
 
+    /**
+     * toggles the interaction state of all main buttons
+     */
     public void toggleAllButtons() {
         if(Session.getInstance().getLoggedUser() != null) {
             this.createBarButton.setEnabled(! this.createBarButton.isEnabled());

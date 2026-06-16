@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
- * simple exception notifier
+ * dynamic exception warning dialog panel content
  */
 public class ExceptionPanel extends RuntimeException{
 

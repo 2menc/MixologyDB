@@ -11,7 +11,7 @@ public class Role {
     public static final String ADMIN = "Admin";
 
     /**
-     * regular user
+     * regolar user
      */
     public static final String USER = "User";
 }

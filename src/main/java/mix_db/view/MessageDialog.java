@@ -12,7 +12,11 @@ public class MessageDialog extends JOptionPane {
     private final String title;
 
     /**
-     * Constructor
+     * showing a dialog panel with a message, title, type, and specific parent component frame
+     * @param title the dialog title
+     * @param message the message content to display
+     * @param messageType the type of the option panel message (e.g. error, information, warning)
+     * @param parent the parent Component which hosts this dialog
      */
     public MessageDialog(String title, String message, int messageType, Component parent) {
         super(

@@ -10,7 +10,7 @@ import mix_db.view.ExceptionPanel;
 public class DAOException extends RuntimeException{
 
     /**
-     * basic exception 
+     * creates a standard DAO exception
      * @param message the message
      */
     public DAOException(final String message) {
@@ -19,17 +19,16 @@ public class DAOException extends RuntimeException{
     }
 
     /**
-     * basic exception 
+     * creates a standard DAO exception with a specified cause
      * @param cause the cause of the exception
      */
-
     public DAOException(Throwable cause) {
         super(cause);
         this.notifyUser(cause.getMessage());
     }
 
     /**
-     * basic exception 
+     * creates a standard DAO exception with a message and specified cause
      * @param message the message
      * @param cause the cause of the exception
      */

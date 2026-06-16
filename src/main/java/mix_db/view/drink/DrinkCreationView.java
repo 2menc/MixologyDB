@@ -14,7 +14,7 @@ public class DrinkCreationView extends JFrame{
     private final CreateDrinkPanel mainPanel;
     
     /**
-     * constructor
+     * creates a separate window for creating a drink
      */
     public DrinkCreationView() {
 
@@ -29,6 +29,10 @@ public class DrinkCreationView extends JFrame{
         this.setVisible(true);
     }
 
+    /**
+     * gets the main panel of this drink creation window
+     * @return the main panel containing the drink creation components
+     */
     public CreateDrinkPanel getMainPanel() {
         return this.mainPanel;
     } 

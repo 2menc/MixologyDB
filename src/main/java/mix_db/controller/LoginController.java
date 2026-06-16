@@ -19,7 +19,7 @@ import mix_db.view.login.LoginView;
 import mix_db.view.login.SignInPanel;
 
 /**
- * Login controller
+ * application controller
  */
 public class LoginController {
 
@@ -170,4 +170,3 @@ public class LoginController {
         }
     }
 }
-

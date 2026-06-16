@@ -7,6 +7,9 @@ import javax.swing.JPanel;
 
 import mix_db.view.FrameIcon;
 
+/**
+ * frame for creating a new bar
+ */
 public class CreateBarView extends JFrame{
 
     private final JPanel mainPanel;

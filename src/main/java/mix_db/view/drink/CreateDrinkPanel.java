@@ -125,6 +125,10 @@ public class CreateDrinkPanel extends JPanel {
         addIngredientRow();
     }
 
+    /**
+     * sets the status of the check box
+     * @param setActive the state to set for check box
+     */
     public void setCheckBoxStatus(boolean setActive) {
         if(setActive) {
             this.asBarCreation.setSelected(false);
@@ -146,7 +150,7 @@ public class CreateDrinkPanel extends JPanel {
     
     /**
      * requests to save the drink
-     * @param al .
+     * @param al the ActionEvent listener managed by controller
      */
     public void addSaveListener(ActionListener al) {
         this.saveButton.addActionListener(al);
@@ -154,7 +158,7 @@ public class CreateDrinkPanel extends JPanel {
     
     /**
      * requests to save the drink by the bar
-     * @param al .
+     * @param al the ActionEvent listener managed by controller
      */
     public void addAsBarListener(ActionListener al) {
         this.asBarCreation.addActionListener(al);
@@ -252,18 +256,34 @@ public class CreateDrinkPanel extends JPanel {
         public String getUnitOfMeasure() { return unitField.getText().trim(); }
     }
 
+    /**
+     * gets the entered drink name
+     * @return the name string
+     */
     public String getDrinkName() {
         return this.name.getText();
     }
 
+    /**
+     * gets the selected category name from option menu
+     * @return the selected category name string
+     */
     public String getCategoryName() {
         return (String) this.categoryName.getSelectedItem();
     }
 
+    /**
+     * gets the entered description of the drink
+     * @return description string
+     */
     public String getDescription() {
         return this.description.getText();
     }
 
+    /**
+     * gets the comma separated list of parsed keywords
+     * @return list of keywords
+     */
     public java.util.List<String> getKeywords() {
         final java.util.List<String> l = new LinkedList<>();
         
@@ -277,10 +297,18 @@ public class CreateDrinkPanel extends JPanel {
         return l;
     }
 
+    /**
+     * gets the loaded drink image file reference
+     * @return the local file reference
+     */
     public java.io.File getDrinkImage() {
         return this.drinkImage;
     }
 
+    /**
+     * populates the category combo box with options
+     * @param list list of category names
+     */
     public void populateComboBox(java.util.List<String> list) {
         for(String c: list) {
             this.categoryName.addItem(c);

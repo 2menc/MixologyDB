@@ -11,7 +11,7 @@ import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
 
 /**
- * User - Review - Drink
+ * represents a user's review for a specific drink, including details like the description, score, and date.
  */
 public class Review {
 
@@ -22,12 +22,12 @@ public class Review {
     private final int score;
     
     /**
-     * constructor
-     * @param drinkID drinkID
-     * @param userID userID
-     * @param description description
-     * @param reviewDate reviewDate
-     * @param score score
+     * constructs a new Review instance with the specified details.
+     * @param drinkID the unique identifier of the drink being reviewed.
+     * @param userID the unique identifier of the user who made the review.
+     * @param description the textual content of the review.
+     * @param reviewDate the date when the review was made.
+     * @param score the numerical score given to the drink by the user.
      */
     public Review(int drinkID, int userID, String description, Date reviewDate, int score) {
         this.drinkID = drinkID;
@@ -37,12 +37,20 @@ public class Review {
         this.score = score;
     }
 
+    /**
+     * returns a string representation of the Review object.
+     * @return a string containing the drink ID, user ID, description, review date, and score.
+     */
     @Override
     public String toString() {
         return "Review [drinkID=" + drinkID + ", userID=" + userID + ", description=" + description + ", reviewDate="
                 + reviewDate + ", score=" + score + "]";
     }
 
+    /**
+     * returns a hash code value for the object.
+     * @return a hash code value for this object.
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -55,6 +63,11 @@ public class Review {
         return result;
     }
 
+    /**
+     * indicates whether some other object is "equal to" this one.
+     * @param obj the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -89,12 +102,15 @@ public class Review {
     public static final class DAO {
 
         /**
-         * adds a new review
-         * @param connection .
-         * @param drinkID .
-         * @param userID .
-         * @param description .
-         * @param score .
+         * adds a new review to the database, along with updating the user's review counters.
+         * This operation is performed within a transaction.
+         * @param connection the database connection.
+         * @param drinkID the unique identifier of the drink being reviewed.
+         * @param userID the unique identifier of the user making the review.
+         * @param description the textual content of the review.
+         * @param score the numerical score given to the drink (1-5).
+         * @return {@code true} if the review was successfully added and counters updated, {@code false} otherwise.
+         * @throws DAOException if a database access error occurs during the operation.
          */
         public static boolean addReview(Connection connection, int drinkID, int userID, String description, int score) {
             try{
@@ -149,10 +165,11 @@ public class Review {
         }
 
         /**
-         * searches all reviews linked to a drink
-         * @param connection .
-         * @param drinkID .
-         * @return a list of the reviews
+         * searches all reviews linked to a specific drink.
+         * @param connection the database connection.
+         * @param drinkID the unique identifier of the drink.
+         * @return a list of the reviews associated with the given drink ID.
+         * @throws DAOException if a database access error occurs.
          */
         public static List<Review> searchDrinkReviews(Connection connection, int drinkID) {
             final var reviews = new LinkedList<Review>();
@@ -181,9 +198,10 @@ public class Review {
         }
 
         /**
-         * updates user's attribute that counts how much reviews he has made
-         * @param connection .
-         * @param userID .
+         * updates the user's attribute that counts how many reviews they have made.
+         * @param connection the database connection.
+         * @param userID the unique identifier of the user.
+         * @throws DAOException if a database access error occurs.
          */
         public static void updateReviewsCounter(Connection connection, int userID) {
             try(
@@ -198,9 +216,11 @@ public class Review {
         }
 
         /**
-         * updates user's attribute that counts how much positive reviews he has
-         * @param connection .
-         * @param userID .
+         * updates the user's attribute that counts how many positive reviews they have made.
+         * A positive review is typically considered a score greater than 2.
+         * @param connection the database connection.
+         * @param userID the unique identifier of the user.
+         * @throws DAOException if a database access error occurs.
          */
         public static void updatePositiveReviewsCounter(Connection connection, int userID) {
             try(
@@ -215,22 +235,42 @@ public class Review {
         }
     }
 
+    /**
+     * gets the unique identifier of the drink associated with this review.
+     * @return the drink ID.
+     */
     public int getDrinkID() {
         return drinkID;
     }
 
+    /**
+     * gets the unique identifier of the user who made this review.
+     * @return the user ID.
+     */
     public int getUserID() {
         return userID;
     }
 
+    /**
+     * gets the textual description of the review.
+     * @return the review description.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * gets the date when this review was made.
+     * @return the review date.
+     */
     public Date getReviewDate() {
         return reviewDate;
     }
 
+    /**
+     * gets the score given in this review.
+     * @return the review score.
+     */
     public int getScore() {
         return score;
     }    

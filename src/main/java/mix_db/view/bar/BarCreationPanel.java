@@ -20,6 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+/**
+ * panel used for creating a new bar
+ */
 public class BarCreationPanel extends JPanel{
 
     private final JTextField barName;
@@ -31,7 +34,9 @@ public class BarCreationPanel extends JPanel{
     private java.util.List<UserRow> usersList = new ArrayList<>();
 
 
-    /**constructor */
+    /**
+     * creates the bar creation panel elements
+     */
     public BarCreationPanel() {
         this.setLayout(new BorderLayout(10, 10));
 
@@ -76,6 +81,10 @@ public class BarCreationPanel extends JPanel{
         addUserRow();
     }
  
+    /**
+     * gets employees registered email list
+     * @return list of employee emails
+     */
     public List<String> getEmails() {
         final List<String> s = new LinkedList<>();
         for(var ur: this.usersList) {
@@ -96,6 +105,10 @@ public class BarCreationPanel extends JPanel{
         this.usersContainer.repaint();
     }
     
+    /**
+     * inserts a save listener on the action element
+     * @param al the ActionEvent listener
+     */
     public void addSaveListener(ActionListener al) {
         this.saveButton.addActionListener(al);
     }
@@ -149,17 +162,33 @@ public class BarCreationPanel extends JPanel{
         /**
          * getters
          */
+        /**
+         * gets employee email from text field element
+         * @return the entered email string
+         */
         public String getEmail() { return emailField.getText().trim(); }
     }
 
+    /**
+     * gets the entered bar name value
+     * @return the bar name string
+     */
     public String getBarName() {
         return barName.getText();
     }
 
+    /**
+     * gets the entered bar city value
+     * @return the city string
+     */
     public String getCity() {
         return city.getText();
     }
 
+    /**
+     * gets the entered bar address value
+     * @return the address string
+     */
     public String getAddress() {
         return address.getText();
     }
