@@ -406,14 +406,14 @@ public class DrinkInformationsPanel extends JPanel{
                 reviewRow.add(ta, BorderLayout.CENTER);
                 
                 if (Session.getInstance().isAdmin() && this.removeReviewListener != null) {
-                    final JButton deleteBtn = new JButton("elimina");
-                    deleteBtn.setForeground(Color.RED);
-                    deleteBtn.putClientProperty("review", r);
-                    deleteBtn.addActionListener(this.removeReviewListener);
+                    final JButton deleteButton = new JButton("elimina");
+                    deleteButton.setForeground(Color.ORANGE);
+                    deleteButton.putClientProperty("review", r);
+                    deleteButton.addActionListener(this.removeReviewListener);
 
                     final JPanel buttonContainer = new JPanel(new GridBagLayout());
                     buttonContainer.setOpaque(false);
-                    buttonContainer.add(deleteBtn);
+                    buttonContainer.add(deleteButton);
                     
                     reviewRow.add(buttonContainer, BorderLayout.EAST);
                 }
