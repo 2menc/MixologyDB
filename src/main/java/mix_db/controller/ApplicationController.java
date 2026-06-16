@@ -7,7 +7,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -494,8 +496,14 @@ public class ApplicationController {
                                     JOptionPane.WARNING_MESSAGE
                                 );
 
+                                if(! Files.exists(Path.of(GeneralSettings.fotoPath + d.getImagePath()))) {
+                                    new ExceptionPanel("Impossibile eliminare l'immagine del drink", mv);
+                                    return;
+                                }
+
                                 if (confirm == JOptionPane.YES_OPTION) {
-                                    if(model.deleteDrink(d.getDrinkID())) { 
+                                    if(model.deleteDrink(d.getDrinkID())) {                                         
+                                        deleteDrinkImage(d.getImagePath());
                                         new MessageDialog("Successo", "Drink eliminato con successo", JOptionPane.INFORMATION_MESSAGE, dp);
                                     } else {
                                         new MessageDialog("Errore", "Drink non eliminato", JOptionPane.CANCEL_OPTION, dp);
@@ -555,6 +563,16 @@ public class ApplicationController {
             }
         }
     }
+
+    private void deleteDrinkImage(final String imageName) {
+        final var path = Path.of(GeneralSettings.fotoPath + imageName);
+        try {
+            Files.delete(path);
+        } catch(IOException e) {
+            new ExceptionPanel(e, this.view);
+        }
+    } 
+
 
     /**
      * checks if the drink is already saved
