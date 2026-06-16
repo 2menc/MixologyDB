@@ -45,7 +45,8 @@ INSERT INTO Utenti (email, password, nome, cognome, dataNascita, ruoloUtente, da
 ('daniele.gallo@email.com', 'pwd_29', 'Daniele', 'Gallo', '1993-11-20', 'Utente', '2024-02-20', 0, 2, 2),
 ('silvia.leone@email.com', 'pwd_30', 'Silvia', 'Leone', '1991-04-10', 'Utente', '2024-03-01', 0, 1, 2);
 
---admins
+-- admins
+INSERT INTO Utenti (email, password, nome, cognome, dataNascita, ruoloUtente, dataIscrizione, numeroRicetteCreate, numeroRecensioniPositive, numeroRecensioniEffettuate) VALUES
 ('rocco.greco@email.com', 'pwd_31', 'Rocco', 'Greco', '1994-07-12', 'Admin', '2024-03-01', 0, 1, 2);
 
 -- 3. POPOLAZIONE SALVATAGGIO PREFERITI (~150 record)
