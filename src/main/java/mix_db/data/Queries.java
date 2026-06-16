@@ -535,7 +535,7 @@ public class Queries {
     public static final String PREPARE_TO_BAN_USER =
     """
     UPDATE creazioni
-    SET userID = 0
+    SET userID = 1
     WHERE userID = ?;
     """;
 

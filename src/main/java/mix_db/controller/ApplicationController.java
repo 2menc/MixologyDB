@@ -275,6 +275,46 @@ public class ApplicationController {
                     }
                 }
             });
+            mv.getRightPanel().adminRequestedToShowAnalitics(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    final var analiticsView = new AnaliticsView();
+
+                    analiticsView.populate(model.getUsersAnalitics(), new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                            final JButton sourceButton = (JButton) e.getSource();
+
+                            final User userToBan = (User) sourceButton.getClientProperty("user");
+
+                            if (userToBan != null) {
+
+                                int confirm = JOptionPane.showConfirmDialog(
+                                    analiticsView, 
+                                    "Sei sicuro di voler bannare l'utente " + userToBan.getName().toUpperCase() + " " + userToBan.getSurname().toUpperCase() + "?",
+                                    "Conferma Azione", 
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.WARNING_MESSAGE
+                                );
+
+                                if (confirm == JOptionPane.YES_OPTION) {
+                                    try {
+                                        model.banUser(userToBan.getUserID()); 
+                                        
+                                        JOptionPane.showMessageDialog(analiticsView, "Utente bannato con successo.", "Operazione completata", JOptionPane.INFORMATION_MESSAGE);
+                                        
+                                        analiticsView.populate(model.getUsersAnalitics(), this);
+                                    } catch (Exception ex) {
+                                        new ExceptionPanel(ex, analiticsView);
+                                        ex.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 

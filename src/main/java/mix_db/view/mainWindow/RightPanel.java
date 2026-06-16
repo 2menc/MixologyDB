@@ -30,6 +30,8 @@ public class RightPanel extends JPanel{
 
     private final JButton logoutButton;
 
+    private final JButton showAnaliticsButton;
+
     public RightPanel() {
         this.setLayout(new GridLayout(20, 1));
 
@@ -55,6 +57,11 @@ public class RightPanel extends JPanel{
         this.createBarButton = new JButton("registra il tuo bar");
         this.createBarButton.setAlignmentX(LEFT_ALIGNMENT);
 
+        this.showAnaliticsButton = new JButton("mostra analitiche utenti");
+        this.showAnaliticsButton.setAlignmentX(LEFT_ALIGNMENT);
+        this.showAnaliticsButton.setVisible(false);
+        this.showAnaliticsButton.setForeground(Color.ORANGE);
+
         final User user = Session.getInstance().getLoggedUser();
         if(user != null) {
             this.userInformations.setText(user.getName() + " " + user.getSurname() + "\n" + user.getEmail());
@@ -62,10 +69,11 @@ public class RightPanel extends JPanel{
             this.userInformations.setEnabled(false);
         }
 
-
         this.changePopulationButton = new JButton("ricarica");
 
         this.showFavouritesButton = new JButton("mostra preferiti");
+
+        this.configureButtons();
 
         this.add(this.createDrinkButton);
         this.add(this.userInformations);
@@ -75,10 +83,7 @@ public class RightPanel extends JPanel{
         this.add(this.showFavouritesButton);
         this.add(this.createBarButton);
         this.add(this.logoutButton);
-
-        if(! Session.getInstance().isLoggedIn()) {
-            this.disableButtonsForGuests();
-        }
+        this.add(this.showAnaliticsButton);
     }
 
     /**
@@ -121,17 +126,25 @@ public class RightPanel extends JPanel{
         this.createBarButton.addActionListener(al);
     }
 
+    public void adminRequestedToShowAnalitics(ActionListener al) {
+        this.showAnaliticsButton.addActionListener(al);
+    }
+
     /**
      * if the user is not logged in disables logged-in user's butotns
      */
-    private void disableButtonsForGuests() {
-        this.createDrinkButton.setEnabled(false);
+    private void configureButtons() {
+        if(Session.getInstance().getLoggedUser() == null) {
+            this.createDrinkButton.setEnabled(false);
 
-        this.logoutButton.setText("iscriviti");
-        this.logoutButton.setForeground(Color.GREEN);
+            this.logoutButton.setText("iscriviti");
+            this.logoutButton.setForeground(Color.GREEN);
 
-        this.showFavouritesButton.setEnabled(false);
-        this.createBarButton.setEnabled(false);
+            this.showFavouritesButton.setEnabled(false);
+            this.createBarButton.setEnabled(false);
+        } else if (Session.getInstance().isAdmin()) {
+            this.showAnaliticsButton.setVisible(true);
+        }
     }
 
     public void setupCreateBarButton(boolean setActive) {
