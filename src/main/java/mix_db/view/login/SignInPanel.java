@@ -25,7 +25,8 @@ public class SignInPanel extends JPanel{
     private final JButton confirmButton;
 
     /**
-     * constructor
+     * initializes the sign-in panel, setting up text fields for user input (email, password, name, surname, birth date)
+     * and a confirmation button, then arranges them in a grid layout.
      */
     public SignInPanel() {
         this.emailField = new JTextField("email");
@@ -80,14 +81,16 @@ public class SignInPanel extends JPanel{
     }
 
     /**
-     * gets user name
+     * gets the name entered by the user.
+     * @return the user's name.
      */
     public String getName() {
         return this.nameField.getText();
     }
 
     /**
-     * gets user surname
+     * gets the surname entered by the user.
+     * @return the user's surname.
      */
     public String getSurname() {
         return this.surnameField.getText();
@@ -112,7 +115,8 @@ public class SignInPanel extends JPanel{
     }
 
     /**
-     * requests a sign in
+     * registers an {@link ActionListener} to be notified when the sign-in confirmation button is clicked.
+     * @param al the {@link ActionListener} to be added.
      */
     public void requestSignIn(ActionListener al) {
         this.confirmButton.addActionListener(al);

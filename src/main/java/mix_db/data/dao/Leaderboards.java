@@ -11,7 +11,7 @@ import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
 
 /**
- * leaderboards
+ * provides access to various leaderboards.
  */
 public class Leaderboards {
 
@@ -22,10 +22,11 @@ public class Leaderboards {
         
         /**
          * gets a leaderboard of the drinks with the more positive reviews
-         * @param connection .
-         * @param daysToFilter .
+         * @param connection connection to the database
+         * @param daysToFilter number of days to consider for reviews
          * @param numberOfResults number of drinks to show
          * @return a difensive copy Map of (drinks, numReviews)
+         * @throws DAOException if a database access error occurs
          */
         public static Map<Drink, Integer> MorePositiveDrinkReviews(Connection connection, int daysToFilter, int numberOfResults) {
             final var drinks = new HashMap<Drink, Integer>();
@@ -56,9 +57,10 @@ public class Leaderboards {
    
         /**
          * gets the list of the most used ingredients
-         * @param connection .
-         * @param numberOfResults .
+         * @param connection connection to the database
+         * @param numberOfResults maximum number of ingredients to return
          * @return a List of infvredients
+         * @throws DAOException if a database access error occurs
          */
         public static List<Ingredient> MostUsedIngredients(Connection connection, int numberOfResults) {
             final var ingredients = new LinkedList<Ingredient>();
@@ -84,9 +86,10 @@ public class Leaderboards {
 
         /**
          * gets the list of users with the more positive reviews
-         * @param connection .
-         * @param numberOfResults .
+         * @param connection connection to the database
+         * @param numberOfResults maximum number of users to return
          * @return a List of Users
+         * @throws DAOException if a database access error occurs
          */
         public static List<User> usersWithMorePositiveReviews(Connection connection, int numberOfResults) {
             final var users = new LinkedList<User>();
@@ -123,10 +126,11 @@ public class Leaderboards {
         
         /**
          * gets the trending tastes
-         * @param connection .
-         * @param daysToFilter .
-         * @param numberOfResults .
+         * @param connection connection to the database
+         * @param daysToFilter number of days to consider for trending keywords
+         * @param numberOfResults maximum number of keywords to return
          * @return a List of tags containing String keywords
+         * @throws DAOException if a database access error occurs
          */
         public static List<Tag> getTrendingKeywords(Connection connection, int daysToFilter, int numberOfResults) {
             final var tags = new LinkedList<Tag>();
@@ -151,6 +155,10 @@ public class Leaderboards {
         }
     }
 
+    /**
+     * returns a string representation of the Leaderboards object.
+     * @return a string representation of the object
+     */
     @Override
     public String toString() {
         return "Leaderboards []";

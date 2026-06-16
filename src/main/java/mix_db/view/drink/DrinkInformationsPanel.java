@@ -35,6 +35,9 @@ import mix_db.data.dao.User;
 import mix_db.view.ExceptionPanel;
 import mix_db.view.FrameIcon;
 
+/**
+ * panel that displays detailed information about a specific drink, including its image, reviews, ingredients, and creator.
+ */
 public class DrinkInformationsPanel extends JPanel{
 
     private final ButtonsPanel buttonsPanel;
@@ -63,6 +66,11 @@ public class DrinkInformationsPanel extends JPanel{
 
     private ActionListener removeReviewListener;
 
+    /**
+     * constructs a new panel to display drink information.
+     * @param drink the drink to display
+     * @param isDrinkAlreaySaved true if the drink is already saved in the user's favorites, false otherwise
+     */
     public DrinkInformationsPanel(Drink drink, boolean isDrinkAlreaySaved) {
         this.setLayout(new BorderLayout());
         this.setOpaque(false);
@@ -240,7 +248,7 @@ public class DrinkInformationsPanel extends JPanel{
 
     /**
      * checks if the image has to be scaled. If it has to, this methos automatically does it
-     * @param image
+     * @param image the image icon to be scaled
      * @return a new JLabel containing the correct-sized image
      */
     private JLabel getScaledImage(ImageIcon image) {
@@ -274,6 +282,11 @@ public class DrinkInformationsPanel extends JPanel{
     }
 
 
+    /**
+     * populates the creator and bar fields with the specified user and bar information.
+     * @param creatorUser the user who created the drink
+     * @param bar the bar where the drink was created
+     */
     public void populateCreatorAndBar(User creatorUser, Bar bar) {
         if (drink.isIBA()) {
             this.creator.setText("Ricetta IBA");
@@ -296,7 +309,7 @@ public class DrinkInformationsPanel extends JPanel{
 
     /**
      * sets add/remove to favourite buttons state, if the drink is already saved or not
-     * @param drinkIsSaved
+     * @param drinkIsSaved true if the drink is already saved, false otherwise
      */
     public void setFavouriteButtonState(boolean drinkIsSaved) {
         if(drinkIsSaved) {
@@ -310,36 +323,67 @@ public class DrinkInformationsPanel extends JPanel{
         this.updateView();;
     }
 
+    /**
+     * registers an action listener for adding the drink to favorites.
+     * @param e the action listener to register
+     */
     public void requestedToAddToFavs(ActionListener e) {
         this.buttonsPanel.addFavouriteButton.addActionListener(e);
         this.updateView();
     }
 
+    /**
+     * registers an action listener for removing the drink from favorites.
+     * @param e the action listener to register
+     */
     public void requestedToRemoveToFavs(ActionListener e) {
         this.buttonsPanel.removeFavouriteButton.addActionListener(e);
         this.updateView();;
     }
 
+    /**
+     * registers an action listener for opening the review dialog.
+     * @param e the action listener to register
+     */
     public void requestedToAddReview(ActionListener e) {
         this.buttonsPanel.addReviewButton.addActionListener(e);
     }
 
+    /**
+     * registers an action listener for going back to the previous view.
+     * @param e the action listener to register
+     */
     public void requestedToGoBack(ActionListener e) {
         this.buttonsPanel.backButton.addActionListener(e);
     }
 
+    /**
+     * registers an action listener for saving the drink details as a PDF.
+     * @param al the action listener to register
+     */
     public void requestedToSavePdf(ActionListener al) {
         this.buttonsPanel.saveAsPdfButton.addActionListener(al);
     }
 
+    /**
+     * registers an action listener for removing the drink (admin only).
+     * @param al the action listener to register
+     */
     public void adminRequestedToRemoveDrink(ActionListener al) {
         this.buttonsPanel.removeDrink.addActionListener(al);
     }
 
+    /**
+     * registers an action listener for removing a review (admin only).
+     * @param al the action listener to register
+     */
     public void adminRequestedToRemoveReview(ActionListener al) {
         this.removeReviewListener = al;
     }
 
+    /**
+     * sets up and displays the frame for adding a new review.
+     */
     public void setUpReviewFrame() {
         this.reviewPanel.add(this.score);
         this.reviewPanel.add(this.reviewDescription);
@@ -351,10 +395,18 @@ public class DrinkInformationsPanel extends JPanel{
         this.reviewFrame.setVisible(true);
     }
 
+    /**
+     * registers an action listener for when the review submission is completed.
+     * @param e the action listener to register
+     */
     public void reviewFinished(ActionListener e) {
         this.sendReview.addActionListener(e);
     }
 
+    /**
+     * retrieves the review information entered by the user.
+     * @return the created review, or null if the input is invalid
+     */
     public Review getReviewInformation() {
         try {
             final var r =  new Review(drink.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), 
@@ -370,6 +422,10 @@ public class DrinkInformationsPanel extends JPanel{
         }
     }
 
+    /**
+     * populates the ingredients text area with the list of ingredients.
+     * @param ingredients the list of ingredients and their quantities
+     */
     public void populateIngredients(List<Composition> ingredients) {
         final StringBuilder sb = new StringBuilder();
         for(var i: ingredients) {
@@ -380,6 +436,10 @@ public class DrinkInformationsPanel extends JPanel{
         this.ingredients.setText("Ingredienti:\n" + sb.toString());
     }
 
+    /**
+     * populates the reviews scroll pane with the given reviews and their authors.
+     * @param revs a map of reviews and the users who wrote them
+     */
     public void populateReviewsScrollPane(Map<Review, User> revs) {
         this.reviews.removeAll(); 
 
@@ -428,6 +488,10 @@ public class DrinkInformationsPanel extends JPanel{
         this.updateView(); 
     }   
 
+    /**
+     * populates the keywords text field with the list of keywords.
+     * @param kws the list of keywords
+     */
     public void populateKeywords(List<String> kws) {
         final StringBuilder sb = new StringBuilder();
         for(String s: kws) {
@@ -445,7 +509,7 @@ public class DrinkInformationsPanel extends JPanel{
     }
 
     /**
-     * if the user is a guest, disables buttons that requires login / if the user is an admin adds the required buttons
+     * configures the visibility and enabled state of buttons based on the user's login status and role.
      */
     public void configureButtons() {
         if(! Session.getInstance().isLoggedIn()) {

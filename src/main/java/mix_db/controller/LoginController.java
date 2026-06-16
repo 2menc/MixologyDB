@@ -19,7 +19,7 @@ import mix_db.view.login.LoginView;
 import mix_db.view.login.SignInPanel;
 
 /**
- * application controller
+ * Login controller
  */
 public class LoginController {
 

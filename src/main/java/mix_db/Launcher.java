@@ -9,6 +9,10 @@ import mix_db.controller.LoginController;
  */
 public class Launcher {
 
+    /**
+     * launches the application
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
 
         System.setProperty("sun.java2d.uiScale", "1.0");

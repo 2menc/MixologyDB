@@ -14,5 +14,6 @@ public interface GeneralSettings {
     /** standard path for icons */
     final String iconsPath = "src/main/resources/icons/";
 
+    /** the IP address for the database server */
     final String databseIP = "127.0.0.1";
 }

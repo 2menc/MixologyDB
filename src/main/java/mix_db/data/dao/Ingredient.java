@@ -12,7 +12,8 @@ import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
 
 /**
- * Ingredient
+ * represents an ingredient used in a drink, along with the number of times it has been utilized across all drinks.
+ * This class provides a data structure for ingredient information and includes a static nested class for Data Access Object (DAO) operations.
  */
 public class Ingredient {
 
@@ -20,20 +21,29 @@ public class Ingredient {
     private final int numUsed;
 
     /**
-     * constructor
-     * @param ingredientName .
-     * @param numUsed .
+     * constructs a new Ingredient instance.
+     * @param ingredientName the name of the ingredient.
+     * @param numUsed the number of times this ingredient has been used in drinks.
      */
     public Ingredient(String ingredientName, int numUsed) {
         this.ingredientName = ingredientName;
         this.numUsed = numUsed;
     }
 
+    /**
+     * returns a string representation of the Ingredient object.
+     * @return a string containing the ingredient's name and its usage count.
+     */
     @Override
     public String toString() {
         return "Ingredient [ingredientName=" + ingredientName + ", numUsed=" + numUsed + "]";
     }
 
+    /**
+     * returns a hash code value for the object.
+     * This method is supported for the benefit of hash tables such as those provided by {@link java.util.HashMap}.
+     * @return a hash code value for this object.
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -43,6 +53,12 @@ public class Ingredient {
         return result;
     }
 
+    /**
+     * indicates whether some other object is "equal to" this one.
+     * The comparison is based on the ingredient name and the number of times it has been used.
+     * @param obj the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -63,7 +79,8 @@ public class Ingredient {
     }
 
     /**
-     * DAO obj for Ingredient
+     * provides Data Access Object (DAO) operations for {@link Ingredient} entities.
+     * This static nested class encapsulates all database interactions related to ingredients.
      */
     public static final class DAO {
 
@@ -95,10 +112,11 @@ public class Ingredient {
         }
 
         /**
-         * gets the ingredients of a drink
-         * @param connection .
-         * @param drinkID ..
-         * @return a Set of ingredients
+         * gets the ingredients of a drink.
+         * @param connection the database connection.
+         * @param drinkID the unique identifier of the drink.
+         * @return a Set of ingredients associated with the specified drink.
+         * @throws DAOException if a database access error occurs.
          */
         public static List<Ingredient> ofDrink(Connection connection, int drinkID) {
             final List<Ingredient> ingredients = new LinkedList<>();
@@ -121,10 +139,11 @@ public class Ingredient {
         }
 
         /**
-         * creates a new ingredient
-         * @param connection .
-         * @param ingredientName .
-         * @return true if can create the ingredient
+         * creates a new ingredient in the database.
+         * @param connection the database connection.
+         * @param ingredientName the name of the ingredient to create.
+         * @return true if the ingredient was successfully created (one row affected), false otherwise.
+         * @throws DAOException if a database access error occurs.
          */
         public static boolean createIngredient(Connection connection, String ingredientName) {
             try(
@@ -138,6 +157,15 @@ public class Ingredient {
             }
         }
 
+        /**
+         * searches for an ingredient by name and returns its name if found.
+         * If the ingredient does not exist, it creates a new ingredient with the given name and then returns its name.
+         * This ensures that an ingredient with the specified name always exists in the database after this method call.
+         * @param connection the database connection.
+         * @param name the name of the ingredient to search for or create.
+         * @return the name of the existing or newly created ingredient.
+         * @throws DAOException if a database access error occurs during search or creation.
+         */
         public static String getOrCreateIngredient(Connection connection, String name) {
 
             try (var statement = DatabaseConnection.prepare(connection, 
@@ -162,10 +190,11 @@ public class Ingredient {
 
 
         /**
-         * deletes an ingredient
-         * @param connection .
-         * @param ingredientName .
-         * @return true if can dlete the ingredient
+         * deletes an ingredient from the database.
+         * @param connection the database connection.
+         * @param ingredientName the name of the ingredient to delete.
+         * @return true if the ingredient was successfully deleted (one row affected), false otherwise.
+         * @throws DAOException if a database access error occurs.
          */
         public static boolean deleteIngredient(Connection connection, String ingredientName) {
             try(
@@ -181,10 +210,18 @@ public class Ingredient {
 
     }
 
+    /**
+     * gets the name of this ingredient.
+     * @return the ingredient's name.
+     */
     public String getIngredientName() {
         return ingredientName;
     }
 
+    /**
+     * gets the number of times this ingredient has been used.
+     * @return the usage count of the ingredient.
+     */
     public int getNumUsed() {
         return numUsed;
     }

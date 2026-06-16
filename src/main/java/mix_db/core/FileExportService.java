@@ -18,7 +18,9 @@ import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DAOException;
 
 /**
- * service to export drinks in pdf 
+ * Provides services for exporting drink information into PDF files.
+ * This class handles the generation of PDF documents containing details about a specific drink,
+ * its creator, associated bar, and keywords.
  */
 public class FileExportService {
 
@@ -29,10 +31,11 @@ public class FileExportService {
 
     /**
      * generates a .pdf file with all drink informations
-     * @param drink .
-     * @param creator .
-     * @param keywords .
-     * @param outputPath .
+     * @param drink the drink to be exported
+     * @param creator the user who created the drink
+     * @param bar the bar where the drink was created, or null
+     * @param keywords the list of keywords associated with the drink
+     * @param outputPath the file path where the PDF will be saved
      */
     public static void createPdf(Drink drink, User creator, Bar bar, java.util.List<String> keywords, String outputPath) {
 

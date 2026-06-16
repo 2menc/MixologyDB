@@ -13,7 +13,8 @@ import mix_db.data.dbConnection.DAOException;
 import mix_db.data.dbConnection.DatabaseConnection;
 
 /**
- * Drink
+ * Represents a drink entity with its properties such as ID, name, description, image path, category, and IBA status.
+ * This class is immutable once created.
  */
 public class Drink {
 
@@ -25,13 +26,13 @@ public class Drink {
     private final boolean isIBA;
 
     /**
-     * constructor
-     * @param drinkID .
-     * @param name .
-     * @param description .
-     * @param imagePath .
-     * @param categoryName .
-     * @param isIBA .
+     * constructs a new Drink instance.
+     * @param drinkID the unique identifier for the drink.
+     * @param name the name of the drink.
+     * @param description a brief description of the drink.
+     * @param imagePath the file path to the drink's image.
+     * @param categoryName the name of the category the drink belongs to.
+     * @param isIBA a boolean indicating if the drink is an IBA (International Bartenders Association) official cocktail.
      */
     public Drink(int drinkID, String name, String description, String imagePath, String categoryName, boolean isIBA) {
         this.drinkID = drinkID;
@@ -103,11 +104,14 @@ public class Drink {
     public static final class DAO {
 
         /**
-         * inserts a new drink as barCreation using transactions. 
-         * @param connection .
-         * @param d the drink to insert
-         * @param keywords the keywords to identify the drink
-         * @return {@code true} if can insert the drink, {@code false} otherwise
+         * inserts a new drink as barCreation using transactions.
+         * @param connection the database connection to use for the transaction.
+         * @param d the drink to insert.
+         * @param barID an optional ID of the bar associated with the drink, if any.
+         * @param userID the ID of the user creating the drink.
+         * @param composition a list of ingredients and their quantities for the drink.
+         * @param keywords the keywords to identify the drink.
+         * @throws DAOException if a database access error occurs during the transaction.
          */
         public static void createDrink(Connection connection, Drink d, Optional<Integer> barID, int userID, List<Composition> composition, List<String> keywords) {
             
@@ -231,9 +235,11 @@ public class Drink {
         }
 
         /**
-         * searches a drink by name
-         * @param name .
-         * @return Optional of Drink
+         * searches a drink by name.
+         * @param connection the database connection.
+         * @param name the name of the drink to search for.
+         * @return an {@code Optional} containing the {@link Drink} if found, or an empty {@code Optional} otherwise.
+         * @throws DAOException if a database access error occurs.
          */
         public static Optional<Drink> searchByName(Connection connection, String name) {
             try (
@@ -260,10 +266,11 @@ public class Drink {
         }
 
         /**
-         * gets a list of random drinks
-         * @param connection .
-         * @param numberOfResults .
-         * @return the list
+         * gets a list of random drinks.
+         * @param connection the database connection.
+         * @param numberOfResults the maximum number of random drinks to retrieve.
+         * @return a {@code List} of {@link Drink} objects, shuffled randomly.
+         * @throws DAOException if a database access error occurs.
          */
         public static List<Drink> getRandomDrinkList(Connection connection, int numberOfResults) {
             final List<Drink> drinkList = new LinkedList<>();
@@ -292,10 +299,11 @@ public class Drink {
         }
 
         /**
-         * searches a drink by his name
-         * @param connection .
-         * @param drinkName .
-         * @return an optional of drink
+         * searches a drink by its ID.
+         * @param connection the database connection.
+         * @param drinkID the unique identifier of the drink to search for.
+         * @return an {@code Optional} containing the {@link Drink} if found, or an empty {@code Optional} otherwise.
+         * @throws DAOException if a database access error occurs.
          */
         public static Optional<Drink> getDrink(Connection connection, int drinkID) {
             try (
@@ -322,11 +330,12 @@ public class Drink {
         }
 
         /**
-         * saves a drink as favourite
-         * @param connection
-         * @param drinkID .
-         * @param userID .
-         * @return true if the drink is not already in the favs, false otherwise
+         * saves a drink as favourite for a specific user.
+         * @param connection the database connection.
+         * @param drinkID the ID of the drink to save as favourite.
+         * @param userID the ID of the user for whom to save the favourite drink.
+         * @return true if the drink was successfully saved as a favourite (i.e., it was not already a favourite), false otherwise.
+         * @throws DAOException if a database access error occurs.
          */
         @Deprecated
         public static boolean saveAsFavourite(Connection connection, int drinkID, int userID) {
@@ -342,6 +351,10 @@ public class Drink {
 
         /**
          * ! FOR TESTS
+         * deletes drinks by category name. This method is intended for testing purposes only.
+         * @param connection the database connection.
+         * @param categoryName the name of the category whose drinks are to be deleted.
+         * @throws DAOException if a database access error occurs.
          */
         @Deprecated
         public static void deleteByCategoryName(Connection connection, String categoryName) {
@@ -357,10 +370,11 @@ public class Drink {
         }
 
         /**
-         * searches a drink by keywords
-         * @param connection .
-         * @param keyword .
-         * @return a List of drinks
+         * searches a drink by keywords.
+         * @param connection the database connection.
+         * @param keyword the keyword to search for within drink names, descriptions, or categories.
+         * @return a {@code List} of {@link Drink} objects matching the keyword.
+         * @throws DAOException if a database access error occurs.
          */
         public static List<Drink> searchByKeyword(Connection connection, String keyword) {
             final List<Drink> drinks = new LinkedList<>();
@@ -395,10 +409,11 @@ public class Drink {
             }
 
             /**
-             * gets the creator of the drink
-             * @param connection .
-             * @param userID .
-             * @return an optional of user
+             * gets the creator of the drink.
+             * @param connection the database connection.
+             * @param drinkID the ID of the drink whose creator is to be retrieved.
+             * @return an {@code Optional} containing the {@link User} who created the drink, or an empty {@code Optional} if not found.
+             * @throws DAOException if a database access error occurs.
              */
             public static Optional<User> getCreator(Connection connection, int drinkID) {
                 try(
@@ -430,26 +445,50 @@ public class Drink {
             }
         }        
 
+    /**
+     * gets the unique identifier of the drink.
+     * @return the drink's ID.
+     */
     public int getDrinkID() {
         return drinkID;
     }
 
+    /**
+     * gets the name of the drink.
+     * @return the drink's name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * gets the description of the drink.
+     * @return the drink's description.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * gets the image path of the drink.
+     * @return the path to the drink's image.
+     */
     public String getImagePath() {
         return imagePath;
     }
 
+    /**
+     * gets the category name of the drink.
+     * @return the name of the drink's category.
+     */
     public String getCategoryName() {
         return categoryName;
     }
 
+    /**
+     * checks if the drink is an IBA (International Bartenders Association) official cocktail.
+     * @return true if the drink is an IBA cocktail, false otherwise.
+     */
     public boolean isIBA() {
         return isIBA;
     }

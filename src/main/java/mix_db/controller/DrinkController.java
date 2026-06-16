@@ -23,11 +23,19 @@ import mix_db.model.IngredientData;
 import mix_db.view.ExceptionPanel;
 import mix_db.view.drink.DrinkCreationView;
 
+/**
+ * controller class that manages the creation of drinks.
+ */
 public class DrinkController {
 
     private final DrinkCreationView view;
     private final Model model;
 
+    /**
+     * constructs a new drink controller.
+     * @param view the view used for drink creation
+     * @param model the model containing application data and logic
+     */
     public DrinkController(DrinkCreationView view, Model model) {
         this.view = view;
         this.model = model;
@@ -120,8 +128,8 @@ public class DrinkController {
 
     /**
      * saves the drink image
-     * @param uploadedFile .
-     * @param drinkName .
+     * @param uploadedFile the file containing the uploaded image
+     * @param drinkName the name of the drink
      * @return true if can save the image
      * @throws IOException if an error occours
      */
@@ -152,8 +160,8 @@ public class DrinkController {
 
     /**
      * generates a secure file name
-     * @param uploadedFile .
-     * @param drinkName .
+     * @param uploadedFile the file containing the uploaded image
+     * @param drinkName the name of the drink
      * @return the secure name
      */
     private String createSecureFileName(File uploadedFile, String drinkName) {

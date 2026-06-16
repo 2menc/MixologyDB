@@ -29,7 +29,7 @@ public class AdminUtils {
 
         /**
          * gets all users with additional analitics data
-         * @param connection .
+         * @param connection the database connection
          * @return a Map of (User - List of reviews he made)
          */
         public static Map<User, List<Review>> getUsersAnalitics(Connection connection) {
@@ -88,7 +88,7 @@ public class AdminUtils {
 
         /**
          * needed to ban a user
-         * @param connection .
+         * @param connection the database connection
          * @param userID the user to ban
          */
         private static boolean removeUserDrinks(Connection connection, int userID) {
@@ -105,8 +105,8 @@ public class AdminUtils {
 
         /**
          * deletes a user
-         * @param userID .
-         * @param conncection .
+         * @param connection the database connection
+         * @param userID the ID of the user to delete
          * @return {@code true} if the user exists and can be deleted,
          * {@code false} otherwise
          */
@@ -124,8 +124,8 @@ public class AdminUtils {
       
         /**
          * deletes a drink
-         * @param connection .
-         * @param drinkID .
+         * @param connection the database connection
+         * @param drinkID the ID of the drink to delete
          * @return true if can delete the drink
          */
         public static boolean deleteDrink(Connection connection, int drinkID) {
@@ -142,9 +142,9 @@ public class AdminUtils {
 
         /**
         * removes a review
-        * @param connection .
-        * @param drinkID .
-        * @param userID .
+        * @param connection the database connection
+        * @param drinkID the ID of the drink associated with the review
+        * @param userID the ID of the user who made the review
         * @return true if can remove the review, false otherwise
         */
         public static boolean removeReview(Connection connection, int drinkID, int userID) {

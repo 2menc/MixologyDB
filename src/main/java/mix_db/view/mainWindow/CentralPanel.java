@@ -39,7 +39,7 @@ public class CentralPanel extends JPanel{
 
     /**
      * gets the grid columns
-     * @return .
+     * @return the number of columns in the grid.
      */
     public static int getColumns() {
         return COLUMNS;
@@ -47,7 +47,7 @@ public class CentralPanel extends JPanel{
 
     /**
      * gets the grid rows
-     * @return .
+     * @return the number of rows in the grid.
      */
     public static int getRows() {
         return ROWS;

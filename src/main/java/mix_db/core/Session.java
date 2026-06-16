@@ -44,6 +44,7 @@ public class Session {
 
     /**
      * sets a new user
+     * @param loggedUser the user to set as logged in
      */
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
@@ -51,7 +52,7 @@ public class Session {
 
     /**
      * tells if the current user is an admin
-     * @return
+     * @return {@code true} if the logged-in user has the ADMIN role, {@code false} otherwise
      */
     public boolean isAdmin() {
         return this.loggedUser.getUserRole().equals(Role.ADMIN);
@@ -59,8 +60,8 @@ public class Session {
 
     /**
      * logs in
-     * @param email .
-     * @param password .
+     * @param email the email of the user attempting to log in
+     * @param password the password of the user attempting to log in
      * @return {@code true} if can log in, {@code false} otherwise
      */
     public boolean login(String email, String password) {

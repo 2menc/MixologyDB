@@ -45,7 +45,8 @@ import mix_db.view.drink.DrinkInformationsPanel;
 import mix_db.view.mainWindow.*;
 
 /**
- * main application controller
+ * main application controller that orchestrates the interaction between the view (GUI) and the model (data and business logic).
+ * It handles user actions, updates the view, and interacts with the database through the model.
  */
 public class ApplicationController {
 
@@ -54,7 +55,8 @@ public class ApplicationController {
     private DbModel model;
 
     /**
-     * constructor
+     * constructs the application controller, establishing a connection to the local database
+     * and initializing the main view.
      */
     public ApplicationController() {
         try {
@@ -81,10 +83,10 @@ public class ApplicationController {
     }
 
     /**
-     * fills the central panel grid.
-     * ! if the user is logged in, shows suggestions
-     * ! if the user is a guest OR the logged in user doesn't have any favourites, 
-     * ! shows a generic list of drinks
+     * populates the central panel grid with a list of drinks.
+     * If a user is logged in, it attempts to show personalized suggestions.
+     * If no user is logged in, or if suggestions are insufficient, it displays a generic list of drinks.
+     * Also updates the leaderboards and trending keywords in the left panel.
      */
     public void populateDrinkGrid() {
         List<Drink> drinkList = new ArrayList<>();
@@ -323,9 +325,9 @@ public class ApplicationController {
     }
 
     /**
-     * creates a drink card
-     * @param d the drink
-     * @return the card
+     * creates a drink card for display in the main view.
+     * @param d the drink object containing information to display.
+     * @return a JPanel representing the drink card.
      */
     public JPanel createDrinkCard(Drink d) {
         final JPanel card = new JPanel(new BorderLayout());
@@ -619,9 +621,9 @@ public class ApplicationController {
 
 
     /**
-     * checks if the drink is already saved
-     * @param drinkID .
-     * @return true if it is
+     * checks if the drink is already saved as a favorite by the currently logged-in user.
+     * @param d the drink to check.
+     * @return true if the drink is saved as a favorite, false otherwise or if no user is logged in.
      */
     private boolean isDrinkSaved(Drink d) {
         if(Session.getInstance().getLoggedUser() == null) {

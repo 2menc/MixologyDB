@@ -18,14 +18,18 @@ public class Category {
 
     /**
      * constructor
-     * @param categoryName .
-     * @param description .
+     * @param categoryName the name of the category
+     * @param description a brief description of the category
      */
     public Category(String categoryName, String description) {
         this.categoryName = categoryName;
         this.description = description;
     }
 
+    /**
+     * calculates the hash code for this Category object.
+     * @return the hash code for this object
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -35,6 +39,11 @@ public class Category {
         return result;
     }
 
+    /**
+     * compares this Category object to the specified object.
+     * @param obj the object to compare with
+     * @return true if the objects are equal, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -64,10 +73,11 @@ public class Category {
 
         /**
          * creates a new category
-         * @param connection .
-         * @param name .
-         * @param description .
+         * @param connection the database connection
+         * @param name the name of the category to create
+         * @param description a description for the new category
          * @return true if the category is created successfully, false otherwise
+         * @throws DAOException if a database access error occurs
          */
         public static boolean createCategory(Connection connection, String name, String description) {
             try(
@@ -81,6 +91,13 @@ public class Category {
             }
         }
 
+        /**
+         * deletes a category from the database.
+         * @param connection the database connection
+         * @param categoryName the name of the category to delete
+         * @return true if the category was deleted successfully, false otherwise
+         * @throws DAOException if a database access error occurs
+         */
         public static boolean deleteCategory(Connection connection, String categoryName) {
             try (
                 final var statement = DatabaseConnection.prepare(connection, 
@@ -95,7 +112,9 @@ public class Category {
 
         /**
          * gets all categories
+         * @param connection the database connection
          * @return a list of category names
+         * @throws DAOException if a database access error occurs
          */
         public static List<String> getAllCategories(Connection connection) {
             final var list = new LinkedList<String>();
@@ -115,10 +134,18 @@ public class Category {
         }
     }
 
+    /**
+     * gets the name of this category.
+     * @return the category name
+     */
     public String getCategoryName() {
         return categoryName;
     }
 
+    /**
+     * gets the description of this category.
+     * @return the category description
+     */
     public String getDescription() {
         return description;
     }

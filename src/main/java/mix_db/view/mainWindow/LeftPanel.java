@@ -18,6 +18,9 @@ public class LeftPanel extends JPanel{
     private final JTextArea mostUsedIngredients;
     private final JTextArea trendingKeywords;
 
+    /**
+     * constructs a new {@code LeftPanel} instance, initializing its layout, borders, and internal components for displaying leaderboards.
+     */
     public LeftPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setOpaque(false); 
@@ -81,29 +84,53 @@ public class LeftPanel extends JPanel{
         return label;
     }
 
+    /**
+     * gets the text area displaying users with the most positive reviews.
+     * @return the {@code JTextArea} for user reviews.
+     */
     public JTextArea getUserWithMostPositiveReviewsTa() {
         return userWithMostPositiveReviews;
     }
 
+    /**
+     * gets the text area displaying the most used ingredients.
+     * @return the {@code JTextArea} for most used ingredients.
+     */
     public JTextArea getMostUsedIngredientsTa() {
         return mostUsedIngredients;
     }
 
+    /**
+     * gets the text area displaying trending keywords.
+     * @return the {@code JTextArea} for trending keywords.
+     */
     public JTextArea getTrendingKeywordsTa() {
         return trendingKeywords;
     }
 
+    /**
+     * populates the text area for users with most positive reviews with the provided list of strings.
+     * @param list a list of strings, each representing a user with positive reviews.
+     */
     public void populateUserWithMostPositiveReviews(List<String> list) {
         this.userWithMostPositiveReviews.setText(String.join("\n", list)); 
         this.userWithMostPositiveReviews.setEditable(false);  
     }
 
+    /**
+     * populates the text area for most used ingredients with the provided list of strings.
+     * @param list a list of strings, each representing a most used ingredient.
+     */
     public void populateMostUsedIngredients(List<String> list) {
         // Semplificato: ora accetta e stampa direttamente le stringhe pulite inviate dal controller! [1]
         this.mostUsedIngredients.setText(String.join("\n", list)); 
         this.mostUsedIngredients.setEditable(false);  
     }
 
+    /**
+     * populates the text area for trending keywords with the provided list of strings.
+     * @param list a list of strings, each representing a trending keyword.
+     */
     public void populateTrendingKeywords(List<String> list) {
         this.trendingKeywords.setText(String.join("\n", list)); 
         this.trendingKeywords.setEditable(false);  

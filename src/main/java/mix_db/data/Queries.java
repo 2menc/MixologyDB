@@ -1,5 +1,8 @@
 package mix_db.data;
 
+/**
+ * contains all the SQL queries used in the application
+ */
 public class Queries {
 
     /**
@@ -22,6 +25,9 @@ public class Queries {
     AND C.drinkID = ?;
     """;
 
+    /**
+     * gets a user from their ID
+     */
     public static final String GET_USER_FROM_ID =
     """
     SELECT *
@@ -96,6 +102,9 @@ public class Queries {
     VALUES (?, ?);
     """;
 
+    /**
+     * gets all users working in a specific bar
+     */
     public static final String USERS_IN_BAR =
     """
     SELECT U.*
@@ -104,6 +113,9 @@ public class Queries {
     AND O.barID = ?;
     """;
 
+    /**
+     * checks if a user is employed in any bar
+     */
     public static final String IS_USER_IN_BAR =
     """
     SELECT *
@@ -111,6 +123,9 @@ public class Queries {
     WHERE userID = ?        
     """;
 
+    /**
+     * gets a user from their email address
+     */
     public static final String  GET_USER_FROM_EMAIL =
     """
     SELECT *
@@ -140,6 +155,9 @@ public class Queries {
     AND indirizzo = ?;
     """;
 
+    /**
+     * searches for bars where a specific user is employed
+     */
     public static final String SEARCH_BAR_BY_EMPLOYEE =
     """
     SELECT B.*
@@ -148,6 +166,9 @@ public class Queries {
     AND O.userID = ?;    
     """;
 
+    /**
+     * gets a bar by its ID
+     */
     public static final String GET_BAR = 
     """
     SELECT *
@@ -173,6 +194,9 @@ public class Queries {
     VALUES (?,?);        
     """;
 
+    /**
+     * gets the composition of a specific drink
+     */
     public static final String GET_DRINK_COMPOSITION =
     """
     SELECT C.*
@@ -224,6 +248,9 @@ public class Queries {
     VALUES (?, DATE(NOW()), ?);
     """;
 
+    /**
+     * links the drink with the creator and their bar
+     */
     public static final String LINK_DRINK_WITH_BAR =
     """
     INSERT INTO creazioni (drinkID, dataCreazione, barID, userID)
@@ -302,6 +329,9 @@ public class Queries {
     WHERE keyword = ?;    
     """;
 
+    /**
+     * searches for a drink by its name
+     */
     public static final String SEARCH_DRINK_BY_NAME =
     """
     SELECT *
@@ -309,6 +339,9 @@ public class Queries {
     WHERE nome = ?;        
     """;
 
+    /**
+     * gets the tags associated with a specific drink
+     */
     public static final String GET_DRINK_TAGS =
     """
     SELECT *
@@ -317,6 +350,9 @@ public class Queries {
     AND D.drinkID = I.drinkID;        
     """;
 
+    /**
+     * gets the user who created a specific drink
+     */
     public static final String GET_DRINK_CREATOR =
     """
     SELECT U.*
@@ -325,6 +361,9 @@ public class Queries {
     AND U.userID = C.userID;         
     """;
 
+    /**
+     * gets the bar associated with the creation of a specific drink
+     */
     public static final String GET_DRINK_CREATOR_BAR =
     """
     SELECT B.*
@@ -354,6 +393,9 @@ public class Queries {
     AND U.userID = ?;    
     """;
 
+    /**
+     * removes a drink from the user's favourites
+     */
     public static final String REMOVE_FAVOURITE =
     """
     DELETE FROM salvataggioPreferiti
@@ -370,6 +412,9 @@ public class Queries {
     VALUES (?, ?, ?, DATE(NOW()), ?);      
     """;
 
+    /**
+     * searches for reviews of a specific drink
+     */
     public static final String SEARCH_DRINK_REVIEWS =
     """
     SELECT *
@@ -442,6 +487,9 @@ public class Queries {
     LIMIT ?;
     """;
 
+    /**
+     * gets the users with the highest number of positive reviews
+     */
     public static final String USERS_WITH_MORE_POSITIVE_REVIEWS =
     """
     SELECT *
@@ -522,6 +570,9 @@ public class Queries {
     WHERE drinkID = ?;        
     """;
 
+    /**
+     * searches for a drink by its ID
+     */
     public static final String SEARCH_DRINK =
     """
     SELECT *
@@ -539,12 +590,18 @@ public class Queries {
     WHERE userID = ?;
     """;
 
+    /**
+     * deletes a user from the database
+     */
     public static final String BAN_USER =
     """
     DELETE FROM utenti
     WHERE userID = ?;        
     """;
 
+    /**
+     * gets all drink categories
+     */
     public static final String GET_ALL_CATEGORIES =
     """
     SELECT *
