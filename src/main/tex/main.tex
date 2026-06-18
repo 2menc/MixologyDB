@@ -36,11 +36,11 @@ L'obiettivo principale è la progettazione e lo sviluppo di un database a suppor
 \\
 La \textbf{parte centrale} dell'applicativo è la seguente:\\
 Ogni drink, che sia un classico IBA o una creazione originale, sarà descritto in maniera precisa e comprenderà informazioni importanti sui suoi ingredienti e sulla preparazione. Il sistema terrà traccia non solo del nome e dell'eventuale utente creatore, ma anche dell'anno di ideazione, della categoria di appartenenza e di una descrizione generale.\\
-Dal punto di vista pratico, verranno memorizzati gli ingredienti necessari, le garnish suggerite e i passaggi dettagliati per la preparazione, accompagnate da foto e keywords per facilitarne l'individuazione e la categorizzazione.\\
-Gli utenti si interfacceranno con il sistema secondo tre livelli di accesso:\\
+In pratica, verranno memorizzati gli ingredienti necessari compresi di foto keywords per facilitarne l'individuazione e la categorizzazione.\\
+Gli utenti si interfacceranno con il sistema tramite tre livelli di accesso:\\
 gli utenti  non registrati potranno esplorare il catalogo senza interagirvi: non potranno creare ricette, scrivere recensioni ...\\
 Al contrario, un utente registrato diventerà parte attiva della community: potrà arricchire il database creando e pubblicando nuovi drink personalizzati. Inoltre, sarà possibile salvare i drink nella sezione \textit{"preferiti"}, aggiungere recensioni testuali alle ricette ed esportare (salvando su file) i dati di un drink, per poter condividere la ricetta.\\
-Il sistema prevede la registrazione come \textbf{bar}. Ogni bar è associato ad un certo numero di \textit{utenti registrati}, i quali possono aggiungere una \textbf{creazione di gruppo}.
+Il sistema prevede la registrazione di \textbf{bar}. Ogni bar è associato ad un certo numero di \textit{utenti registrati}, da cui possono aggiungere una \textbf{creazione di gruppo}.
 \\
 Per navigare nell'archivio, l'applicazione fornirà un motore di ricerca in cui gli utenti potranno cercare un drink non solo per nome, ma anche filtrando per gusti (ad esempio "dolce", "amaro", "fruttato"), per specifici ingredienti (come "gin" o "fragola"), o sfruttando le parole chiave inserite liberamente dai creatori.\\
 \\
@@ -56,7 +56,7 @@ Infine, il database dovrà supportare la possibilità di ottenere di informazion
 \hline
 \textbf{Utente registrato}\normalsize: &persona che può interagire con il database, visualizzando e aggiungendo determinate informazioni;\\
 \hline
-\textbf{Bar}: &"gruppo" di barman che possono interagire con il database visualizzando le informazioni \footnotesize(proprio come gli \textit{utenti})\normalsize e registrando informazioni "di gruppo";\\
+\textbf{Bar}: &"gruppo" di barman che possono interagire con il database visualizzando le informazioni \footnotesize(proprio come gli \textit{utenti})\normalsize e registrando informazioni in gruppo;\\
 \hline
 \textbf{Admin}: &utente dotato di permessi "speciali" che si occupa della moderazione;\\
 \hline
@@ -73,8 +73,7 @@ Infine, il database dovrà supportare la possibilità di ottenere di informazion
 \subsection{Correzione delle ambiguità}
 \subsubsection{Segue un testo che riassume i concetti più a basso livello, eliminandone le ambiguità:}
 
-Per ogni utente registrato vengono salvati nome, cognome, e-mail e password e, dopo la prima iscrizione, potrà autenticarsi accedendo con la sua e-mail e password. Un utente registrato può visualizzare i drink già presenti nel database e crearne di nuovi.\\
-Un bar, esattamente come un utente singolo, può visualizzare i drink già presenti nel database e crearne di nuovi.\\
+Per ogni utente registrato vengono salvati nome, cognome, e-mail e password e, dopo la prima iscrizione, potrà autenticarsi accedendo con la sua e-mail e password. Un utente registrato può visualizzare i drink già presenti nel database e crearne di nuovi, anche tramite il suo bar.\\
 un utente non registrato, al contrario, non sarà abilitato fruire delle seguenti funzioni: creare drink, scrivere recensioni, salvare drink come \textit{"preferiti"}.\\
 Tutti gli utenti saranno abilitati alla \textit{ricerca tramite parole chiave}, utilizzando le parole chiave che il creatore del drink ha specificato, oltre la descrizione stessa del drink. 
 Vi sarà la possibilità, solo per utenti specifici, di accedere come "admin", per moderare l'uso della piattaforma. 
@@ -161,7 +160,7 @@ L'entità \textit{Drink} si riferisce ad una generica ricetta con una descrizion
 \end{figure}
 
 \subsubsection{gestione delle relazioni Utente-Drink}
-Ad eccezione degli admin, tutti gli utenti registrati e i bar possono condividere ricette, solo admin e utenti registrati possono salvare ricette come "preferite", ma solo gli utenti registrati possono recensirle.
+Tutti gli utenti registrati e amministratori possono condividere ricette, salvare ricette come "preferite" e recensirle.
 
 \begin{itemize}
     \item Ogni \textit{Utente} potrà creare e recensire fino a $n$ drink, ma dovrà poter lasciare una sola recensione per drink.\\
@@ -213,8 +212,6 @@ Ad eccezione degli admin, tutti gli utenti registrati e i bar possono condivider
     creazione & R & 15.000\\
     \hline
     recensione & R & 60.000\\
-    \hline
-    \footnotesize creazioneDiGruppo\normalsize & R & 5.000\\
     \hline
     \footnotesize salvataggioPreferiti\normalsize & R & 300.000\\
 \hline
@@ -291,8 +288,6 @@ Per l'eliminazione della gerarchia su "Utente" si è deciso di applicare un coll
 \subsubsection{Eliminazione degli attributi composti}
 Lo schema non presenta attributi composti: i concetti che potrebbero richiederlo sono già stati modellati tramite attributi.
 \\
-Inoltre, si è scelto di usare due relazioni distinte per distinguere la creazione di una ricetta da parte di un utente singolo o di un bar, distinguendo i due concetti.
-
 \subsubsection{Scelta delle chiavi primarie}
 Si è scelto di attribuire un codice univoco agli utenti, per non escludere a priori la possibilità di poter cambiare la mail in futuro.
 \\
@@ -653,6 +648,7 @@ op & accessi & frequenza/sett & totale \\
     \end{tabular}
     \\ $27S + 21A \to 117$ operazioni.
 
+    \newpage
     \item (admin) ban di un utente, con cancellazione di recensioni e "preferiti" e mantenimento delle ricette\\
         \begin{tabular}{c|c|c}
     concetto & accessi & tipo\\
@@ -734,7 +730,7 @@ Per questo motivo, verrà usata la versione con ridondanza.
 \newpage
 \subsection{Query SQL}
 
-    Gli identificatori Drink.drinkID, User.userID, Bar.barID sono di tipo tipo int auto\textunderscore increment, pertanto non c'è bisogno di inserirli manualmente.
+    Gli identificatori Drink.drinkID, User.userID, Bar.barID sono di tipo tipo int auto\textunderscore increment, pertanto non è necessario inserirli manualmente.
 \begin{enumerate}
     \item \textbf{Iscrizione di un nuovo utente:}\\
         \textcolor{blue}{INSERT INTO} Utenti \footnotesize(email, password, nome, cognome, dataNascita, ruoloUtente, dataIscrizione, numeroRicetteCreate, numeroRecensioniPositive, numeroRecensioniEffettuate) \normalsize \\
