@@ -850,6 +850,7 @@ Per questo motivo, verrà usata la versione con ridondanza.
         \textcolor{blue}{FROM} identificazioni I, recensioni R\\
         \textcolor{blue}{WHERE} I.drinkID = R.drinkID\\
         \textcolor{blue}{AND} \textcolor{blue}{DATEDIFF}(\textcolor{gray}{DATE(NOW())}, R.dataRecensione) $<=$ ?\\
+        \textcolor{blue}{AND} R.voto $>$ 2\\
         \textcolor{blue}{GROUP BY} keyword\\
         \textcolor{blue}{ORDER BY} tendenza \textcolor{blue}{DESC}
         \textcolor{blue}{LIMIT} ?;

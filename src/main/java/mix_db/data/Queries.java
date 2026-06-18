@@ -506,6 +506,7 @@ public class Queries {
     SELECT keyword, COUNT(*) AS tendenza
     FROM identificazioni I, recensioni R
     WHERE I.drinkID = R.drinkID
+    AND R.voto > 2
     AND DATEDIFF(DATE(NOW()), R.dataRecensione) <= ?
     GROUP BY keyword
     ORDER BY tendenza DESC LIMIT ?;        
