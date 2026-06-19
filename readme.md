@@ -1,11 +1,16 @@
-# Applicazione per visualizzazione, salvataggio e condivisione di ricette, preparazioni e ingredienti per cocktail riconosciuti e creati dall’utente.
+# MixologyDB
 <img width="502" height="502" alt="applicationIconRedim" src="https://github.com/user-attachments/assets/318a2605-f628-4f60-bf21-fe95cfddfe8f" />
 
-### L’obiettivo è quello di creare un programma in cui un utente, iscritto con le proprie informazioni può visualizzare i cocktail riconosciuti dall’IBA (aggiornati fino ad una certa data), crearne di nuovi personalizzati e pubblicarli rendendoli visibili anche agli altri utenti. Inoltre, sarà possibile cercare i drink adatti ai propri gusti (tramite parole chiave, ad esempio: “dolce”, “amaro”, “rosso” ...  e ingredienti “gin”, “fragola” ...).
+## Applicazione per visualizzazione, salvataggio e condivisione di ricette di cocktail riconosciuti e creati dall’utente.
 
-### Un utente non registrato potrà solo visualizzare i drink, un utente registrato, invece, potrà anche crearli e pubblicarli. 
-### Ci sarà la possibilità di scaricare le informazioni dei drink creati per condividerli: verranno lette e salvate come file le informazioni del drink.
-### Ci sarà la possibilità di aggiungere recensioni alle ricette.
+# Obiettivo
+Creare un programma in cui un utente, iscritto con le proprie informazioni può visualizzare i cocktail riconosciuti dall’IBA, crearne di nuovi personalizzati e pubblicarli rendendoli visibili anche agli altri utenti. Inoltre, è possibile cercare i drink adatti ai propri gusti (tramite parole chiave, ad esempio: “dolce”, “amaro”, “rosso” ...  e ingredienti “gin”, “fragola” ...).
+
+Un utente non registrato potrà solo visualizzare i drink, un utente registrato, invece, potrà anche crearli e pubblicarli. 
+
+Ci sarà la possibilità di scaricare le informazioni dei drink creati per condividerli: verranno lette e salvate come file le informazioni del drink.
+
+Ci sarà la possibilità di aggiungere recensioni alle ricette.
 
 ***
 
@@ -16,19 +21,6 @@
 4)	Aggiunta di drink ai “preferiti”;
 5)	Salvataggio su file dei dati dei drink;
 6)	Ricerca di un drink tramite parole chiave.
-
-### Inoltre, l’amministratore potrà:
-1)	Eliminare ricette non pertinenti;
-2)	Eliminare recensioni non pertinenti;
-3)	Eliminare gli utenti che aggiungono ricette e/o recensioni non pertinenti;
-4)	Ottenere una lista di tutti gli utenti, compresa di alcune informazioni come il numero di drink creati.
-
-### Infine, sarà possibile consultare le seguenti informazioni aggregate:
-1)	Elenco degli utenti con più recensioni positive;
-2)	Elenco degli ingredienti più utilizzati;
-3)	Elenco dei gusti di tendenza;
-4)	raccomandazione di drink in base ai drink preferiti dell’utente;
-5)	Il drink con più recensioni positive in un determinato periodo di tempo (ad esempio il più recensito del mese).
 
 # Prima di avviare l'applicativo:
 1) si crei il database locale (nome: "MixologyDB", utente: "root", password: "Password");
