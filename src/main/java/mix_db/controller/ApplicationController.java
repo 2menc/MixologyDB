@@ -221,7 +221,7 @@ public class ApplicationController {
                 public void actionPerformed(ActionEvent e) {
                     final JFrame frame = new JFrame();
                     frame.setTitle("preferiti");
-                    new FrameIcon(frame);
+                    FrameIcon.setIcon(mv);
                     
                     final JPanel panel = new JPanel();
 

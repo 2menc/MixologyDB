@@ -63,7 +63,7 @@ public class AnaliticsView extends JFrame{
         
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        new FrameIcon(this);
+        FrameIcon.setIcon(this);
         this.setVisible(true);
     }
 

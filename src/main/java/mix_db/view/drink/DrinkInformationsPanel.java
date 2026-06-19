@@ -238,7 +238,7 @@ public class DrinkInformationsPanel extends JPanel{
         this.add(this.buttonsPanel, BorderLayout.NORTH);
 
         this.reviewFrame = new JFrame("Aggiungi una recensione");
-        new FrameIcon(this.reviewFrame);
+        FrameIcon.setIcon(this.reviewFrame);
         
         this.reviewPanel = new JPanel();    
         this.score = new JTextField("voto");

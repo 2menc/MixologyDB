@@ -149,7 +149,7 @@ public class LoginController {
                 }
 
                 final var u = new User(0, email, password, name, surname, 
-                    birthDate, surname, null, 0, 0, 0);
+                    birthDate, mix_db.data.Role.USER, null, 0, 0, 0);
 
 
                 if(this.model.registerUser(u).isEmpty()) {

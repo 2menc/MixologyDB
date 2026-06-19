@@ -40,7 +40,7 @@ public class MainView extends JFrame {
         this.setTitle("MixologyDB");
         super.setSize((int)(Toolkit.getDefaultToolkit().getScreenSize().width/1.3), (int)(Toolkit.getDefaultToolkit().getScreenSize().height/1.3));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        new FrameIcon(this);
+        FrameIcon.setIcon(this);
         this.setVisible(true);
     }
 
