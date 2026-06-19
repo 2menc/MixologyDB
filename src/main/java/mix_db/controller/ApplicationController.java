@@ -35,6 +35,7 @@ import mix_db.data.dao.Review;
 import mix_db.data.dao.User;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
+import mix_db.model.ReviewHelp;
 import mix_db.view.ExceptionPanel;
 import mix_db.view.FrameIcon;
 import mix_db.view.MessageDialog;
@@ -398,6 +399,12 @@ public class ApplicationController {
 
                     final DrinkInformationsPanel dp = new DrinkInformationsPanel(d, isDrinkSaved(d));
                     
+                    boolean loggedIn = Session.getInstance().isLoggedIn();
+                    boolean admin = loggedIn && Session.getInstance().isAdmin();
+
+                    dp.setReviewActionsEnabled(loggedIn);
+                    dp.setAdminControlsVisible(admin);
+
                     // *listeners
                     dp.requestedToAddToFavs(new ActionListener() {
                         @Override
@@ -423,24 +430,21 @@ public class ApplicationController {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                final var review = dp.getReviewInformation();
+                                // Riceve solo i dati grezzi inseriti dall'utente
+                                final ReviewHelp input = dp.getReviewInput();
+                                if (input == null) return;
 
-                                if(review.getScore() < 1 || review.getScore() > 5) {
+                                if (input.score() < 1 || input.score() > 5) {
                                     throw new IllegalArgumentException("Il voto deve essere compreso tra 1 e 5");
                                 }
 
-                                model.addReview(d.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), review.getDescription(), review.getScore());
+                                // Il controller (e solo lui) recupera l'ID dell'utente loggato dalla sessione
+                                int loggedUserID = Session.getInstance().getLoggedUser().getUserID();
 
-                                final var reviewsMap = new HashMap<Review, User>();
-                                for(var k: model.getDrinkReviews(d.getDrinkID())) {
-                                    final var u = model.getFullUserFromID(k.getUserID());
-                                    
-                                    if(u.isPresent()) {
-                                        reviewsMap.put(k, u.get());
-                                    }
-                                }
-                                dp.populateReviewsScrollPane(reviewsMap);
+                                // Salva nel database tramite modello
+                                model.addReview(d.getDrinkID(), loggedUserID, input.description(), input.score());
 
+                                // ... ricarica le recensioni aggiornate
                             } catch (Exception ex) {
                                 new ExceptionPanel(ex, view);
                                 ex.printStackTrace();
@@ -531,7 +535,9 @@ public class ApplicationController {
                                                 reviewsMap.put(k, u.get());
                                             }
                                         }
-                                        dp.populateReviewsScrollPane(reviewsMap);
+
+                                        boolean isAdmin = Session.getInstance().isLoggedIn() && Session.getInstance().isAdmin();
+                                        dp.populateReviewsScrollPane(reviewsMap, isAdmin);
                                         
                                     } catch (Exception ex) {
                                         new ExceptionPanel(ex, view);
@@ -548,7 +554,6 @@ public class ApplicationController {
                     mainPanel.revalidate();
                     mainPanel.repaint();
 
-                    dp.configureButtons();
                     dp.populateIngredients(model.getComposition(d.getDrinkID()));
                     dp.populateKeywords(model.getKeywords(d.getDrinkID()));
 
@@ -565,7 +570,8 @@ public class ApplicationController {
                             reviewsMap.put(k, u.get());
                         }
                     }
-                    dp.populateReviewsScrollPane(reviewsMap);
+                    boolean isAdmin = Session.getInstance().isLoggedIn() && Session.getInstance().isAdmin();
+                    dp.populateReviewsScrollPane(reviewsMap, isAdmin);
                 }
             }            
         });

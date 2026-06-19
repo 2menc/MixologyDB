@@ -26,12 +26,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import mix_db.core.GeneralSettings;
-import mix_db.core.Session;
 import mix_db.data.dao.Bar;
 import mix_db.data.dao.Composition;
 import mix_db.data.dao.Drink;
 import mix_db.data.dao.Review;
 import mix_db.data.dao.User;
+import mix_db.model.ReviewHelp;
 import mix_db.view.ExceptionPanel;
 import mix_db.view.FrameIcon;
 
@@ -407,20 +407,17 @@ public class DrinkInformationsPanel extends JPanel{
      * retrieves the review information entered by the user.
      * @return the created review, or null if the input is invalid
      */
-    public Review getReviewInformation() {
-        try {
-            final var r =  new Review(drink.getDrinkID(), Session.getInstance().getLoggedUser().getUserID(), 
-                    this.reviewDescription.getText(), null, Integer.parseInt(this.score.getText()));
-
-            this.reviewFrame.dispose();
-
-            this.updateView();
-            return r;
-        } catch (NumberFormatException e) {
-            new ExceptionPanel(e, reviewFrame);
-            return null;
+        public ReviewHelp getReviewInput() {
+            try {
+                int scoreValue = Integer.parseInt(this.score.getText());
+                String desc = this.reviewDescription.getText();
+                this.reviewFrame.dispose();
+                return new ReviewHelp(desc, scoreValue);
+            } catch (NumberFormatException e) {
+                new ExceptionPanel(e, reviewFrame);
+                return null;
+            }
         }
-    }
 
     /**
      * populates the ingredients text area with the list of ingredients.
@@ -440,7 +437,7 @@ public class DrinkInformationsPanel extends JPanel{
      * populates the reviews scroll pane with the given reviews and their authors.
      * @param revs a map of reviews and the users who wrote them
      */
-    public void populateReviewsScrollPane(Map<Review, User> revs) {
+    public void populateReviewsScrollPane(Map<Review, User> revs, boolean showDeleteButtons) {
         this.reviews.removeAll(); 
 
         if (revs == null || revs.isEmpty()) {
@@ -467,7 +464,7 @@ public class DrinkInformationsPanel extends JPanel{
                 reviewRow.setOpaque(false);
                 reviewRow.add(ta, BorderLayout.CENTER);
                 
-                if (Session.getInstance().isAdmin() && this.removeReviewListener != null) {
+                if (showDeleteButtons && this.removeReviewListener != null) {
                     final JButton deleteButton = new JButton("elimina");
                     deleteButton.setForeground(Color.ORANGE);
                     deleteButton.putClientProperty("review", r);
@@ -510,16 +507,20 @@ public class DrinkInformationsPanel extends JPanel{
 
     /**
      * configures the visibility and enabled state of buttons based on the user's login status and role.
+     * @param enabled .
      */
-    public void configureButtons() {
-        if(! Session.getInstance().isLoggedIn()) {
-            this.buttonsPanel.addFavouriteButton.setEnabled(false);
-            this.buttonsPanel.removeFavouriteButton.setEnabled(false);
-            this.buttonsPanel.addReviewButton.setEnabled(false);
-        }
-        if(Session.getInstance().isAdmin()) {
-            this.buttonsPanel.removeDrink.setVisible(true);
-        }
+    public void setReviewActionsEnabled(boolean enabled) {
+        this.buttonsPanel.addFavouriteButton.setEnabled(enabled);
+        this.buttonsPanel.removeFavouriteButton.setEnabled(enabled);
+        this.buttonsPanel.addReviewButton.setEnabled(enabled);
+    }
+
+    /**
+     * Sets admin controls visibility
+     * @param visible .
+     */
+    public void setAdminControlsVisible(boolean visible) {
+        this.buttonsPanel.removeDrink.setVisible(visible);
     }
 
     private static class ButtonsPanel extends JPanel{
