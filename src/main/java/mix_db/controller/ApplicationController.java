@@ -613,7 +613,7 @@ public class ApplicationController {
     private void deleteDrinkImage(final String imageName) {
         final var path = Path.of(GeneralSettings.fotoPath + imageName);
         try {
-            Files.delete(path);
+            Files.deleteIfExists(path);
         } catch(IOException e) {
             new ExceptionPanel(e, this.view);
         }

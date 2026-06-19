@@ -209,7 +209,7 @@ public class CreateDrinkPanel extends JPanel {
             this.ingredientsContainer.revalidate();
             this.ingredientsContainer.repaint();
         } else {
-            JOptionPane.showMessageDialog(this, "Il drink deve avere almeno un ingrediente!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Il drink deve avere almeno un ingrediente", "Attenzione", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -288,7 +288,7 @@ public class CreateDrinkPanel extends JPanel {
         final java.util.List<String> l = new LinkedList<>();
         
         if(this.keywords.getText().contains("parole chiave separate da virgola")) {
-            JOptionPane.showMessageDialog(this, "Il drink deve avere almeno un ingrediente!", "Attenzione", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Inserisci almeno una parola chiave per il drink", "Attenzione", JOptionPane.WARNING_MESSAGE);
         } else {
             for(var k: this.keywords.getText().split(", ")) {
                 l.add(k);
