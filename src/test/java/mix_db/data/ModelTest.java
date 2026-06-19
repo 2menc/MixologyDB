@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.Optional;
 
 import mix_db.data.dao.User;
+import mix_db.core.GeneralSettings;
 import mix_db.data.dao.Bar;
 import mix_db.data.dbConnection.DatabaseConnection;
 import mix_db.model.DbModel;
@@ -20,7 +21,11 @@ public class ModelTest {
 
     @BeforeAll
     static void initConnection() {
-        connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
+        connection = DatabaseConnection.localConnection(
+            GeneralSettings.databaseName,
+            GeneralSettings.databaseUser,
+            GeneralSettings.databasePassword
+        );
     }
 
     @BeforeEach

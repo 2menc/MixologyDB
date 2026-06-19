@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import java.sql.Connection;
 import java.util.Optional;
 
+import mix_db.core.GeneralSettings;
 import mix_db.data.dao.Bar;
 import mix_db.data.dbConnection.DatabaseConnection;
 
@@ -15,7 +16,11 @@ public class DaoTest {
 
     @BeforeAll
     static void initConnection() {
-        connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
+        connection = DatabaseConnection.localConnection(
+            GeneralSettings.databaseName,
+            GeneralSettings.databaseUser,
+            GeneralSettings.databasePassword
+        );
     }
 
     @AfterAll

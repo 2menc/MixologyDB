@@ -60,7 +60,11 @@ public class ApplicationController {
      */
     public ApplicationController() {
         try {
-            final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
+            final Connection connection = DatabaseConnection.localConnection(
+                GeneralSettings.databaseName,
+                GeneralSettings.databaseUser,
+                GeneralSettings.databasePassword
+            );
             this.model = new DbModel(connection);
         } catch (Exception e) {
             e.printStackTrace();

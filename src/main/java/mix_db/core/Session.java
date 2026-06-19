@@ -66,7 +66,12 @@ public class Session {
      */
     public boolean login(String email, String password) {
 
-        try (final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password")) {
+        try (final Connection connection = DatabaseConnection.localConnection(
+                GeneralSettings.databaseName,
+                GeneralSettings.databaseUser,
+                GeneralSettings.databasePassword
+            );
+) {
 
             if(email.equals("anonimo") && password.equals("0")) {
                 throw new IllegalArgumentException("cannot login as anonymous user");

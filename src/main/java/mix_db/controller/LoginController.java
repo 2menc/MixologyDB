@@ -7,6 +7,7 @@ import java.sql.Date;
 
 import javax.swing.JFrame;
 
+import mix_db.core.GeneralSettings;
 import mix_db.core.Session;
 import mix_db.core.exceptions.WrongCredentialsException;
 import mix_db.data.dao.User;
@@ -34,7 +35,11 @@ public class LoginController {
         this.view = new LoginView();
 
         try {
-            final Connection connection = DatabaseConnection.localConnection("MixologyDB", "root", "Password");
+            final Connection connection = DatabaseConnection.localConnection(
+                GeneralSettings.databaseName,
+                GeneralSettings.databaseUser,
+                GeneralSettings.databasePassword
+            );
             this.model = new DbModel(connection);
 
         } catch (Exception e) {
