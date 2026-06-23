@@ -4,6 +4,8 @@ import java.awt.Toolkit;
 
 import javax.swing.*;
 
+import mix_db.view.FrameIcon;
+
 /**
  * simple login frame
  */
@@ -21,6 +23,7 @@ public class LoginView extends JFrame{
 
         this.panel = new LoginPanel();
         this.add(this.panel);
+        FrameIcon.setIcon(this);
         super.setVisible(true);
     }
     
