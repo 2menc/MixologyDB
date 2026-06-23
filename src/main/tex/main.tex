@@ -32,15 +32,15 @@ Si vuole progettare un database su cui creare un'applicazione desktop per visual
 \end{flushleft}
 
 \subsection{Intervista}
-L'obiettivo principale è la progettazione e lo sviluppo di un database a supporto di un'applicazione desktop pensata per gli appassionati di mixology. La piattaforma si presenta come un raccoglitore digitale in cui, inizialmente, il sistema metterà a disposizione un catalogo preimpostato, contenente tutti i cocktail ufficialmente riconosciuti dall'IBA (International Bartenders Association), aggiornati fino ad una certa data, ma sarà possibile inserire nuove creazioni.\\
+L'obiettivo principale è la progettazione e lo sviluppo di un database a supporto di un'applicazione desktop pensata per gli appassionati di mixology. La piattaforma si presenta come un raccoglitore digitale in cui, inizialmente, il sistema metterà a disposizione un catalogo preimpostato, contenente i cocktail più celebri, ufficialmente riconosciuti dall'IBA (International Bartenders Association), aggiornati fino ad una certa data, ma sarà possibile inserire nuove creazioni.\\
 \\
 La \textbf{parte centrale} dell'applicativo è la seguente:\\
-Ogni drink, che sia un classico IBA o una creazione originale, sarà descritto in maniera precisa e comprenderà informazioni importanti sui suoi ingredienti e sulla preparazione. Il sistema terrà traccia non solo del nome e dell'eventuale utente creatore, ma anche dell'anno di ideazione, della categoria di appartenenza e di una descrizione generale.\\
-In pratica, verranno memorizzati gli ingredienti necessari compresi di foto keywords per facilitarne l'individuazione e la categorizzazione.\\
-Gli utenti si interfacceranno con il sistema tramite tre livelli di accesso:\\
-gli utenti  non registrati potranno esplorare il catalogo senza interagirvi: non potranno creare ricette, scrivere recensioni ...\\
-Al contrario, un utente registrato diventerà parte attiva della community: potrà arricchire il database creando e pubblicando nuovi drink personalizzati. Inoltre, sarà possibile salvare i drink nella sezione \textit{"preferiti"}, aggiungere recensioni testuali alle ricette ed esportare (salvando su file) i dati di un drink, per poter condividere la ricetta.\\
-Il sistema prevede la registrazione di \textbf{bar}. Ogni bar è associato ad un certo numero di \textit{utenti registrati}, da cui possono aggiungere una \textbf{creazione di gruppo}.
+Ogni drink, che sia un classico IBA o una nuova creazione, sarà descritto in maniera precisa e comprenderà informazioni importanti sulla sua composizione. Il sistema terrà traccia non solo del nome e dell'eventuale utente creatore, ma anche della categoria di appartenenza e di una descrizione generale.\\
+In pratica, verranno memorizzati gli ingredienti necessari compresi di foto e keywords per facilitarne l'individuazione e la categorizzazione.\\
+Gli utenti si interfacceranno con il sistema tramite due livelli di accesso:\\
+gli \textbf{utenti  non registrati} potranno esplorare il catalogo senza interagirvi: non potranno creare ricette, scrivere recensioni ...\\
+Al contrario, un \textbf{utente registrato} diventerà parte attiva della community: potrà arricchire il database creando e pubblicando nuovi drink personalizzati. Inoltre, sarà possibile salvare i drink nella sezione \textit{"preferiti"}, aggiungere recensioni testuali alle ricette ed esportare (salvando su file) i dati di un drink, per poter condividere la ricetta.\\
+Il sistema prevede la registrazione di \textbf{bar}. Ogni bar è associato ad un certo numero di \textit{utenti registrati}, da cui possono aggiungere una creazione "di gruppo".
 \\
 Per navigare nell'archivio, l'applicazione fornirà un motore di ricerca in cui gli utenti potranno cercare un drink non solo per nome, ma anche filtrando per gusti (ad esempio "dolce", "amaro", "fruttato"), per specifici ingredienti (come "gin" o "fragola"), o sfruttando le parole chiave inserite liberamente dai creatori.\\
 \\
@@ -81,7 +81,7 @@ Vi sarà la possibilità, solo per utenti specifici, di accedere come "admin", p
 \subsubsection{Più specificatamente, per un utente registrato, il programma offrirà le seguenti funzionalità:}
 \begin{enumerate}
     \item salvataggio di drink nella scheda personale “preferiti”;
-    \item Salvataggio su file dei dati dei drink;
+    \item Salvataggio su file pdf dei dati dei drink;
     \item Ricerca di un drink tramite parole chiave.
 \end{enumerate}
 
@@ -283,7 +283,7 @@ Tutti gli utenti registrati e amministratori possono condividere ricette, salvar
 \subsection{Raffinamento dello schema}
 \label{raffinamentoSchema}
 \subsubsection{Eliminazione delle gerarchie}
-Per l'eliminazione della gerarchia su "Utente" si è deciso di applicare un collasso verso l'alto, dato il numero di attributi e la relazione in comune. Per distinguere amministratori e utenti, si è deciso di aggiungere un attributo "ruoloUtente" (amministratore/registrato), in modo tale da distinguere i due ruoli.
+Per l'eliminazione della gerarchia su "Utente" si è deciso di applicare un collasso verso l'alto, dato il numero di attributi e la relazione in comune. Per distinguere amministratori e utenti, si è deciso di aggiungere un attributo "ruoloUtente" (Admin/User), in modo tale da distinguere i due ruoli.
 
 \subsubsection{Eliminazione degli attributi composti}
 Lo schema non presenta attributi composti: i concetti che potrebbero richiederlo sono già stati modellati tramite attributi.
@@ -700,7 +700,7 @@ Per questo motivo, verrà usata la versione con ridondanza.
 \textbf{Utenti} (\underline{userID}, email, password, nome, cognome, dataNascita, ruoloUtente, dataIscrizione, numeroRicetteCreate, numeroRecensioniPositive, numeroRecensioniEffettuate)\\
 \textbf{occupazioni} (Utenti: \underline{userID}, Bar: \underline{barID})\\
 \textbf{Bar} (\underline{barID}, nomeBar, città, indirizzo)\\
-\textbf{creazioni} (Utenti: \underline{userID}, Drink: \underline{drinkID}, dataCreazione)\\
+\textbf{creazioni} (Utenti: \underline{userID}, Drink: \underline{drinkID}, barID*,  dataCreazione)\\
 \textbf{recensioni}: (Utenti: \underline{userID}, Drink: \underline{drinkID}, descrizione, dataRecensione, voto)\\
 \textbf{salvataggioPreferiti}: (Utenti: \underline{userID}, Drink: \underline{drinkID}, dataSalvataggio)\\
 \textbf{Drink} (\underline{drinkID}, nomeCategoria, nome, descrizione, foto, nomeCategoria, IBA)\\
