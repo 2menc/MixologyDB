@@ -693,6 +693,8 @@ op & accessi & frequenza/sett & totale \\
 \subsubsection{Conclusione}
 \normalsize La variante con ridondanza risulta essere nettamente più efficiente, specialmente nelle operazioni 8 e 9, le quali, nella variante senza ridodnanza, richiederebbero la lettura di un volume intero.
 \\
+Riguardo l'operazione 7, la ridondanza non ha influito, poichè la ricerca avviene solo su campi non ridondanti.
+\\
 Per questo motivo, verrà usata la versione con ridondanza.
 
 \subsection{Traduzione di entità e associazioni in relazioni}
@@ -897,7 +899,7 @@ Per questo motivo, verrà usata la versione con ridondanza.
         Avendo specificato "ON DELETE CASCADE", il database, al momento dell'eliminazione di una recensione o di una ricetta, elimina automaticamente le relazioni ad esso associate.
     
     \item \textbf{\textcolor{orange}{Admin} | ban di un utente dal sistema con cancellazione a cascata di recensioni e lista "preferiti", mantenimento delle ricette come anonime}\\
-        Soluzione: Verrà inserito nel database un utente anonimo con userID = 0, a cui verranno associate le ricette appartenenti agli utenti eliminati.
+        Soluzione: Verrà inserito nel database un utente anonimo con userID = 1, a cui verranno associate le ricette appartenenti agli utenti eliminati.
         \\
         prima di tutto, vengono assegnate le creazioni appartenenti all'utente da eliminare all'utente anonimo, per non perderle.\\
         \textcolor{blue}{UPDATE} creazioni\\
