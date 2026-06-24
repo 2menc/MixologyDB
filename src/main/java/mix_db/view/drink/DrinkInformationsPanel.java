@@ -42,6 +42,9 @@ public class DrinkInformationsPanel extends JPanel{
 
     private final ButtonsPanel buttonsPanel;
 
+    private boolean isDrinkAlreaySaved;
+    private boolean reviewActionsEnabled;
+
     private final Drink drink;
 
     private final JTextArea description;
@@ -76,6 +79,7 @@ public class DrinkInformationsPanel extends JPanel{
         this.setOpaque(false);
 
         this.drink = drink;
+    this.isDrinkAlreaySaved = isDrinkAlreaySaved;
 
         this.buttonsPanel = new ButtonsPanel();
         this.buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
@@ -312,15 +316,42 @@ public class DrinkInformationsPanel extends JPanel{
      * @param drinkIsSaved true if the drink is already saved, false otherwise
      */
     public void setFavouriteButtonState(boolean drinkIsSaved) {
-        if(drinkIsSaved) {
-            buttonsPanel.addFavouriteButton.setEnabled(false);
-            buttonsPanel.removeFavouriteButton.setEnabled(true);
-        } else {
-            buttonsPanel.addFavouriteButton.setEnabled(true);
-            buttonsPanel.removeFavouriteButton.setEnabled(false);
-        }
+        this.isDrinkAlreaySaved = drinkIsSaved;
+        this.updateButtonsState();
+    }
 
-        this.updateView();;
+    /**
+     * configures the visibility and enabled state of buttons based on the user's login status and role.
+     * @param enabled .
+     */
+    public void setReviewActionsEnabled(boolean enabled) {
+        this.reviewActionsEnabled = enabled;
+        this.updateButtonsState();
+    }
+
+    /**
+     * manager for action buttons.
+     * Resolves conflicts between session status and favorite database state.
+     */
+    private void updateButtonsState() {
+        if (!this.reviewActionsEnabled) {
+
+            this.buttonsPanel.addFavouriteButton.setEnabled(false);
+            this.buttonsPanel.removeFavouriteButton.setEnabled(false);
+            this.buttonsPanel.addReviewButton.setEnabled(false);
+        } else {
+
+            this.buttonsPanel.addReviewButton.setEnabled(true);
+            
+            if (this.isDrinkAlreaySaved) {
+                this.buttonsPanel.addFavouriteButton.setEnabled(false);
+                this.buttonsPanel.removeFavouriteButton.setEnabled(true);
+            } else {
+                this.buttonsPanel.addFavouriteButton.setEnabled(true);
+                this.buttonsPanel.removeFavouriteButton.setEnabled(false);
+            }
+        }
+        this.updateView();
     }
 
     /**
@@ -503,16 +534,6 @@ public class DrinkInformationsPanel extends JPanel{
     private void updateView() {
         this.revalidate();
         this.repaint();
-    }
-
-    /**
-     * configures the visibility and enabled state of buttons based on the user's login status and role.
-     * @param enabled .
-     */
-    public void setReviewActionsEnabled(boolean enabled) {
-        this.buttonsPanel.addFavouriteButton.setEnabled(enabled);
-        this.buttonsPanel.removeFavouriteButton.setEnabled(enabled);
-        this.buttonsPanel.addReviewButton.setEnabled(enabled);
     }
 
     /**
