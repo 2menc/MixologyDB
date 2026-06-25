@@ -16,7 +16,7 @@ public class Launcher {
      */
     public static void main(String[] args) {
 
-        System.setProperty("sun.java2d.uiScale", "1.0");
+        //System.setProperty("sun.java2d.uiScale", "1.0");
 
         FlatMacDarkLaf.setup();
 
